@@ -25,7 +25,7 @@ const LoginPage: React.FC = () => {
                         <Link to="/register" className="text-blue-400 hover:underline">
                             Register
                         </Link>
-                        <Link to="/">
+                        <Link to="/game">
                             <button type="submit" className="bg-[#0F1015] text-white px-5 py-3 rounded-lg shadow-lg flex items-center justify-center gap-2 hover:opacity-90 transition-all duration-300 w-full mt-4">
                                 Login
                             </button>
