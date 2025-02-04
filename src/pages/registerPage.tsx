@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaUser, FaLock } from 'react-icons/fa';
 import { MdAlternateEmail } from 'react-icons/md';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const RegisterPage: React.FC = () => {
     return (
