@@ -3,7 +3,7 @@ import React from 'react';
 const MainPage: React.FC = () => {
     return (
         <main className='flex flex-col items-center justify-center min-h-screen bg-[#0F1015]'>
-            <div className="flex flex-col md:flex-row items-center mb-10 ml-0 md:ml-24 space-y-6 md:space-y-0 md:mt-0 lg:mb-48">
+            <div className="flex flex-col md:flex-row items-center space-y-6 md:space-y-0">
                         <div className="relative w-full md:w-auto flex justify-center md:justify-start">
                             <img
                                 src="/mainPageLogo.svg"
