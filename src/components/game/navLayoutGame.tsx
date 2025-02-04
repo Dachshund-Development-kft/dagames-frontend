@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { HiMiniHome } from "react-icons/hi2";
 import { HiOutlineMenu } from "react-icons/hi";
 import { IoSettingsSharp } from "react-icons/io5";
 import { FaNewspaper } from "react-icons/fa6";
@@ -16,6 +17,7 @@ const NavLayoutGame: React.FC = () => {
     const navItems = [
         { path: "/game/settings", icon: <IoSettingsSharp />, label: "Settings" },
         { path: "/game/loadout", icon: <GiAbdominalArmor />, label: "Loadout" },
+        { path: "/game/", icon: <HiMiniHome />, label: "Home" },
         { path: "/game/shop", icon: <FaShop />, label: "Shop" },
         { path: "/game/news", icon: <FaNewspaper />, label: "News" },
     ];
