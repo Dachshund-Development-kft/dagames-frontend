@@ -8,7 +8,7 @@ const LobbyPage: React.FC = () => {
             <NavLayoutGame />
             <FriendList />
             <div className='flex flex-grow items-center justify-center gap-4'>
-                <h1 className='text-3xl font-bold text-white bg-clip-text bg-gradient-to-r from-[#FF0080] to-[#7928CA]'>
+                <h1 className='text-3xl font-bold text-white bg-clip-text'>
                     Lobby
                 </h1>
                 <div className='flex flex-col items-center justify-center gap-4'>
