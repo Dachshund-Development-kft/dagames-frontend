@@ -2,10 +2,8 @@ import React from 'react';
 
 const MainPage: React.FC = () => {
     return (
-        <div className="flex flex-col min-h-screen text-white inset-0 bg-cover filter z-[-2] bg-repeat-y">
-            <main className="flex-grow items-center mt-96 lg:mt-96 xl:mt-96 2xl:mt-80 2xl:mb-48 mb-20 lg:mb-0">
-                <div className="flex flex-col items-center mt-80 justify-center h-screen">
-                    <div className="flex flex-col md:flex-row items-center mb-10 ml-0 md:ml-24 space-y-6 md:space-y-0 md:mt-0 lg:mb-48">
+        <main className='flex flex-col items-center justify-center min-h-screen bg-[#0F1015]'>
+            <div className="flex flex-col md:flex-row items-center mb-10 ml-0 md:ml-24 space-y-6 md:space-y-0 md:mt-0 lg:mb-48">
                         <div className="relative w-full md:w-auto flex justify-center md:justify-start">
                             <img
                                 src="/mainPageLogo.svg"
@@ -45,9 +43,7 @@ const MainPage: React.FC = () => {
                             Hiszünk abban, hogy az informatika az innováció és a fejlődés kulcsa. Fedezzük fel együtt a digitális lehetőségeket!
                         </p>
                     </div>
-                </div>
-            </main>
-        </div>
+        </main>
     );
 };
 
