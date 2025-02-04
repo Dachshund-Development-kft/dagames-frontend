@@ -32,7 +32,7 @@ const RegisterPage: React.FC = () => {
                             Log in
                         </Link></p>
                         <button type="submit" className="bg-[#0F1015] text-white px-5 py-3 rounded-lg shadow-lg flex items-center justify-center gap-2 hover:opacity-90 transition-all duration-300 w-full mt-4">
-                        Register
+                            Register
                         </button>
                     </div>
                 </form>
