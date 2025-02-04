@@ -30,6 +30,7 @@
     flex: 1;
     padding: 6px;
     overflow-y: auto;
+    scrollbar-width: none;
 }
 
 .friend {
