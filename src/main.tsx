@@ -6,10 +6,8 @@ import {
 } from 'react-router-dom'
 import MainPage from './pages/MainPage'
 import ErrorPage from './pages/ErrorPage'
-import LoginPage from './pages/loginPage'
 import ForgotPassword from './pages/forgotPassword'
 import Register from './pages/registerPage'
-import AboutUsPage from './pages/aboutUsPage'
 import LobbyPage from './pages/game/LobbyPage'
 
 
@@ -19,20 +17,12 @@ const router = createBrowserRouter([
     element: <MainPage />,
   },
   {
-    path: '/login',
-    element: <LoginPage />,
-  },
-  {
     path: '/forgot-password',
     element: <ForgotPassword />,
   },
   {
     path: '/register',
     element: <Register />,
-  },
-  {
-    path: '/about-us',
-    element: <AboutUsPage />,
   },
   {
     path: '/game/',

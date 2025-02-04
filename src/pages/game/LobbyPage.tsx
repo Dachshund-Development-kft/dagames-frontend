@@ -1,8 +1,26 @@
-import React from 'react';
-import NavLayoutGame from '../../components/game/navLayoutGame';
-import FriendList from '../../components/game/FriendList';
+import React, { useEffect, useState } from 'react';
+import NavLayoutGame from '../../components/navLayoutGame';
+import FriendList from '../../components/FriendList';
+import { me } from '../../api/me';
 
 const LobbyPage: React.FC = () => {
+    const [user, setUser] = useState<any>(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await me();
+                setUser(response);
+            } catch (err) {
+                console.error(err);
+                localStorage.removeItem('token');
+                window.location.href = '/';
+            }
+        };
+
+        fetchData();
+    }, []);
+
     return (
         <main className='flex flex-col items-center justify-center min-h-screen bg-[#0F1015]' style={{ backgroundImage: "url(/blobs.svg)" }}>
             <NavLayoutGame />
@@ -12,7 +30,7 @@ const LobbyPage: React.FC = () => {
                     Lobby
                 </h1>
                 <div className='flex flex-col items-center justify-center gap-4'>
-                <button className='bg-[#1a5f31] text-white px-5 py-3 rounded-lg shadow-lg flex items-center justify-center gap-2 transition-all duration-300 hover:scale-105 hover:shadow-xl'>
+                    <button className='bg-[#1a5f31] text-white px-5 py-3 rounded-lg shadow-lg flex items-center justify-center gap-2 transition-all duration-300 hover:scale-105 hover:shadow-xl'>
                         Play matchmaking
                     </button>
                     <button className='bg-[#1a235f] text-white px-5 py-3 rounded-lg shadow-lg flex items-center justify-center gap-2 transition-all duration-300 hover:scale-105 hover:shadow-xl'>

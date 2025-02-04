@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../../assets/FriendList.css'; // Import the CSS file
+import '../assets/FriendList.css';
 
 const friends = [
     { id: 1, name: 'Alice', status: 'Online', avatar: '/Logo.svg' },
