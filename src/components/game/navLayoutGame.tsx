@@ -66,7 +66,7 @@ const NavLayoutGame: React.FC = () => {
         <div className="flex flex-row p-2 items-center w-full bg-[#1A1B22] bg-opacity-30 relative" style={{ backgroundColor: 'rgba(26, 27, 34, 0.3)' }}>
             <div className="flex items-center mr-24">
                 <Link to="/" className="text-white">
-                    <img width={50} src="./Logo.svg" alt="Logo" title="Logo" />
+                    <img width={50} src="/Logo.svg" alt="Logo" title="Logo" />
                 </Link>
             </div>
             <div className="lg:hidden ml-auto">
