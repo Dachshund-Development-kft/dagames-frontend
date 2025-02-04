@@ -10,6 +10,8 @@ import LoginPage from './pages/loginPage'
 import ForgotPassword from './pages/forgotPassword'
 import Register from './pages/registerPage'
 import AboutUsPage from './pages/aboutUsPage'
+import LobbyPage from './pages/game/LobbyPage'
+
 
 const router = createBrowserRouter([
   {
@@ -31,6 +33,10 @@ const router = createBrowserRouter([
   {
     path: '/about-us',
     element: <AboutUsPage />,
+  },
+  {
+    path: '/game/',
+    element: <LobbyPage />,
   },
   {
     path: '*',
