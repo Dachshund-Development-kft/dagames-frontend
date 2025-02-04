@@ -1,10 +1,11 @@
 import React from 'react';
+import NavLayout from '../components/navLayout';
 
 const MainPage: React.FC = () => {
     return (
-        <main className='flex flex-col items-center justify-center min-h-screen bg-[#0F1015]'>
-            
-            <div className="flex flex-col md:flex-row items-center space-y-6 md:space-y-0 mb-14">
+        <main className='flex flex-col items-center justify-center min-h-screen bg-[#0F1015]' style={{ backgroundImage: "url(/blobs.svg)" }}>
+            <NavLayout />
+            <div className="flex flex-col md:flex-row items-center space-y-6 md:space-y-0 my-14">
                         <div className="relative w-full md:w-auto flex justify-center md:justify-start">
                             <img
                                 src="/mainPageLogo.svg"
@@ -22,7 +23,7 @@ const MainPage: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className="bg-[#291E7C] rounded-2xl shadow-xl p-8  sm:max-w-md md:max-w-2xl text-center md:pl-24 md:pr-24 md:pt-12 md:pb-12" style={{ backgroundColor: 'rgba(41, 30, 124, 0.12)' }}>
+                    <div className="bg-[#291E7C] rounded-2xl shadow-xl p-8  sm:max-w-md md:max-w-2xl text-center md:pl-24 md:pr-24 md:pt-12 md:pb-12 mb-12" style={{ backgroundColor: 'rgba(41, 30, 124, 0.12)' }}>
                         <h2 className="text-4xl font-bold bg-gradient-to-r from-[#5E78FF] to-[#384899] text-transparent bg-clip-text">Rólunk</h2>
                         <p className="md:text-lg sm:text-sm text-gray-300 mb-4 text-left">
                             A Dachshund Development elkötelezett az innovatív és hatékony informatikai
