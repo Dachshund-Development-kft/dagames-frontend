@@ -14,7 +14,7 @@ const ForgotPassword: React.FC = () => {
                     </h2>
                     <div className="flex flex-col gap-4 mt-10">
                         <div className="flex items-center bg-black text-white rounded-lg p-3 focus-within:ring-2 focus-within:ring-blue-500 transform duration-300">
-                            <MdAlternateEmail  className="text-gray-500 mr-2" />
+                            <MdAlternateEmail className="text-gray-500 mr-2" />
                             <input type="text" placeholder="Code" className="bg-transparent flex-1 outline-none focus:ring-0" />
                         </div>
                         <Link to="/login" className="text-blue-400 hover:underline">
