@@ -2,8 +2,8 @@ import React from 'react';
 
 const LobbyPage: React.FC = () => {
     return (
-        <div>
-            <img src="/lobby.jpg" alt="" />
+        <div className='overflow-hidden'>
+            <img className='' src="/lobby.jpg" alt="" height={'960px'} />
         </div>
     );
 };
