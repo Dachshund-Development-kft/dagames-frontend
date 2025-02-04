@@ -12,13 +12,13 @@ const LobbyPage: React.FC = () => {
                     Lobby
                 </h1>
                 <div className='flex flex-col items-center justify-center gap-4'>
-                <button className='bg-[#FF0080] text-white px-5 py-3 rounded-lg shadow-lg flex items-center justify-center gap-2 transition-all duration-300 hover:scale-105 hover:shadow-xl'>
+                <button className='bg-[#1a5f31] text-white px-5 py-3 rounded-lg shadow-lg flex items-center justify-center gap-2 transition-all duration-300 hover:scale-105 hover:shadow-xl'>
                         Play matchmaking
                     </button>
-                    <button className='bg-[#FF0080] text-white px-5 py-3 rounded-lg shadow-lg flex items-center justify-center gap-2 transition-all duration-300 hover:scale-105 hover:shadow-xl'>
+                    <button className='bg-[#1a235f] text-white px-5 py-3 rounded-lg shadow-lg flex items-center justify-center gap-2 transition-all duration-300 hover:scale-105 hover:shadow-xl'>
                         Create room
                     </button>
-                    <button className='bg-[#FF0080] text-white px-5 py-3 rounded-lg shadow-lg flex items-center justify-center gap-2 transition-all duration-300 hover:scale-105 hover:shadow-xl'>
+                    <button className='bg-[#1a235f] text-white px-5 py-3 rounded-lg shadow-lg flex items-center justify-center gap-2 transition-all duration-300 hover:scale-105 hover:shadow-xl'>
                         Join room
                     </button>
                 </div>
