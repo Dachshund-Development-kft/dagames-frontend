@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { HiMiniHome } from "react-icons/hi2";
-import { HiUserAdd } from "react-icons/hi";
 import { HiOutlineMenu } from "react-icons/hi";
+import { IoSettingsSharp } from "react-icons/io5";
+import { FaNewspaper } from "react-icons/fa6";
+import { FaShop } from "react-icons/fa6";
+import { GiAbdominalArmor } from "react-icons/gi";
 
 const NavLayoutGame: React.FC = () => {
     const location = useLocation();
@@ -12,8 +14,10 @@ const NavLayoutGame: React.FC = () => {
     const [user, setUser] = useState<any>(null);
 
     const navItems = [
-        { path: "/", icon: <HiMiniHome />, label: "Main page" },
-        { path: "/about-us", icon: <HiUserAdd />, label: "About us" },
+        { path: "/game/settings", icon: <IoSettingsSharp />, label: "Settings" },
+        { path: "/game/loadout", icon: <GiAbdominalArmor />, label: "Loadout" },
+        { path: "/game/shop", icon: <FaShop />, label: "Shop" },
+        { path: "/game/news", icon: <FaNewspaper />, label: "News" },
     ];
 
     useEffect(() => {
