@@ -16,8 +16,6 @@ import InventoryPage from './pages/game/inventoryPage'
 import StorePage from './pages/game/storePage'
 import NewsPage from './pages/game/newsPage'
 
-
-
 const router = createBrowserRouter([
   {
     path: '/',
