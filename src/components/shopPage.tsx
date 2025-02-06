@@ -68,8 +68,6 @@ const ShopPage: React.FC = () => {
     return (
         <div className="flex flex-col items-center justify-center w-full max-w-[1400px] p-4">
             <h1 className="text-2xl font-bold mb-4">Shop Items</h1>
-
-            {/* Selected Item Showcase */}
             {selectedItem && (
                 <div className="w-full mb-8 p-4 border rounded-lg bg-gray-100">
                     <h2 className="text-2xl font-bold mb-4">Selected Item</h2>
@@ -93,8 +91,6 @@ const ShopPage: React.FC = () => {
                     </div>
                 </div>
             )}
-
-            {/* Shop Items Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {shopItems.map((item) => (
                     <div
