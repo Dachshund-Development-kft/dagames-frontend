@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import NavLayoutGame from '../../components/navLayoutGame';
 import FriendList from '../../components/FriendList';
 import { me } from '../../api/me';
 import NewsLayout from '../../components/news';
 
 const LobbyPage: React.FC = () => {
-    const [setUser] = useState<any>(null);
-
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await me();
-                setUser(response);
+                console.log(response.username);
             } catch (err) {
                 console.error(err);
                 localStorage.removeItem('token');
