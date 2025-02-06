@@ -4,7 +4,6 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from 'react-router-dom'
-import MainPage from './pages/MainPage'
 import ErrorPage from './pages/ErrorPage'
 import ForgotPassword from './pages/forgotPassword'
 import Register from './pages/registerPage'
@@ -16,7 +15,7 @@ import LoginPage from './pages/loginPage'
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <MainPage />,
+    element: <p>Sigma</p>,
   },
   {
     path: '/forgot-password',
