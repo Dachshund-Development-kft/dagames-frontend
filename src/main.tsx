@@ -36,7 +36,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/game',
-    element: <MainPage />,
+    element: <LobbyPage />,
   },
   {
     path: '/logout',

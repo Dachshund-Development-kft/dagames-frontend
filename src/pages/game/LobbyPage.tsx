@@ -4,15 +4,14 @@ import FriendList from '../../components/FriendList';
 import { me } from '../../api/me';
 
 const LobbyPage: React.FC = () => {
-
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await me();
                 console.log(response.username);
             } catch (err) {
-                console.error(err);
                 localStorage.removeItem('token');
+                console.error(err);
                 window.location.href = '/';
             }
         };
