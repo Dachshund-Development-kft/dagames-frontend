@@ -3,7 +3,7 @@ import NavLayoutGame from '../../components/navLayoutGame';
 import { me } from '../../api/me';
 import NewsLayout from '../../components/news';
 
-const LobbyPage: React.FC = () => {
+const MainPage: React.FC = () => {
     const [user, setUser] = useState<any>(null);
 
     useEffect(() => {
@@ -32,4 +32,4 @@ const LobbyPage: React.FC = () => {
     );
 };
 
-export default LobbyPage;
+export default MainPage;

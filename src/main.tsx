@@ -10,6 +10,7 @@ import ForgotPassword from './pages/forgotPassword'
 import Register from './pages/registerPage'
 import LobbyPage from './pages/game/LobbyPage'
 import LogoutPage from './pages/logoutPage'
+import SettingsPage from './pages/game/settingsPage'
 
 
 const router = createBrowserRouter([
@@ -26,8 +27,16 @@ const router = createBrowserRouter([
     element: <Register />,
   },
   {
-    path: '/game',
+    path: '/game/lobby',
     element: <LobbyPage />,
+  },
+  {
+    path: '/game/settings',
+    element: <SettingsPage />,
+  },
+  {
+    path: '/game',
+    element: <MainPage />,
   },
   {
     path: '/logout',
