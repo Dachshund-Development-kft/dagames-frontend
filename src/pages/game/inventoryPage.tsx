@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import NavLayoutGame from '../../components/navLayoutGame';
 import { me } from '../../api/me';
 
-const SettingsPage: React.FC = () => {
+const InventoryPage: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -28,4 +28,4 @@ const SettingsPage: React.FC = () => {
     );
 };
 
-export default SettingsPage;
+export default InventoryPage;
