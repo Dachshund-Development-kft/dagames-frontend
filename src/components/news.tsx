@@ -53,8 +53,6 @@ const NewsLayout: React.FC = () => {
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12">
                     <div className="bg-black bg-opacity-90 text-white p-8 rounded-lg shadow-lg max-w-2xl w-full mx-4 sm:mx-6 md:mx-8 lg:mx-10 xl:mx-12">
                         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-center">{news.name}</h2>
-
-                        {/* Markdown rendering with scrolling */}
                         <div className="overflow-y-auto max-h-96 prose prose-invert sm:max-h-[30rem] md:max-h-[35rem] lg:max-h-[40rem]">
                             <ReactMarkdown remarkPlugins={[remarkGfm]}>{news.body}</ReactMarkdown>
                         </div>

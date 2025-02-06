@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import NavLayoutGame from '../../components/navLayoutGame';
 import { me } from '../../api/me';
+import ShopPage from '../../components/shopPage';
 
 const InventoryPage: React.FC = () => {
     useEffect(() => {
@@ -21,8 +22,8 @@ const InventoryPage: React.FC = () => {
     return (
         <main className='flex flex-col items-center justify-center min-h-screen bg-[#0F1015]' style={{ backgroundImage: "url(/blobs.svg)" }}>
             <NavLayoutGame />
-            <div className='flex flex-grow items-center justify-center gap-4'>
-                <h1>store goes here</h1>
+            <div className='flex flex-grow items-center justify-center gap-4 p-4'>
+                <ShopPage />
             </div>
         </main>
     );

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import NavLayoutGame from '../../components/navLayoutGame';
 import { me } from '../../api/me';
+import NewsPageLayout from '../../components/newspage';
 
 
 const InventoryPage: React.FC = () => {
@@ -23,7 +24,7 @@ const InventoryPage: React.FC = () => {
         <main className='flex flex-col items-center justify-center min-h-screen bg-[#0F1015]' style={{ backgroundImage: "url(/blobs.svg)" }}>
             <NavLayoutGame />
             <div className='flex flex-grow items-center justify-center gap-4'>
-                <h1>news goes here</h1>
+                <NewsPageLayout />
             </div>
         </main>
     );
