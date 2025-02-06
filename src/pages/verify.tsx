@@ -1,12 +1,10 @@
 import React from 'react';
-import NavLayout from '../components/navLayout';
 import { MdAlternateEmail } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 
 const ForgotPassword: React.FC = () => {
     return (
         <div className="flex flex-col min-h-screen text-white bg-cover bg-repeat-y" style={{ backgroundImage: "url(/blobs.svg)" }}>
-            <NavLayout />
             <main className="flex flex-grow items-center justify-center py-16">
                 <form className="bg-black bg-opacity-30 rounded-2xl shadow-xl p-6 w-full max-w-sm text-center">
                     <h2 className="text-3xl font-bold bg-white bg-clip-text">
@@ -17,7 +15,7 @@ const ForgotPassword: React.FC = () => {
                             <MdAlternateEmail className="text-gray-500 mr-2" />
                             <input type="text" placeholder="Code" className="bg-transparent flex-1 outline-none focus:ring-0" />
                         </div>
-                        <Link to="/login" className="text-blue-400 hover:underline">
+                        <Link to="/" className="text-blue-400 hover:underline">
                             Log in
                         </Link>
                         <button type="submit" className="bg-[#0F1015] text-white px-5 py-3 rounded-lg shadow-lg flex items-center justify-center gap-2 hover:opacity-90 transition-all duration-300 w-full mt-4">
