@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import NavLayoutGame from '../../components/navLayoutGame';
 import FriendList from '../../components/FriendList';
 import { me } from '../../api/me';
-import NewsLayout from '../../components/news';
 
 const LobbyPage: React.FC = () => {
 
@@ -25,7 +24,6 @@ const LobbyPage: React.FC = () => {
         <main className='flex flex-col items-center justify-center min-h-screen bg-[#0F1015]' style={{ backgroundImage: "url(/blobs.svg)" }}>
             <NavLayoutGame />
             <FriendList />
-            <NewsLayout />
             <div className='flex flex-grow items-center justify-center gap-4'>
                 <h1 className='text-3xl font-bold text-white bg-clip-text'>
                     Lobby
