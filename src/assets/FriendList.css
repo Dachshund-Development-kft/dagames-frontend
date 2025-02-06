@@ -1,8 +1,7 @@
 .friend-list {
     position: fixed;
     right: 0;
-    top: 4rem;
-    height: calc(100% - 4rem);
+    height: calc(100%);
     background: #1E1F26;
     color: white;
     width: 72px; /* Initial width */

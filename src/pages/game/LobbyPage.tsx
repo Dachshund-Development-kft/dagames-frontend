@@ -5,7 +5,7 @@ import { me } from '../../api/me';
 import NewsLayout from '../../components/news';
 
 const LobbyPage: React.FC = () => {
-    const [user, setUser] = useState<any>(null);
+    const [setUser] = useState<any>(null);
 
     useEffect(() => {
         const fetchData = async () => {
