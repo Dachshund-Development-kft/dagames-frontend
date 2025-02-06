@@ -104,11 +104,11 @@ const NavLayoutGame: React.FC = () => {
                 </div>
                 <button className=" flex items-center gap-2 transition-all duration-300 w-full mt-2">
                     {user ? (
-                        <Link className="bg-[#0F1015] text-white px-4 py-2 rounded-md shadow-lg hover:bg-gray-700 flex items-center gap-2 transition-all duration-300" to='/dashboard'>
+                        <Link className="bg-[#0F1015] text-white px-4 py-2 rounded-md shadow-lg hover:bg-gray-700 flex items-center gap-2 transition-all duration-300" to='/profile'>
                             Profile
                         </Link>
                     ) : (
-                        <Link className="bg-[#0F1015] text-white px-4 py-2 rounded-md shadow-lg hover:bg-gray-700 flex items-center gap-2 transition-all duration-300" to='/login'>
+                        <Link className="bg-[#0F1015] text-white px-4 py-2 rounded-md shadow-lg hover:bg-gray-700 flex items-center gap-2 transition-all duration-300" to='/'>
                             Login
                         </Link>
                     )}

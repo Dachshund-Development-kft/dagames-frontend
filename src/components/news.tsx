@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import ReactMarkdown from 'react-markdown'; // Markdown támogatás
-import remarkGfm from 'remark-gfm'; // GitHub Flavored Markdown támogatás
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm';
 import { getNews } from '../api/news';
 
 interface ApiResponse {
