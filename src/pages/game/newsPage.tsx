@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import NavLayoutGame from '../../components/navLayoutGame';
 import { me } from '../../api/me';
-import NewsLayout from '../../components/news';
-import FriendList from '../../components/FriendList';
 
-const MainPage: React.FC = () => {
+
+const InventoryPage: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -23,13 +22,11 @@ const MainPage: React.FC = () => {
     return (
         <main className='flex flex-col items-center justify-center min-h-screen bg-[#0F1015]' style={{ backgroundImage: "url(/blobs.svg)" }}>
             <NavLayoutGame />
-            <FriendList />
-            <NewsLayout />
             <div className='flex flex-grow items-center justify-center gap-4'>
-
+                <h1>news goes here</h1>
             </div>
         </main>
     );
 };
 
-export default MainPage;
+export default InventoryPage;

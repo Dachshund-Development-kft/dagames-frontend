@@ -13,6 +13,10 @@ import SettingsPage from './pages/game/settingsPage'
 import LoginPage from './pages/loginPage'
 import MainPage from './pages/game/mainPage'
 import InventoryPage from './pages/game/inventoryPage'
+import StorePage from './pages/game/storePage'
+import NewsPage from './pages/game/newsPage'
+
+
 
 const router = createBrowserRouter([
   {
@@ -37,11 +41,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/shop',
-    element: <p>Shop</p>,
+    element: <StorePage />,
   },
   {
     path: '/news',
-    element: <p>News</p>,
+    element: <NewsPage />,
   },
   {
     path: '/inventory',

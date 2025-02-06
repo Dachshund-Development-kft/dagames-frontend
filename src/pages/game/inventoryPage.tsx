@@ -22,7 +22,7 @@ const InventoryPage: React.FC = () => {
         <main className='flex flex-col items-center justify-center min-h-screen bg-[#0F1015]' style={{ backgroundImage: "url(/blobs.svg)" }}>
             <NavLayoutGame />
             <div className='flex flex-grow items-center justify-center gap-4'>
-                <h1>settings go here</h1>
+                <h1>inventory goes here</h1>
             </div>
         </main>
     );

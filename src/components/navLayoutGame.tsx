@@ -22,7 +22,7 @@ const NavLayoutGame: React.FC = () => {
     const centerNavItems = [
         { path: "/inventory", icon: <MdInventory />, label: "Inventory" },
         { path: "/play", icon: <FaPlay />, label: "Play" },
-        { path: "/shop", icon: <FaShop />, label: "Store" },
+        { path: "/shop", icon: <FaShop />, label: "Shop" },
         { path: "/news", icon: <FaNewspaper />, label: "News" }
     ];
 
