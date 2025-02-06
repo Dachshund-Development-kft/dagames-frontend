@@ -17,3 +17,12 @@ body {
     font-size: large;
     overflow-x: hidden;
 }
+
+:root::-webkit-scrollbar {
+    display: none;
+}
+
+:root {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}

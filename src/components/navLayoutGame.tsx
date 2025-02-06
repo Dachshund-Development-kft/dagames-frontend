@@ -64,7 +64,7 @@ const NavLayoutGame: React.FC = () => {
             </div>
 
             <nav className="flex flex-row justify-center w-full">
-                <div className="flex flex-row items-center gap-8">
+                <div className="flex flex-row items-center gap-8 pr-[104px]">
                     {centerNavItems.map((item, index) => (
                         <div key={index} className={`flex flex-row items-center transition-opacity duration-300 ${location.pathname === item.path ? "opacity-100" : "opacity-50 hover:opacity-100"}`}>
                             <Link to={item.path} className="text-white flex items-center">
