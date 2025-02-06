@@ -3,7 +3,7 @@ import NavLayoutGame from '../../components/navLayoutGame';
 import FriendList from '../../components/FriendList';
 import { me } from '../../api/me';
 
-const LobbyPage: React.FC = () => {
+const PlayPage: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -12,7 +12,7 @@ const LobbyPage: React.FC = () => {
             } catch (err) {
                 localStorage.removeItem('token');
                 console.error(err);
-                window.location.href = '/';
+                window.location.href = '/login';
             }
         };
 
@@ -43,4 +43,4 @@ const LobbyPage: React.FC = () => {
     );
 };
 
-export default LobbyPage;
+export default PlayPage;

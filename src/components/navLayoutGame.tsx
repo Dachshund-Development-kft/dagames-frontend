@@ -3,7 +3,6 @@ import { Link, useLocation } from 'react-router-dom';
 import { HiMiniHome } from "react-icons/hi2";
 import { IoSettingsSharp } from "react-icons/io5";
 import { FaNewspaper, FaShop } from "react-icons/fa6";
-import { GiAbdominalArmor } from "react-icons/gi";
 import { FiLogOut } from "react-icons/fi";
 import { MdInventory } from "react-icons/md";
 import { FaPlay } from "react-icons/fa";
@@ -15,17 +14,16 @@ const NavLayoutGame: React.FC = () => {
     const menuButtonRef = useRef<HTMLButtonElement>(null);
 
     const leftNavItems = [
-        { path: "/game", icon: <HiMiniHome size={24} /> },
-        { path: "/game/settings", icon: <IoSettingsSharp size={24} /> },
+        { path: "/", icon: <HiMiniHome size={24} /> },
+        { path: "/settings", icon: <IoSettingsSharp size={24} /> },
         { path: "/logout", icon: <FiLogOut size={24} /> }
     ];
 
     const centerNavItems = [
-        { path: "/game/inventory", icon: <MdInventory />, label: "Inventory" },
-        { path: "/game/loadout", icon: <GiAbdominalArmor />, label: "Loadout" },
-        { path: "/game/play", icon: <FaPlay />, label: "Play" },
-        { path: "/game/shop", icon: <FaShop />, label: "Store" },
-        { path: "/game/news", icon: <FaNewspaper />, label: "News" }
+        { path: "/inventory", icon: <MdInventory />, label: "Inventory" },
+        { path: "/play", icon: <FaPlay />, label: "Play" },
+        { path: "/shop", icon: <FaShop />, label: "Store" },
+        { path: "/news", icon: <FaNewspaper />, label: "News" }
     ];
 
     useEffect(() => {

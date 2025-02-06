@@ -12,7 +12,7 @@ const MainPage: React.FC = () => {
             } catch (err) {
                 localStorage.removeItem('token');
                 console.error(err);
-                window.location.href = '/';
+                window.location.href = '/login';
             }
         };
 

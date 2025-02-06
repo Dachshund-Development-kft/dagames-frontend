@@ -10,7 +10,7 @@ const LoginPage: React.FC = () => {
 
     useEffect(() => {
         if (localStorage.getItem('token')) {
-            window.location.href = '/game';
+            window.location.href = '/';
         }
     }, []);
 
@@ -22,7 +22,7 @@ const LoginPage: React.FC = () => {
             
             if (response.token) {
                 localStorage.setItem('token', response.token);
-                window.location.href = '/game';
+                window.location.href = '/';
             }
         } catch (err) {
             console.error(err);

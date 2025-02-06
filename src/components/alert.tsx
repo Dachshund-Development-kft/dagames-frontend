@@ -18,7 +18,6 @@ interface ApiResponse {
 
 const AlertLayout: React.FC = () => {
     const [maintenanceMessage, setMaintenanceMessage] = useState<string | null>(null);
-    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -28,17 +27,12 @@ const AlertLayout: React.FC = () => {
                     setMaintenanceMessage(response.message);
                 }
             } catch (err) {
-                setError('Hiba történt az adatok betöltése közben.');
                 console.error(err);
             }
         };
 
         fetchData();
     }, []);
-
-    if (error) {
-        return <div className="text-red-500">{error}</div>;
-    }
 
     return (
         <>

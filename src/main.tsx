@@ -11,11 +11,13 @@ import LobbyPage from './pages/game/LobbyPage'
 import LogoutPage from './pages/logoutPage'
 import SettingsPage from './pages/game/settingsPage'
 import LoginPage from './pages/loginPage'
+import MainPage from './pages/game/mainPage'
+import InventoryPage from './pages/game/inventoryPage'
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <p>Sigma</p>,
+    element: <MainPage />,
   },
   {
     path: '/forgot-password',
@@ -30,8 +32,20 @@ const router = createBrowserRouter([
     element: <SettingsPage />,
   },
   {
-    path: '/lobby',
+    path: '/play',
     element: <LobbyPage />,
+  },
+  {
+    path: '/shop',
+    element: <p>Shop</p>,
+  },
+  {
+    path: '/news',
+    element: <p>News</p>,
+  },
+  {
+    path: '/inventory',
+    element: <InventoryPage />,
   },
   {
     path: '/login',
