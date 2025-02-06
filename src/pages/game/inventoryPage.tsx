@@ -74,7 +74,7 @@ const InventoryPage: React.FC = () => {
     }, []);
 
     return (
-        <main className='flex flex-col justify-center min-h-screen bg-[#0F1015]' style={{ backgroundImage: "url(/blobs.svg)" }}>
+        <main className='flex flex-col items-center justify-center min-h-screen bg-[#0F1015]' style={{ backgroundImage: "url(/blobs.svg)" }}>
             <NavLayoutGame />
             <div className='flex flex-grow items-center justify-center w-full max-w-4xl p-4'>
                 <div className="grid grid-cols-6 gap-4 w-full h-[800px] overflow-y-auto p-4 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-800">
