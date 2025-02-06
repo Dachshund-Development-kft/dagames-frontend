@@ -26,10 +26,6 @@ const router = createBrowserRouter([
     element: <Register />,
   },
   {
-    path: '/game/lobby',
-    element: <LobbyPage />,
-  },
-  {
     path: '/game/settings',
     element: <SettingsPage />,
   },
