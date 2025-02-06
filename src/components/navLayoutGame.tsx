@@ -51,7 +51,7 @@ const NavLayoutGame: React.FC = () => {
 
     return (
         <div className="flex flex-row p-2 items-center w-full bg-[#1A1B22] bg-opacity-30 relative">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 py-2">
                 {leftNavItems.map((item, index) => (
                     <Link 
                         key={index} 

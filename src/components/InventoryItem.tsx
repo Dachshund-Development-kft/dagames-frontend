@@ -18,7 +18,7 @@ interface InventoryItemProps {
 
 const InventoryItem: React.FC<InventoryItemProps> = ({ name, icon, type, stats, isEquipped }) => {
     return (
-        <div className="flex h-48 w-48 flex-col items-center p-4 bg-gray-800 rounded-lg shadow-lg hover:bg-gray-700 transition duration-300">
+        <div className="flex h-60 w-48 flex-col items-center p-4 bg-gray-800 rounded-lg shadow-lg hover:bg-gray-700 transition duration-300">
             <img src={icon} alt={name} className="w-16 h-16 mb-2" />
             <span className="text-white text-sm">{name}</span>
             <span className="text-gray-400 text-xs">{type}</span>
