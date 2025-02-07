@@ -1,25 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { fetchShopItems, fetchShopItemById, buyItem, ShopItem } from '../api/shop';
+import { inventory } from '../api/inventory'; // Assuming you have an inventory API
 
 const ShopPage: React.FC = () => {
     const [shopItems, setShopItems] = useState<ShopItem[]>([]);
     const [selectedItem, setSelectedItem] = useState<ShopItem | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const [ownedItems, setOwnedItems] = useState<string[]>([]); // Track IDs of owned items
 
+    // Fetch shop items and user's inventory
     useEffect(() => {
-        const loadShopItems = async () => {
+        const loadData = async () => {
             try {
                 const items = await fetchShopItems();
                 setShopItems(items);
+
+                // Fetch user's inventory to check owned items
+                const inventoryResponse = await inventory();
+                const ownedItemIds = inventoryResponse.map((item: any) => item.id); // Use the same ID as the shop
+                setOwnedItems(ownedItemIds);
+
                 setLoading(false);
             } catch (err) {
-                setError('Failed to load shop items.');
+                setError('Failed to load shop items or inventory.');
                 setLoading(false);
             }
         };
 
-        loadShopItems();
+        loadData();
     }, []);
 
     const handleItemClick = async (itemId: string) => {
@@ -38,12 +47,20 @@ const ShopPage: React.FC = () => {
     const handleBuyClick = async () => {
         if (!selectedItem) return;
 
+        // Check if the item is already owned
+        if (ownedItems.includes(selectedItem.id)) {
+            alert('You already own this item.');
+            return;
+        }
+
         const confirmPurchase = window.confirm(`Do you want to buy ${selectedItem.name} for $${selectedItem.price}?`);
         if (confirmPurchase) {
             try {
                 const result = await buyItem(selectedItem.id);
                 if (result.success) {
                     alert('Purchase successful!');
+                    // Update owned items list
+                    setOwnedItems([...ownedItems, selectedItem.id]);
                 } else {
                     alert(result.message || 'Failed to buy item.');
                 }
@@ -84,9 +101,14 @@ const ShopPage: React.FC = () => {
                         )}
                         <button
                             onClick={handleBuyClick}
-                            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                            className={`mt-4 px-4 py-2 text-white rounded-lg transition-colors ${
+                                ownedItems.includes(selectedItem.id)
+                                    ? 'bg-gray-400 cursor-not-allowed'
+                                    : 'bg-blue-500 hover:bg-blue-600'
+                            }`}
+                            disabled={ownedItems.includes(selectedItem.id)}
                         >
-                            Buy Now
+                            {ownedItems.includes(selectedItem.id) ? 'Owned' : 'Buy Now'}
                         </button>
                     </div>
                 </div>
@@ -95,9 +117,14 @@ const ShopPage: React.FC = () => {
                 {shopItems.map((item) => (
                     <div
                         key={item._id}
-                        className="border p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+                        className="border p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer relative"
                         onClick={() => handleItemClick(item.id)}
                     >
+                        {ownedItems.includes(item.id) && (
+                            <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-lg">
+                                <span className="text-red-500 text-2xl font-bold">Owned</span>
+                            </div>
+                        )}
                         <h2 className="text-xl font-semibold">{item.name}</h2>
                         <p className="text-gray-600">{item.description}</p>
                         <p className="text-green-600 font-bold">${item.price}</p>
