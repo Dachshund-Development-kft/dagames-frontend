@@ -48,7 +48,6 @@ const InventoryPage: React.FC = () => {
         fetchData();
     }, []);
 
-    // Sort inventory data so that equipped items come first
     const sortedInventoryData = [...inventoryData].sort((a, b) => {
         if (a.equipped && !b.equipped) return -1;
         if (!a.equipped && b.equipped) return 1;
@@ -69,7 +68,7 @@ const InventoryPage: React.FC = () => {
                             type={item.type}
                             stats={item.stats}
                             isEquipped={item.equipped}
-                            onEquip={fetchInventoryData} // Pass the callback to refresh inventory
+                            onEquip={fetchInventoryData}
                         />
                     ))}
                 </div>

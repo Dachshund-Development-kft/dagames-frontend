@@ -15,6 +15,7 @@ import MainPage from './pages/game/mainPage'
 import InventoryPage from './pages/game/inventoryPage'
 import StorePage from './pages/game/storePage'
 import NewsPage from './pages/game/newsPage'
+import VerifyPage from './pages/verifyPage'
 
 const router = createBrowserRouter([
   {
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
   {
     path: '/logout',
     element: <LogoutPage />,
+  },
+  {
+    path: '/verify',
+    element: <VerifyPage />,
   },
   {
     path: '*',

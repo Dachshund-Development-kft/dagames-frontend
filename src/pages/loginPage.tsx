@@ -58,18 +58,15 @@ const LoginPage: React.FC = () => {
                                 className="bg-transparent flex-1 outline-none focus:ring-0 placeholder-gray-400"
                             />
                         </div>
-                        <Link to="/forgot-password" className="text-blue-400 hover:underline text-sm">
-                            Forgotten password?
-                        </Link>
-                        <Link to="/register" className="text-blue-400 hover:underline text-sm">
-                            Don't have an account? Register
-                        </Link>
                         <button
                             type="submit"
-                            className="bg-[#0F1015] text-white px-5 py-3 rounded-lg shadow-lg flex items-center justify-center gap-2 hover:bg-opacity-90 transition-all duration-300 w-full mt-4"
-                        >
+                            className="bg-[#0F1015] text-white px-5 py-3 rounded-lg shadow-lg flex items-center justify-center gap-2 hover:bg-opacity-90 transition-all duration-300 w-full mt-4">
                             Login
                         </button>
+                        <br />
+                        <Link to="/register" className="text-blue-400 hover:underline text-sm">
+                            Don't have an account?
+                        </Link>
                     </div>
                 </form>
             </main>

@@ -6,7 +6,7 @@ interface InventoryItemProps {
     name: string;
     type: string;
     icon: string;
-    stats: {
+    stats?: {
         power?: number;
         speed?: number;
         ability?: number;
@@ -15,10 +15,10 @@ interface InventoryItemProps {
         attack?: number;
     };
     isEquipped: boolean;
-    onEquip?: () => void; // Callback to refresh inventory after equipping
+    onEquip?: () => void;
 }
 
-const InventoryItem: React.FC<InventoryItemProps> = ({ id, name, icon, type, stats, isEquipped, onEquip }) => {
+const InventoryItem: React.FC<InventoryItemProps> = ({ id, name, icon, type, stats = {}, isEquipped, onEquip }) => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const handleItemClick = () => {
@@ -50,7 +50,7 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ id, name, icon, type, sta
             if (response.data.success) {
                 console.log(`${type} equipped successfully: ${name}`);
                 setIsDialogOpen(false);
-                if (onEquip) onEquip(); // Refresh the inventory
+                if (onEquip) onEquip();
             } else {
                 console.error('Failed to equip item:', response.data.message);
             }
@@ -64,7 +64,7 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ id, name, icon, type, sta
     };
 
     const handleCloseDialog = (e: React.MouseEvent) => {
-        e.stopPropagation(); // Prevent event propagation to the parent div
+        e.stopPropagation();
         setIsDialogOpen(false);
     };
 

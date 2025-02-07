@@ -22,7 +22,7 @@ const RegisterPage: React.FC = () => {
 
         if (success) {
             alert("User registered");
-            window.location.href = '/';
+            window.location.href = '/verify';
         }
     }
     return (
@@ -49,12 +49,12 @@ const RegisterPage: React.FC = () => {
                             <FaLock className="text-gray-500 mr-2" />
                             <input id='passwordAgain' type="password" placeholder="Password again " className="bg-transparent flex-1 outline-none focus:ring-0" />
                         </div>
-                        <p>Have an account? <Link to="/" className="text-blue-400 hover:underline">
-                            Log in
-                        </Link></p>
                         <button onClick={handleRegister} type="submit" className="bg-[#0F1015] text-white px-5 py-3 rounded-lg shadow-lg flex items-center justify-center gap-2 hover:opacity-90 transition-all duration-300 w-full mt-4">
                             Register
                         </button>
+                        <p>Have an account? <Link to="/login" className="text-blue-400 hover:underline">
+                            Log in
+                        </Link></p>
                     </div>
                 </form>
             </main>
