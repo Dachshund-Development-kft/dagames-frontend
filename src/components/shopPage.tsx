@@ -8,13 +8,30 @@ const ShopPage: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [ownedItems, setOwnedItems] = useState<string[]>([]);
+    const [coins, setCoins] = useState<number>(0);
 
     useEffect(() => {
         const loadData = async () => {
             try {
+                // Fetch user data
+                const userResponse = await fetch('https://api.dagames.online/v1/user/@me', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                if (!userResponse.ok) {
+                    throw new Error('Failed to fetch user data');
+                }
+
+                const userData = await userResponse.json();
+                setCoins(userData.coins);
+
+                // Fetch shop items
                 const items = await fetchShopItems();
                 setShopItems(items);
 
+                // Fetch inventory
                 const inventoryResponse = await inventory();
                 const ownedItemIds = inventoryResponse.map((item: any) => item.id);
                 setOwnedItems(ownedItemIds);
@@ -57,6 +74,7 @@ const ShopPage: React.FC = () => {
                 if (result.success) {
                     alert('Purchase successful!');
                     setOwnedItems([...ownedItems, selectedItem.id]);
+                    setCoins(coins - selectedItem.price); // Deduct the price from the user's coins
                 } else {
                     alert(result.message || 'Failed to buy item.');
                 }
@@ -80,6 +98,9 @@ const ShopPage: React.FC = () => {
 
     return (
         <div className="flex flex-col items-center justify-center w-full max-w-[1400px] p-4">
+            <div className="self-start mb-4">
+                <p className="text-lg font-bold text-white">Coins: {coins}</p>
+            </div>
             <h1 className="text-2xl font-bold mb-4">Shop Items</h1>
             {selectedItem && (
                 <div className="w-full mb-8 p-4 border rounded-lg bg-gray-100">

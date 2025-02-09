@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../assets/FriendList.css';
+import { div } from 'framer-motion/client';
 
 const friends = [
     { id: 1, name: 'Alice', status: 'Online', avatar: '/Logo.svg' },
@@ -13,7 +14,9 @@ const FriendList: React.FC = () => {
     const [hovered, setHovered] = useState(false);
 
     return (
-        <div
+        <div>
+            {/*
+            <div
             className={`friend-list ${hovered ? 'expanded' : ''}`}
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
@@ -34,6 +37,8 @@ const FriendList: React.FC = () => {
                     </li>
                 ))}
             </ul>
+        </div>    
+        */}
         </div>
     );
 };
