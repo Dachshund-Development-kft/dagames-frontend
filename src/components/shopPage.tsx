@@ -1,24 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { fetchShopItems, fetchShopItemById, buyItem, ShopItem } from '../api/shop';
-import { inventory } from '../api/inventory'; // Assuming you have an inventory API
+import { inventory } from '../api/inventory';
 
 const ShopPage: React.FC = () => {
     const [shopItems, setShopItems] = useState<ShopItem[]>([]);
     const [selectedItem, setSelectedItem] = useState<ShopItem | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-    const [ownedItems, setOwnedItems] = useState<string[]>([]); // Track IDs of owned items
+    const [ownedItems, setOwnedItems] = useState<string[]>([]);
 
-    // Fetch shop items and user's inventory
     useEffect(() => {
         const loadData = async () => {
             try {
                 const items = await fetchShopItems();
                 setShopItems(items);
 
-                // Fetch user's inventory to check owned items
                 const inventoryResponse = await inventory();
-                const ownedItemIds = inventoryResponse.map((item: any) => item.id); // Use the same ID as the shop
+                const ownedItemIds = inventoryResponse.map((item: any) => item.id);
                 setOwnedItems(ownedItemIds);
 
                 setLoading(false);
@@ -47,7 +45,6 @@ const ShopPage: React.FC = () => {
     const handleBuyClick = async () => {
         if (!selectedItem) return;
 
-        // Check if the item is already owned
         if (ownedItems.includes(selectedItem.id)) {
             alert('You already own this item.');
             return;
@@ -59,7 +56,6 @@ const ShopPage: React.FC = () => {
                 const result = await buyItem(selectedItem.id);
                 if (result.success) {
                     alert('Purchase successful!');
-                    // Update owned items list
                     setOwnedItems([...ownedItems, selectedItem.id]);
                 } else {
                     alert(result.message || 'Failed to buy item.');
