@@ -6,7 +6,7 @@ interface InventoryItemProps {
     name: string;
     type: string;
     icon: string;
-    stats: {
+    stats?: {
         power?: number;
         speed?: number;
         ability?: number;
@@ -18,7 +18,7 @@ interface InventoryItemProps {
     onEquip?: () => void;
 }
 
-const InventoryItem: React.FC<InventoryItemProps> = ({ id, name, icon, type, stats, isEquipped, onEquip }) => {
+const InventoryItem: React.FC<InventoryItemProps> = ({ id, name, icon, type, stats = {}, isEquipped, onEquip }) => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const handleItemClick = () => {

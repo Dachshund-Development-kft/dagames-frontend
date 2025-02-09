@@ -4,6 +4,7 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from 'react-router-dom'
+import React from 'react'
 import ErrorPage from './pages/ErrorPage'
 import ForgotPassword from './pages/forgotPassword'
 import Register from './pages/registerPage'
@@ -15,6 +16,8 @@ import MainPage from './pages/game/mainPage'
 import InventoryPage from './pages/game/inventoryPage'
 import StorePage from './pages/game/storePage'
 import NewsPage from './pages/game/newsPage'
+import VerifyPage from './pages/verifyPage'
+import { Analytics } from "@vercel/analytics/react"
 
 const router = createBrowserRouter([
   {
@@ -58,11 +61,18 @@ const router = createBrowserRouter([
     element: <LogoutPage />,
   },
   {
+    path: '/verify',
+    element: <VerifyPage />,
+  },
+  {
     path: '*',
     element: <ErrorPage />,
   }
 ])
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <RouterProvider router={router} />
+  <React.Fragment>
+    <Analytics/>
+    <RouterProvider router={router} />
+  </React.Fragment>
 )

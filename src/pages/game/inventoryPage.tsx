@@ -47,6 +47,7 @@ const InventoryPage: React.FC = () => {
 
         fetchData();
     }, []);
+
     const sortedInventoryData = [...inventoryData].sort((a, b) => {
         if (a.equipped && !b.equipped) return -1;
         if (!a.equipped && b.equipped) return 1;
