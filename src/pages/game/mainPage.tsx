@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import NavLayoutGame from '../../components/navLayoutGame';
 import FriendList from '../../components/FriendList';
 import { me } from '../../api/me';
 import NewsLayout from '../../components/news';
+import SetupLayout from '../../components/setupLayout';
 
 const ProfileModal = ({ user, onClose }: { user: any, onClose: () => void }) => {
     if (!user) return null;
@@ -40,7 +41,7 @@ const ProfileModal = ({ user, onClose }: { user: any, onClose: () => void }) => 
                                         src={badge.icon}
                                         alt={badge.name}
                                         className="w-8 h-8"
-                                        title={badge.name} // Display badge name on hover
+                                        title={badge.name}
                                     />
                                 ))}
                             </div>
@@ -55,16 +56,15 @@ const ProfileModal = ({ user, onClose }: { user: any, onClose: () => void }) => 
 };
 
 const PlayPage = () => {
-    const [user, setUser] = useState<{ username: string; pfp: string; lvl: number; rank: string; badges: any[] } | null>(null);
+    const [user, setUser] = useState<{ username: string; pfp: string; lvl: number; rank: string; badges: any[]; isNew: boolean } | null>(null);
     const [showProfileModal, setShowProfileModal] = useState(false);
+    const [showSetupLayout, setShowSetupLayout] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Fetch user data
                 const userData = await me();
 
-                // Try to fetch badges
                 try {
                     const badgesResponse = await fetch('https://api.dagames.online/v1/user/@me/badges', {
                         headers: {
@@ -75,14 +75,16 @@ const PlayPage = () => {
                     if (badgesResponse.ok) {
                         const badgeData = await badgesResponse.json();
 
-                        // Set user data with badges
                         setUser({
                             ...userData,
                             badges: badgeData
                         });
+
+                        if (userData.isNew) {
+                            setShowSetupLayout(true);
+                        }
                     } else {
                         console.error('Failed to fetch badges');
-                        // Set user data without badges if the request fails
                         setUser({
                             ...userData,
                             badges: []
@@ -90,14 +92,12 @@ const PlayPage = () => {
                     }
                 } catch (badgeError) {
                     console.error('Error fetching badges:', badgeError);
-                    // Set user data without badges if there's an error
                     setUser({
                         ...userData,
                         badges: []
                     });
                 }
             } catch (err) {
-                // Only log out if fetching user data fails
                 localStorage.removeItem('token');
                 console.error(err);
                 window.location.href = '/login';
@@ -107,6 +107,10 @@ const PlayPage = () => {
         fetchData();
     }, []);
 
+    const handleSetupComplete = () => {
+        setShowSetupLayout(false);
+    };
+
     return (
         <main className='flex flex-col items-center justify-center min-h-screen bg-[#0F1015]' style={{ backgroundImage: "url(/blobs.svg)" }}>
             <NavLayoutGame />
@@ -115,7 +119,6 @@ const PlayPage = () => {
             <div className='flex flex-grow items-center justify-center gap-4'>
             </div>
 
-            {/* Profile Icon and Name */}
             {user && (
                 <div className="fixed top-20 left-4 flex items-center space-x-2 cursor-pointer" onClick={() => setShowProfileModal(true)}>
                     <img src={user.pfp} alt="Profile" className="w-10 h-10 rounded-full" />
@@ -123,8 +126,9 @@ const PlayPage = () => {
                 </div>
             )}
 
-            {/* Profile Modal */}
             {showProfileModal && <ProfileModal user={user} onClose={() => setShowProfileModal(false)} />}
+
+            {showSetupLayout && <SetupLayout onComplete={handleSetupComplete} />}
         </main>
     );
 };
