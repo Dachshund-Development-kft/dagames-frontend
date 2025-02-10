@@ -21,6 +21,12 @@ const ProfileModal = ({ user, onClose }: { user: any, onClose: () => void }) => 
                         <img src={user.pfp} alt="Profile" className="w-16 h-16 rounded-full" />
                         <div>
                             <p className="text-white">Level: {user.lvl}</p>
+                            <div className="w-full bg-gray-700 rounded-full h-2 mt-2">
+                                <div
+                                    className="bg-blue-500 h-2 rounded-full"
+                                    style={{ width: '34%' }} // Fixed at 34%
+                                ></div>
+                            </div>
                             <p className="text-white">Rank: {user.rank}</p>
                         </div>
                     </div>
@@ -118,9 +124,24 @@ const PlayPage = () => {
             </div>
 
             {user && (
-                <div className="fixed top-20 left-4 flex items-center space-x-2 cursor-pointer" onClick={() => setShowProfileModal(true)}>
-                    <img src={user.pfp} alt="Profile" className="w-10 h-10 rounded-full" />
-                    <span className="text-white font-bold">{user.username}</span>
+                <div className="fixed top-20 left-4">
+                    <div className="border-2 border-[#1E1F25] p-4 rounded-lg bg-[#1E1F25] flex items-center space-x-2 cursor-pointer" onClick={() => setShowProfileModal(true)}>
+                        <img src={user.pfp} alt="Profile" className="w-10 h-10 rounded-full" />
+                        <div>
+                            <span className="text-white font-bold">{user.username}</span>
+                            <div className="text-white">
+                                <span>Level: {user.lvl}</span>
+                                <span className="ml-2">Rank: {user.rank}</span>
+                            </div>
+                            {/* Progress Bar */}
+                            <div className="w-full bg-gray-700 rounded-full h-2 mt-2">
+                                <div
+                                    className="bg-blue-500 h-2 rounded-full"
+                                    style={{ width: '34%' }} // Fixed at 34%
+                                ></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             )}
 

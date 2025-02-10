@@ -19,6 +19,7 @@ const ProfilePopout: React.FC<ProfilePopoutProps> = ({ username, stats, levels, 
             <div className="mt-2">
                 <h3 className="text-white font-semibold">Levels</h3>
                 <p className="text-white">Current Level: {levels.current}</p>
+                
                 <p className="text-white">XP: {levels.xp}</p>
             </div>
             <div className="mt-2">
