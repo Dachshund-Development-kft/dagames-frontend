@@ -107,12 +107,12 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-[#1E1F25] p-6 rounded-lg shadow-lg w-96">
+            <div className="bg-[#1E1F25] p-6 rounded-lg shadow-lg max-w-2xl">
                 <h2 className="text-2xl font-bold text-white mb-4">Válaszd ki a kezdő karaktered és fegyvered!</h2>
                 {error && <p className="text-red-500 mb-4">{error}</p>}
                 <div className="space-y-4">
                     <div>
-                        <h3 className="text-xl font-bold text-white">Karakterek</h3>
+                        <h3 className="text-xl font-bold text-white mb-4">Karakterek</h3>
                         <div className="flex space-x-4">
                             {characters.map((character) => (
                                 <div
@@ -129,7 +129,7 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
                         </div>
                     </div>
                     <div>
-                        <h3 className="text-xl font-bold text-white">Fegyverek</h3>
+                        <h3 className="text-xl font-bold text-white mb-4">Fegyverek</h3>
                         <div className="flex space-x-4">
                             {weapons.map((weapon) => (
                                 <div
