@@ -98,13 +98,13 @@ const ShopPage: React.FC = () => {
             <div className="self-start mb-4">
                 <p className="text-lg font-bold text-white">Coins: {coins}</p>
             </div>
-            <h1 className="text-2xl font-bold mb-4">Shop Items</h1>
+            <h1 className="text-2xl font-bold mb-4 text-white">Shop Items</h1>
             {selectedItem && (
-                <div className="w-full mb-8 p-4 border rounded-lg bg-gray-100">
+                <div className="w-full mb-8 p-4 rounded-lg bg-gray-600">
                     <h2 className="text-2xl font-bold mb-4">Selected Item</h2>
                     <div className="flex flex-col items-center">
                         <h3 className="text-xl font-semibold">{selectedItem.name}</h3>
-                        <p className="text-gray-600">{selectedItem.description}</p>
+                        <p className="text-gray-800">{selectedItem.description}</p>
                         <p className="text-green-600 font-bold">${selectedItem.price}</p>
                         {selectedItem.image && (
                             <img
@@ -131,7 +131,7 @@ const ShopPage: React.FC = () => {
                 {shopItems.map((item) => (
                     <div
                         key={item._id}
-                        className="border p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer relative"
+                        className="p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer relative bg-black bg-opacity-30"
                         onClick={() => handleItemClick(item.id)}
                     >
                         {ownedItems.includes(item.id) && (
@@ -139,8 +139,8 @@ const ShopPage: React.FC = () => {
                                 <span className="text-red-500 text-2xl font-bold">Owned</span>
                             </div>
                         )}
-                        <h2 className="text-xl font-semibold">{item.name}</h2>
-                        <p className="text-gray-600">{item.description}</p>
+                        <h2 className="text-xl font-semibold text-white">{item.name}</h2>
+                        <p className="text-gray-500">{item.description}</p>
                         <p className="text-green-600 font-bold">${item.price}</p>
                         {item.image && (
                             <img
