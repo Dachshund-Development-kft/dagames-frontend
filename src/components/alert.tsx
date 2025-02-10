@@ -28,6 +28,7 @@ const AlertLayout: React.FC = () => {
                 }
             } catch (err) {
                 console.error(err);
+                setMaintenanceMessage('API is currently down for maintenance.');
             }
         };
 

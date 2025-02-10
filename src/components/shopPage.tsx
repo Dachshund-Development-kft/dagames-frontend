@@ -13,7 +13,6 @@ const ShopPage: React.FC = () => {
     useEffect(() => {
         const loadData = async () => {
             try {
-                // Fetch user data
                 const userResponse = await fetch('https://api.dagames.online/v1/user/@me', {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -27,11 +26,9 @@ const ShopPage: React.FC = () => {
                 const userData = await userResponse.json();
                 setCoins(userData.coins);
 
-                // Fetch shop items
                 const items = await fetchShopItems();
                 setShopItems(items);
 
-                // Fetch inventory
                 const inventoryResponse = await inventory();
                 const ownedItemIds = inventoryResponse.map((item: any) => item.id);
                 setOwnedItems(ownedItemIds);
@@ -74,7 +71,7 @@ const ShopPage: React.FC = () => {
                 if (result.success) {
                     alert('Purchase successful!');
                     setOwnedItems([...ownedItems, selectedItem.id]);
-                    setCoins(coins - selectedItem.price); // Deduct the price from the user's coins
+                    setCoins(coins - selectedItem.price);
                 } else {
                     alert(result.message || 'Failed to buy item.');
                 }
