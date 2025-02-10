@@ -24,7 +24,7 @@ const ProfileModal = ({ user, onClose }: { user: any, onClose: () => void }) => 
                             <div className="w-full bg-gray-700 rounded-full h-2 mt-2">
                                 <div
                                     className="bg-blue-500 h-2 rounded-full"
-                                    style={{ width: '34%' }} // Fixed at 34%
+                                    style={{ width: user.xp / user.xpNeeded * 100 + '%' }}
                                 ></div>
                             </div>
                             <p className="text-white">Rank: {user.rank}</p>
@@ -61,7 +61,7 @@ const ProfileModal = ({ user, onClose }: { user: any, onClose: () => void }) => 
 };
 
 const PlayPage = () => {
-    const [user, setUser] = useState<{ username: string; pfp: string; lvl: number; rank: string; badges: any[]; isNew: boolean } | null>(null);
+    const [user, setUser] = useState<{ username: string; pfp: string; lvl: number; rank: string; badges: any[]; isNew: boolean, xp: number, xpNeeded: number } | null>(null);
     const [showProfileModal, setShowProfileModal] = useState(false);
     const [showSetupLayout, setShowSetupLayout] = useState(false);
 
@@ -133,11 +133,10 @@ const PlayPage = () => {
                                 <span>Level: {user.lvl}</span>
                                 <span className="ml-2">Rank: {user.rank}</span>
                             </div>
-                            {/* Progress Bar */}
                             <div className="w-full bg-gray-700 rounded-full h-2 mt-2">
                                 <div
                                     className="bg-blue-500 h-2 rounded-full"
-                                    style={{ width: '34%' }} // Fixed at 34%
+                                    style={{ width: user.xp / user.xpNeeded * 100 + '%' }}
                                 ></div>
                             </div>
                         </div>
