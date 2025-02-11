@@ -11,7 +11,7 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const characterIds = ["b4d60e0299", "f192671b53", "5b86f0d6b9"];
+                const characterIds = ["3b1b21e2fc", "d070592d6f", "ef7a4f5ba3"];
                 const characterPromises = characterIds.map(id =>
                     fetch(`https://api.dagames.online/v1/shop/${id}`).then(res => res.json())
                 );
@@ -23,7 +23,7 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
                 }));
                 setCharacters(formattedCharacters);
 
-                const weaponIds = ["0981446889", "34c9fa40b7", "5a23f144e4", "1acfc6e05b", "b8331d2da2"];
+                const weaponIds = ["a5cb18924b", "1df43eea51", "e5f10e6165", "396c2a7e11", "ad234b5421"];
                 const weaponPromises = weaponIds.map(id =>
                     fetch(`https://api.dagames.online/v1/shop/${id}`).then(res => res.json())
                 );
