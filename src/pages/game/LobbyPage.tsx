@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import NavLayoutGame from '../../components/navLayoutGame';
 import { me } from '../../api/me';
+import socket from '../../api/socket';
 
 const PlayPage: React.FC = () => {
     useEffect(() => {
@@ -16,6 +17,8 @@ const PlayPage: React.FC = () => {
         };
 
         fetchData();
+
+        socket.emit('auth', { token: localStorage.getItem('token') });
     }, []);
 
     return (
@@ -26,9 +29,7 @@ const PlayPage: React.FC = () => {
                     Lobby
                 </h1>
                 <div className='flex flex-col items-center justify-center gap-4'>
-                    <button className='bg-[#1a5f31] text-white px-5 py-3 rounded-lg shadow-lg flex items-center justify-center gap-2 transition-all duration-300 hover:scale-105 hover:shadow-xl'>
-                        Play matchmaking
-                    </button>
+
                 </div>
             </div>
         </main>

@@ -3,6 +3,8 @@ import NavLayoutGame from '../../components/navLayoutGame';
 import { me } from '../../api/me';
 import NewsLayout from '../../components/news';
 import SetupLayout from '../../components/setupLayout';
+import socket from '../../api/socket';
+import AlertLayout from '../../components/alert';
 
 const ProfileModal = ({ user, onClose }: { user: any, onClose: () => void }) => {
     if (!user) return null;
@@ -110,6 +112,7 @@ const PlayPage = () => {
         };
 
         fetchData();
+        socket.emit('auth', {"token": 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6ImM4ZDcyNTJlZmQzODE1ZTM5NDU4NjBiNGEzYzdhMzQ0ZDkzMjAwYWRiN2NlZWFmMGViMjNkZjE0ZWFmNjY1NmFlZmZjY2U4MzNlZjk4N2NhMTlhNDZlZTFhM2Q0MjExODkzMjY1NTBkMTdmYTg2NTg5NTc4MTg0ZWQzYjEzZTE4IiwiaWF0IjoxNzM5Mzc4MjY3LCJleHAiOjE3Mzk5ODMwNjd9.-PgFbmsX30NkDk8YCWDoUzpwsR7ZeAQ4SHuzTLVCSkM'});
     }, []);
 
     const handleSetupComplete = () => {
@@ -120,6 +123,7 @@ const PlayPage = () => {
         <main className='flex flex-col items-center justify-center min-h-screen bg-[#0F1015]' style={{ backgroundImage: "url(/blobs.svg)" }}>
             <NavLayoutGame />
             <NewsLayout />
+            <AlertLayout />
             <div className='flex flex-grow items-center justify-center gap-4'>
             </div>
 
