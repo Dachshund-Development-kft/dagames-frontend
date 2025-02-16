@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { character, weapon } from '../api/select';
 
 interface InventoryItemProps {
     id: number;
@@ -28,25 +29,16 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ id, name, icon, type, sta
 
     const handleEquip = async () => {
         try {
-            let endpoint = '';
-            let body = {};
+            let response;
 
             if (type === 'character') {
-                endpoint = '/@me/character/select';
-                body = { itemid: id };
+                response = await character(id.toString());
             } else if (type === 'weapon') {
-                endpoint = '/@me/weapon/select';
-                body = { weaponid: id };
+                response = await weapon(id.toString());
             } else {
                 console.error('Invalid item type');
                 return;
             }
-
-            const response = await axios.put(
-                `https://api.dagames.online/v1/user${endpoint}`,
-                body,
-                { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
-            );
 
             if (response.data.success) {
                 console.log(`${type} equipped successfully: ${name}`);
