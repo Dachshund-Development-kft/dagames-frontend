@@ -31,15 +31,17 @@ const PlayPageID: React.FC = () => {
         socket.emit('auth', { token: localStorage.getItem('token') });
 
         socket.on('lobby_update', (data: any) => {
-            if (data.id === id) {
-                setPlayers(data.players);
-            }
+            setPlayers(data.players || []);
         });
 
         socket.on('lobby_message', (data: any) => {
-            if (data.id === id) {
-                alert(data.message);
-            }
+            console.log(data.message);
+            alert(data.message);
+        });
+
+        socket.on('lobby_deleted', () => {
+            alert('Lobby deleted');
+            window.location.href = '/play';
         });
 
         const fetchLobbyData = async () => {
@@ -51,9 +53,10 @@ const PlayPageID: React.FC = () => {
                 });
                 const data = await response.json();
                 setLobbyData(data);
-                setPlayers(data.players);
+                setPlayers(data.players || []);
                 setLoading(false);
 
+                socket.emit('join', { id: data.id });
                 localStorage.setItem('lobby_id', data.id);
             } catch (err) {
                 console.error('Failed to fetch lobby data:', err);
@@ -63,7 +66,7 @@ const PlayPageID: React.FC = () => {
         };
 
         fetchLobbyData();
-    }, []);
+    }, [id]);
 
     const leaveLobby = async () => {
         const id = window.location.pathname.split('/')[2];
@@ -96,7 +99,7 @@ const PlayPageID: React.FC = () => {
                     <div className='bg-[#1E1F25] p-4 rounded-lg w-96'>
                         <h2 className='text-xl font-bold text-white mb-4'>Players in Lobby</h2>
                         <ul className='text-white'>
-                            {players.map((player, index) => (
+                            {players && players.map((player, index) => ( // Ellenőrizzük, hogy a players létezik-e
                                 <li key={index} className='flex items-center gap-2 mb-2'>
                                     <span>{player}</span>
                                 </li>

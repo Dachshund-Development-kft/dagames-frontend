@@ -102,8 +102,32 @@ const PlayPage: React.FC = () => {
     }
 
     const handleJoinLobby = (lobbyId: string) => {
-        socket.emit('join_lobby', { id: lobbyId });
-        window.location.href = `/play/${lobbyId}`;
+        const password = (document.getElementById('pass') as HTMLInputElement)?.value;
+        if (password) {
+            socket.emit('join_lobby', { id: lobbyId, password: password });
+
+            socket.on('join_lobby', (data: any) => {
+                if (data.success) {
+                    console.log('Joined lobby:', data.id);
+                    localStorage.setItem('lobby_id', data.id);
+                    return window.location.href = `/play/${data.id}`;
+                } else {
+                    console.log('Failed to join lobby:', data.message);
+                }
+            });
+        } else {
+            socket.emit('join_lobby', { id: lobbyId });
+
+            socket.on('join_lobby', (data: any) => {
+                if (data.success) {
+                    console.log('Joined lobby:', data.id);
+                    localStorage.setItem('lobby_id', data.id);
+                    return window.location.href = `/play/${data.id}`;
+                } else {
+                    console.log('Failed to join lobby:', data.message);
+                }
+            });
+        }
     };
 
     if (loading) {
@@ -135,6 +159,11 @@ const PlayPage: React.FC = () => {
                             <div className="text-sm text-gray-600">
                                 Players: {lobby.players}/2
                             </div>
+                            {!lobby.public && (
+                                <div className="text-sm text-gray-600">
+                                    <input type="password" placeholder='password' id='pass' />
+                                </div>
+                            )}
                             <button
                                 onClick={() => handleJoinLobby(lobby.id)}
                                 className="mt-2 w-full bg-blue-500 text-white py-1 px-4 rounded hover:bg-blue-600 transition-colors"
