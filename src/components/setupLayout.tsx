@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { getShopItems } from '../api/shopItem';
+import { setup } from '../api/setup';
 
 const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
     const [characters, setCharacters] = useState<{ id: string; name: string; image: string }[]>([]);
@@ -12,9 +14,10 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
         const fetchData = async () => {
             try {
                 const characterIds = ["3b1b21e2fc", "d070592d6f", "ef7a4f5ba3"];
-                const characterPromises = characterIds.map(id =>
-                    fetch(`https://api.dagames.online/v1/shop/${id}`).then(res => res.json())
-                );
+                const characterPromises = characterIds.map(async (id) => {
+                    const response = await getShopItems(id);
+                    return response;
+                });
                 const characterData = await Promise.all(characterPromises);
                 const formattedCharacters = characterData.map(item => ({
                     id: item.id,
@@ -24,9 +27,10 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
                 setCharacters(formattedCharacters);
 
                 const weaponIds = ["a5cb18924b", "1df43eea51", "e5f10e6165", "396c2a7e11", "ad234b5421"];
-                const weaponPromises = weaponIds.map(id =>
-                    fetch(`https://api.dagames.online/v1/shop/${id}`).then(res => res.json())
-                );
+                const weaponPromises = weaponIds.map(async id => {
+                    const response = await getShopItems(id);
+                    return response;
+                });
                 const weaponData = await Promise.all(weaponPromises);
                 const formattedWeapons = weaponData.map(item => ({
                     id: item.id,
@@ -66,24 +70,14 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
                 throw new Error('Nincs érvényes token.');
             }
 
-            const response = await fetch('https://api.dagames.online/v1/user/@me/setup', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-                body: JSON.stringify({
-                    weaponItemid: selectedWeapon,
-                    characterItemid: selectedCharacter,
-                }),
-            });
+            const response = await setup(selectedWeapon, selectedCharacter);
 
-            if (!response.ok) {
-                const errorData = await response.json();
+            if (response.status !== 200) {
+                const errorData = response.data;
                 throw new Error(errorData.message || 'Hiba történt a kérés során.');
             }
 
-            const result = await response.json();
+            const result = response.data;
             if (result.success) {
                 onComplete();
             } else {

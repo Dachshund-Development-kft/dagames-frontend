@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { lobby } from '../api/lobby';
 
 interface Lobby {
   id: string;
@@ -27,11 +27,7 @@ const LobbyLayout = () => {
       }
 
       try {
-        const response = await axios.get('https://api.dagames.online/v1/lobby', {
-          headers: {
-            Authorization: `Bearer ${token}`, 
-          },
-        });
+        const response = await lobby();
         setLobbies(response.data); 
         setLoading(false);
       } catch (err) {

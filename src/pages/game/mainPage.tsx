@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import NavLayoutGame from '../../components/navLayoutGame';
-import { me } from '../../api/me';
+import { me, badges } from '../../api/me';
 import NewsLayout from '../../components/news';
 import SetupLayout from '../../components/setupLayout';
 import socket from '../../api/socket';
@@ -73,14 +73,10 @@ const PlayPage = () => {
                 const userData = await me();
 
                 try {
-                    const badgesResponse = await fetch('https://api.dagames.online/v1/user/@me/badges', {
-                        headers: {
-                            'Authorization': `Bearer ${localStorage.getItem('token')}`
-                        }
-                    });
+                    const badgesResponse = await badges();
 
-                    if (badgesResponse.ok) {
-                        const badgeData = await badgesResponse.json();
+                    if (badgesResponse.status === 200) {
+                        const badgeData = badgesResponse.data;
 
                         setUser({
                             ...userData,
@@ -112,7 +108,7 @@ const PlayPage = () => {
         };
 
         fetchData();
-        socket.emit('auth', {"token": 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6ImM4ZDcyNTJlZmQzODE1ZTM5NDU4NjBiNGEzYzdhMzQ0ZDkzMjAwYWRiN2NlZWFmMGViMjNkZjE0ZWFmNjY1NmFlZmZjY2U4MzNlZjk4N2NhMTlhNDZlZTFhM2Q0MjExODkzMjY1NTBkMTdmYTg2NTg5NTc4MTg0ZWQzYjEzZTE4IiwiaWF0IjoxNzM5Mzc4MjY3LCJleHAiOjE3Mzk5ODMwNjd9.-PgFbmsX30NkDk8YCWDoUzpwsR7ZeAQ4SHuzTLVCSkM'});
+        socket.emit('auth', {"token": localStorage.getItem('token')});
     }, []);
 
     const handleSetupComplete = () => {

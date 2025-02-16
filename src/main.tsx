@@ -18,6 +18,8 @@ import StorePage from './pages/game/storePage'
 import NewsPage from './pages/game/newsPage'
 import VerifyPage from './pages/verifyPage'
 import { Analytics } from "@vercel/analytics/react"
+import dotenv from 'dotenv';
+dotenv.config();
 
 const router = createBrowserRouter([
   {
