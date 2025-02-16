@@ -19,6 +19,10 @@ const PlayPage: React.FC = () => {
 
         fetchData();
 
+        if (!socket) {
+            alert('Socket not connected');
+        }
+
         socket.emit('auth', { token: localStorage.getItem('token') });
     }, []);
 
