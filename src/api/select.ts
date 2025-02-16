@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const character = async (id: string) => {
-    const response = await axios.put(
+    const response = await axios.post(
         'https://api.dagames.online/v1/user/@me/character',
         { itemid: id },
         {
@@ -14,7 +14,7 @@ export const character = async (id: string) => {
 };
 
 export const weapon = async (id: string) => {
-    const response = await axios.put(
+    const response = await axios.post(
         'https://api.dagames.online/v1/user/@me/weapon',
         { weaponid: id },
         {
