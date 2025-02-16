@@ -30,6 +30,18 @@ const PlayPageID: React.FC = () => {
 
         socket.emit('auth', { token: localStorage.getItem('token') });
 
+        socket.on('lobby_update', (data: any) => {
+            if (data.id === id) {
+                setPlayers(data.players);
+            }
+        });
+
+        socket.on('lobby_message', (data: any) => {
+            if (data.id === id) {
+                alert(data.message);
+            }
+        });
+
         const fetchLobbyData = async () => {
             try {
                 const response = await fetch(`https://api.dagames.online/v1/lobby/${id}`, {

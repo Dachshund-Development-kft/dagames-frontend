@@ -41,7 +41,7 @@ const PlayPage: React.FC = () => {
                         localStorage.removeItem('lobby_id')
                         return window.location.href = '/play';
                     } else {
-                        alert('asd')
+                        console.log('Data niggered...')
                         localStorage.removeItem('lobby_id')
                     }
                 });
