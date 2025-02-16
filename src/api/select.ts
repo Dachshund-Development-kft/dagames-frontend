@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const character = async (id: string) => {
     const response = await axios.post(
-        'https://api.dagames.online/v1/user/@me/character',
+        'https://api.dagames.online/v1/user/@me/character/select',
         { itemid: id },
         {
             headers: {
@@ -15,7 +15,7 @@ export const character = async (id: string) => {
 
 export const weapon = async (id: string) => {
     const response = await axios.post(
-        'https://api.dagames.online/v1/user/@me/weapon',
+        'https://api.dagames.online/v1/user/@me/weapon/select',
         { weaponid: id },
         {
             headers: {
