@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'; //
+import React, { useEffect, useState } from 'react';
 import NavLayoutGame from '../../components/navLayoutGame';
 import { me } from '../../api/me';
 import socket from '../../api/socket';
