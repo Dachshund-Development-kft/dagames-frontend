@@ -30,6 +30,23 @@ const PlayPage: React.FC = () => {
         }
 
         socket.emit('auth', { token: localStorage.getItem('token') });
+        
+        setTimeout(() => {
+            if (localStorage.getItem('lobby_id')) {
+                console.log('Leaving lobby:', localStorage.getItem('lobby_id'));
+                socket.emit('leave_lobby', { id: localStorage.getItem('lobby_id') });
+
+                socket.on('leave_lobby', (data: any) => {
+                    if (data.success) {
+                        localStorage.removeItem('lobby_id')
+                        return window.location.href = '/play';
+                    } else {
+                        alert('asd')
+                        localStorage.removeItem('lobby_id')
+                    }
+                });
+            }
+        }, 1000);
     }, []);
 
     const createLobby = () => {
@@ -116,9 +133,6 @@ const PlayPage: React.FC = () => {
                             <button
                                 className='text-white bg-blue-500 p-2 w-full rounded-md text-lg mt-4'
                                 onClick={() => {
-                                    console.log('Lobby Name:', lobbyName);
-                                    console.log('Lobby Visibility:', lobbyVisibility ? 'Public' : 'Private');
-                                    console.log('Lobby Password:', lobbyPassword);
                                     setLobbyPopup(false);
 
                                     socket.emit('create_lobby', {

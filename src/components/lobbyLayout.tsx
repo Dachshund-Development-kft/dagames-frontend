@@ -44,7 +44,7 @@ const LobbyLayout = () => {
   }, []);
 
   const handleJoinLobby = (lobbyId: string) => {
-    navigate(`/play/lobby/${lobbyId}`); 
+    navigate(`/play/${lobbyId}`); 
   };
 
   if (loading) {

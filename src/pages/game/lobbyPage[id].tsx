@@ -41,6 +41,8 @@ const PlayPageID: React.FC = () => {
                 setLobbyData(data);
                 setPlayers(data.players);
                 setLoading(false);
+
+                localStorage.setItem('lobby_id', data.id);
             } catch (err) {
                 console.error('Failed to fetch lobby data:', err);
                 setLoading(false);
@@ -58,6 +60,7 @@ const PlayPageID: React.FC = () => {
         socket.on('leave_lobby', (data: any) => {
             if (data.success) {
                 window.location.href = '/play';
+                localStorage.removeItem('lobby_id');
             } else {
                 alert('Failed to leave lobby');
             }
