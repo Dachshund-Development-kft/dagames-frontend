@@ -2,14 +2,24 @@ import React, { useEffect, useState } from 'react';
 import NavLayoutGame from '../../components/navLayoutGame';
 import { me } from '../../api/me';
 import socket from '../../api/socket';
-import LobbyLayout from '../../components/lobbyLayout';
 import { FaEye, FaEyeSlash, FaLock, FaTimes } from 'react-icons/fa';
+import { lobby } from '../../api/lobby';
+
+interface Lobby {
+    id: string;
+    name: string;
+    public: boolean;
+    owner: string;
+    players: number;
+}
 
 const PlayPage: React.FC = () => {
     const [lobbyPopup, setLobbyPopup] = useState<boolean>(false);
     const [lobbyVisibility, setLobbyVisibility] = useState<boolean>(true);
     const [lobbyName, setLobbyName] = useState<string>('');
     const [lobbyPassword, setLobbyPassword] = useState<string>('');
+    const [lobbies, setLobbies] = useState<Lobby[]>([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -25,12 +35,37 @@ const PlayPage: React.FC = () => {
 
         fetchData();
 
+        const fetchLobbies = async () => {
+            const token = localStorage.getItem('token');
+
+            if (!token) {
+                console.log('No token found in localStorage');
+                setLoading(false);
+                return;
+            }
+
+            try {
+                const response = await lobby();
+                setLobbies(response.data);
+                setLoading(false);
+            } catch (err) {
+                if (err instanceof Error) {
+                    console.log(err.message);
+                } else {
+                    console.log('An unknown error occurred');
+                }
+                setLoading(false);
+            }
+        };
+
+        fetchLobbies();
+
         if (!socket) {
             alert('Socket not connected');
         }
 
         socket.emit('auth', { token: localStorage.getItem('token') });
-        
+
         setTimeout(() => {
             if (localStorage.getItem('lobby_id')) {
                 console.log('Leaving lobby:', localStorage.getItem('lobby_id'));
@@ -66,11 +101,49 @@ const PlayPage: React.FC = () => {
         }
     }
 
+    const handleJoinLobby = (lobbyId: string) => {
+        socket.emit('join_lobby', { id: lobbyId });
+        window.location.href = `/play/${lobbyId}`;
+    };
+
+    if (loading) {
+        return (
+            <div className="fixed left-0 top-20 ml-4 p-4 bg-white shadow-lg rounded-lg">
+                <h2 className="text-xl font-bold mb-4">Active Lobbies</h2>
+                <div className="text-center text-gray-600">Loading...</div>
+            </div>
+        );
+    }
+
     return (
         <main className='flex flex-col items-center justify-center min-h-screen bg-[#0F1015]' style={{ backgroundImage: "url(/blobs.svg)" }}>
             <NavLayoutGame />
             <div className='flex flex-grow items-center justify-center gap-4'>
-                <LobbyLayout />
+                <h2 className="text-xl font-bold mb-4">Active Lobbies</h2>
+                <ul>
+                    {lobbies.map((lobby) => (
+                        <li key={lobby.id} className="mb-3 p-3 bg-white bg-opacity-10 rounded-lg">
+                            <div className="flex justify-between items-center">
+                                <span className="font-medium">{lobby.name}</span>
+                                <span className={`text-sm ${lobby.public ? 'text-green-500' : 'text-red-500'}`}>
+                                    {lobby.public ? 'Public' : 'Private'}
+                                </span>
+                            </div>
+                            <div className="text-sm text-gray-600">
+                                Owner: {lobby.owner}
+                            </div>
+                            <div className="text-sm text-gray-600">
+                                Players: {lobby.players}/2
+                            </div>
+                            <button
+                                onClick={() => handleJoinLobby(lobby.id)}
+                                className="mt-2 w-full bg-blue-500 text-white py-1 px-4 rounded hover:bg-blue-600 transition-colors"
+                            >
+                                Join Lobby
+                            </button>
+                        </li>
+                    ))}
+                </ul>
 
                 <div className='flex flex-col items-center justify-center gap-4'>
                     <h1 className='text-2xl font-bold text-white'>Create Lobby</h1>

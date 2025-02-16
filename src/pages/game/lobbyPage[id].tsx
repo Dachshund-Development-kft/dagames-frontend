@@ -63,7 +63,7 @@ const PlayPageID: React.FC = () => {
         };
 
         fetchLobbyData();
-    }, [id]);
+    }, []);
 
     const leaveLobby = async () => {
         const id = window.location.pathname.split('/')[2];
