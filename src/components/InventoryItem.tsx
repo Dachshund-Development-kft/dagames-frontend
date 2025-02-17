@@ -80,7 +80,7 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ id, name, icon, type, isE
     const [itemStats, setItemStats] = useState<ItemStats>({});
     const [rarityColor, setRarityColor] = useState<string>('green');
 
-    const debouncedId = useDebounce(id, 500); 
+    const debouncedId = useDebounce(id, 500);
 
     useEffect(() => {
         const fetchItemData = async () => {
@@ -199,10 +199,10 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ id, name, icon, type, isE
             {isDialogOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" onClick={handleCloseDialog}>
                     <div className="bg-gray-800 p-4 rounded-lg" onClick={(e) => e.stopPropagation()}>
-                        <h2 className="text-white text-lg">{name}</h2>
+                        <h2 className="text-white text-lg text-center font-bold">{name}</h2>
                         {error && <div className="text-red-500 text-sm mb-2">{error}</div>}
-                        <button className="mt-2 px-4 py-2 bg-blue-500 text-white rounded" onClick={handleEquip}>Equip</button>
-                        <button className="mt-2 ml-2 px-4 py-2 bg-gray-500 text-white rounded" onClick={handleCloseDialog}>Close</button>
+                        <button className="mt-5 px-4 py-2 bg-blue-500 text-white rounded m-2" onClick={handleEquip}>Equip</button>
+                        <button className="mt-5 ml-2 px-4 py-2 bg-gray-500 text-white rounded m-2" onClick={handleCloseDialog}>Close</button>
                     </div>
                 </div>
             )}
