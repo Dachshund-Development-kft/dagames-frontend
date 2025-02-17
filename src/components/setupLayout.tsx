@@ -62,7 +62,6 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
         fetchData();
     }, []);
 
-    // Helper function to format stat ranges
     const formatStatRange = (from: number, to: number) => {
         return from === to ? `${from}` : `${from}-${to}`;
     };
@@ -178,7 +177,6 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
                 </div>
             </div>
 
-            {/* Popout Menu for Stats */}
             {hoveredItem && (
                 <div
                     className="absolute bg-[#2D2F3A] p-4 rounded-lg shadow-lg text-white"
@@ -187,7 +185,7 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
                         left: hoverPosition.x + 10,
                     }}
                 >
-                    <h4 className="font-bold mb-2">{hoveredItem.type === 'character' ? 'Karakter Statok' : 'Fegyver Statok'}</h4>
+                    <h4 className="font-bold mb-2">{hoveredItem.type === 'character' ? 'Chraracter stats' : 'Weapon Stats'}</h4>
                     {Object.entries(hoveredItem.stats).map(([key, value]) => (
                         <p key={key}>{`${key}: ${value}`}</p>
                     ))}
