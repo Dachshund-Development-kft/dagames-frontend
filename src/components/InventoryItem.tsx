@@ -3,85 +3,139 @@ import axios from 'axios';
 import { character, weapon } from '../api/select';
 
 interface InventoryItemProps {
-    id: number;
+    id: string;
     name: string;
     type: string;
     icon: string;
-    stats?: {
-        power?: number;
-        speed?: number;
-        ability?: number;
-        defend?: number;
-        damage?: number;
-        attack?: number;
-    };
     isEquipped: boolean;
     onEquip?: () => void;
-    shopData?: {
-        stat_power_to?: number;
-        stat_speed_to?: number;
-        stat_ability_to?: number;
-        stat_defend_to?: number;
-        stat_damage_to?: number;
-        stat_attack_to?: number;
-    };
+    stats?: { [key: string]: number };
 }
 
-// Helper function to calculate percentage for a stat
-const calculateStatPercentage = (from: number, to: number) => {
-    if (to === 0) return 0; // Avoid division by zero
-    return (from / to) * 100;
+interface ItemStats {
+    power?: { from: number; to: number };
+    speed?: { from: number; to: number };
+    ability?: { from: number; to: number };
+    defend?: { from: number; to: number };
+    damage?: { from: number; to: number };
+    attack?: { from: number; to: number };
+}
+
+const useDebounce = (value: string, delay: number) => {
+    const [debouncedValue, setDebouncedValue] = useState(value);
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebouncedValue(value);
+        }, delay);
+
+        return () => {
+            clearTimeout(handler);
+        };
+    }, [value, delay]);
+
+    return debouncedValue;
 };
 
-// Helper function to calculate average percentage for all stats
-const calculateAveragePercentage = (stats: InventoryItemProps['stats'], shopData: InventoryItemProps['shopData']) => {
-    if (!stats || !shopData) return 0;
+const itemCache: { [key: string]: any } = {};
 
-    const percentages = [];
-    if (stats.power && shopData.stat_power_to) percentages.push(calculateStatPercentage(stats.power, shopData.stat_power_to));
-    if (stats.speed && shopData.stat_speed_to) percentages.push(calculateStatPercentage(stats.speed, shopData.stat_speed_to));
-    if (stats.ability && shopData.stat_ability_to) percentages.push(calculateStatPercentage(stats.ability, shopData.stat_ability_to));
-    if (stats.defend && shopData.stat_defend_to) percentages.push(calculateStatPercentage(stats.defend, shopData.stat_defend_to));
-    if (stats.damage && shopData.stat_damage_to) percentages.push(calculateStatPercentage(stats.damage, shopData.stat_damage_to));
-    if (stats.attack && shopData.stat_attack_to) percentages.push(calculateStatPercentage(stats.attack, shopData.stat_attack_to));
+const calculateRarity = (itemStats: ItemStats, actualStats: { [key: string]: number }): number => {
+    let total = 0;
+    let count = 0;
 
-    if (percentages.length === 0) return 0;
+    for (const key in itemStats) {
+        if (itemStats.hasOwnProperty(key)) {
+            const statKey = key as keyof ItemStats;
+            const stat = itemStats[statKey];
+            const actualValue = actualStats[key];
 
-    const average = percentages.reduce((sum, percentage) => sum + percentage, 0) / percentages.length;
-    return average;
+            if (stat && actualValue !== undefined && stat.from !== stat.to) {
+                const progress = (actualValue - stat.from) / (stat.to - stat.from);
+                total += progress;
+                count++;
+            }
+        }
+    }
+
+    if (count === 0) return 0;
+
+    const averageRarity = total / count;
+
+    const normalizedRarity = averageRarity * 100;
+
+    return normalizedRarity;
 };
 
-// Helper function to determine rarity
-const getRarity = (averagePercentage: number) => {
-    if (averagePercentage < 50) return { name: 'Common', color: 'gray' };
-    if (averagePercentage < 75) return { name: 'Rare', color: 'blue' };
-    if (averagePercentage < 90) return { name: 'Epic', color: 'purple' };
-    return { name: 'Legendary', color: 'orange' };
+const getRarityColor = (rarity: number): string => {
+    if (rarity < 20) return 'green'; // Common (0-20)
+    if (rarity < 40) return 'blue'; // Uncommon (20-40)
+    if (rarity < 60) return 'purple'; // Rare (40-60)
+    if (rarity < 80) return 'orange'; // Epic (60-80)
+    return 'red'; // Legendary (80-100)
 };
 
-// Helper function to generate gradient style
-const getGradientStyle = (rarityColor: string) => {
-    const defaultColor = '#1E1F25'; // Default background color (gray-800)
-    return {
-        background: `linear-gradient(135deg, ${defaultColor}, ${rarityColor})`,
-    };
-};
-
-const InventoryItem: React.FC<InventoryItemProps> = ({ id, name, icon, type, stats = {}, isEquipped, onEquip, shopData }) => {
+const InventoryItem: React.FC<InventoryItemProps> = ({ id, name, icon, type, isEquipped, onEquip, stats = {} }) => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [itemStats, setItemStats] = useState<ItemStats>({});
+    const [rarityColor, setRarityColor] = useState<string>('green');
 
-    // Calculate average percentage and rarity
-    const averagePercentage = calculateAveragePercentage(stats, shopData);
-    const rarity = getRarity(averagePercentage);
+    const debouncedId = useDebounce(id, 500); 
 
-    // Get gradient style based on rarity
-    const gradientStyle = getGradientStyle(
-        rarity.color === 'gray' ? '#6B7280' : // gray-500
-        rarity.color === 'blue' ? '#3B82F6' : // blue-500
-        rarity.color === 'purple' ? '#8B5CF6' : // purple-500
-        '#F97316' // orange-500
-    );
+    useEffect(() => {
+        const fetchItemData = async () => {
+            try {
+                if (itemCache[debouncedId]) {
+                    const itemData = itemCache[debouncedId];
+                    console.log('Item data loaded from cache:', itemData);
+                    processItemData(itemData);
+                    return;
+                }
+
+                console.log(itemStats);
+
+                const response = await axios.get(`https://api.dagames.online/v1/shop/${debouncedId}`);
+                const itemData = response.data;
+
+                itemCache[debouncedId] = itemData;
+                console.log('Item data fetched from API:', itemData);
+
+                processItemData(itemData);
+            } catch (error) {
+                console.error('Error fetching item data:', error);
+                setError('Failed to load item data');
+            }
+        };
+
+        const processItemData = (itemData: any) => {
+            const newItemStats: ItemStats = {};
+            if (itemData.stat_power_from !== undefined) {
+                newItemStats.power = { from: itemData.stat_power_from, to: itemData.stat_power_to };
+            }
+            if (itemData.stat_speed_from !== undefined) {
+                newItemStats.speed = { from: itemData.stat_speed_from, to: itemData.stat_speed_to };
+            }
+            if (itemData.stat_ability_from !== undefined) {
+                newItemStats.ability = { from: itemData.stat_ability_from, to: itemData.stat_ability_to };
+            }
+            if (itemData.stat_defense_from !== undefined) {
+                newItemStats.defend = { from: itemData.stat_defense_from, to: itemData.stat_defense_to };
+            }
+            if (itemData.stat_damage_from !== undefined) {
+                newItemStats.damage = { from: itemData.stat_damage_from, to: itemData.stat_damage_to };
+            }
+            if (itemData.stat_attack_from !== undefined) {
+                newItemStats.attack = { from: itemData.stat_attack_from, to: itemData.stat_attack_to };
+            }
+
+            setItemStats(newItemStats);
+
+            const calculatedRarity = calculateRarity(newItemStats, stats);
+            setRarityColor(getRarityColor(calculatedRarity));
+        };
+
+        fetchItemData();
+    }, [debouncedId, stats]);
 
     const handleItemClick = () => {
         setIsDialogOpen(true);
@@ -92,9 +146,9 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ id, name, icon, type, sta
             let response;
 
             if (type === 'character') {
-                response = await character(id.toString());
+                response = await character(id);
             } else if (type === 'weapon') {
-                response = await weapon(id.toString());
+                response = await weapon(id);
             } else {
                 console.error('Invalid item type');
                 return;
@@ -126,17 +180,11 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ id, name, icon, type, sta
     };
 
     return (
-        <div
-            className="flex h-60 w-48 flex-col items-center p-4 rounded-lg shadow-lg hover:bg-gray-700 transition duration-300"
-            style={gradientStyle} // Apply gradient background
-            onClick={!isEquipped ? handleItemClick : undefined}
-        >
+        <div className={`flex h-60 w-48 flex-col items-center p-4 bg-black bg-opacity-30 rounded-lg shadow-lg hover:bg-gray-700 transition duration-300 relative ${isEquipped && 'border-2 border-opacity-40 border-white'}`} onClick={!isEquipped ? handleItemClick : undefined}>
             <img src={icon} alt={name} className="w-16 h-16 mb-2" />
             <span className="text-white text-sm">{name}</span>
             <span className="text-gray-400 text-xs">{type}</span>
-            {/* Display Rarity */}
-            <span className={`text-${rarity.color}-500 text-xs`}>{rarity.name}</span>
-            {isEquipped && <span className="text-green-500 text-xs">Equipped</span>}
+
             <div className="mt-2 text-xs text-gray-300">
                 {stats.power && <div>Power: {stats.power}</div>}
                 {stats.speed && <div>Speed: {stats.speed}</div>}
@@ -145,6 +193,8 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ id, name, icon, type, sta
                 {stats.damage && <div>Damage: {stats.damage}</div>}
                 {stats.attack && <div>Attack: {stats.attack}</div>}
             </div>
+
+            <div className="absolute bottom-0 left-0 right-0 h-2 rounded-b-lg" style={{ background: `linear-gradient(to right, ${rarityColor}, transparent)` }}></div>
 
             {isDialogOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" onClick={handleCloseDialog}>

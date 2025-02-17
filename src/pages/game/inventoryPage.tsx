@@ -62,12 +62,12 @@ const InventoryPage: React.FC = () => {
                     {sortedInventoryData.map(item => (
                         <InventoryItem
                             key={item.id}
-                            id={item.id}
+                            id={item.id.toString()}
                             name={item.name}
                             icon={item.icon}
                             type={item.type}
-                            stats={item.stats}
                             isEquipped={item.equipped}
+                            stats={item.stats}
                             onEquip={fetchInventoryData}
                         />
                     ))}
