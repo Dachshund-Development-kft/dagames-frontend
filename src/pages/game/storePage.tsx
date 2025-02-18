@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import NavLayoutGame from '../../components/navLayoutGame';
+import NavLayoutGame from '../../components/nav';
 import { me } from '../../api/me';
 import { fetchShopItems, fetchShopItemById, buyItem, ShopItem } from '../../api/shop';
 import { inventory } from '../../api/inventory';
@@ -115,7 +115,7 @@ const InventoryPage: React.FC = () => {
     }
 
     return (
-        <main className='flex flex-col items-center justify-center min-h-screen bg-[#0F1015] no-scrollbar' style={{ backgroundImage: "url(/blobs.svg)" }}>
+        <main className='flex flex-col items-center justify-center min-h-screen no-scrollbar'>
             <NavLayoutGame />
             <div className='flex flex-grow items-center justify-center gap-4 p-4'>
                 <div className="flex flex-col items-center justify-center w-full max-w-[1400px] p-4">

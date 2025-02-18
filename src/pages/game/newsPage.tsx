@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import NavLayoutGame from '../../components/navLayoutGame';
+import NavLayoutGame from '../../components/nav';
 import { me } from '../../api/me';
 import Loading from '../../components/loading';
 import ReactMarkdown from 'react-markdown';
@@ -49,7 +49,7 @@ const InventoryPage: React.FC = () => {
     if (!news) return null;
 
     return (
-        <main className='flex flex-col items-center justify-center min-h-screen bg-[#0F1015]' style={{ backgroundImage: "url(/blobs.svg)" }}>
+        <main className='flex flex-col items-center justify-center min-h-screen'>
             <NavLayoutGame />
             <div className='flex flex-grow items-center justify-center gap-4'>
                 <div className="space-y-8 max-w-2xl w-full mx-auto my-8">

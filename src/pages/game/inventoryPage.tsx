@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import NavLayoutGame from '../../components/navLayoutGame';
+import NavLayoutGame from '../../components/nav';
 import { me } from '../../api/me';
 import InventoryItem from '../../components/InventoryItem';
 import { inventory } from '../../api/inventory';
@@ -60,7 +60,7 @@ const InventoryPage: React.FC = () => {
     if (loading) return <Loading />;
 
     return (
-        <main className='flex flex-col items-center justify-center min-h-screen bg-[#0F1015]' style={{ backgroundImage: "url(/blobs.svg)" }}>
+        <main className='flex flex-col items-center justify-center min-h-screen'>
             <NavLayoutGame />
             <div className='flex flex-grow items-center justify-center w-full max-w-[1400px] p-4'>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 2xl:grid-cols-6 gap-4 w-full h-[800px] overflow-y-auto p-4 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-800">

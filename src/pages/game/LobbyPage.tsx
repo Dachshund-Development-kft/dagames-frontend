@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import NavLayoutGame from '../../components/navLayoutGame';
+import NavLayoutGame from '../../components/nav';
 import { me } from '../../api/me';
 import socket from '../../api/socket';
 import { FaEye, FaEyeSlash, FaLock, FaTimes } from 'react-icons/fa';
@@ -136,7 +136,7 @@ const PlayPage: React.FC = () => {
     }
 
     return (
-        <main className='flex flex-col items-center justify-center min-h-screen bg-[#0F1015]' style={{ backgroundImage: "url(/blobs.svg)" }}>
+        <main className='flex flex-col items-center justify-center min-h-screen'>
             <NavLayoutGame />
             <div className='flex flex-grow items-center justify-center gap-4'>
                 <h2 className="text-xl font-bold mb-4">Active Lobbies</h2>

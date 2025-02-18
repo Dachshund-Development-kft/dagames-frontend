@@ -50,7 +50,7 @@ const NavLayoutGame: React.FC = () => {
     }, [isMenuOpen]);
 
     return (
-        <div className="flex flex-row p-2 items-center w-full bg-[#1A1B22] bg-opacity-30 relative">
+        <div className="flex flex-row p-2 items-center w-full bg-black bg-opacity-30 backdrop-blur-lg relative">
             <div className="flex items-center gap-4 py-2">
                 {leftNavItems.map((item, index) => (
                     <Link

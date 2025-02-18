@@ -180,32 +180,36 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ id, name, icon, type, isE
     };
 
     return (
-        <div className={`flex h-60 w-48 flex-col items-center p-4 bg-black bg-opacity-30 rounded-lg shadow-lg hover:bg-gray-700 transition duration-300 relative ${isEquipped && 'border-4 border-opacity-70 border-white rounded-lg'}`} onClick={!isEquipped ? handleItemClick : undefined}>
-            <img src={icon} alt={name} className="w-16 h-16 mb-2" />
-            <span className="text-white text-md font-bold">{name}</span>
-            <span className="text-gray-400 text-xs">{type}</span>
+        <div>
+            <div className={`flex h-60 w-48 flex-col items-center p-4 bg-black bg-opacity-50 backdrop-blur-md rounded-lg shadow-lg hover:bg-opacity-80 transition duration-300 relative ${isEquipped && 'border-4 border-opacity-70 border-white rounded-lg'}`} onClick={!isEquipped ? handleItemClick : undefined}>
+                <img src={icon} alt={name} className="w-16 h-16 mb-2" />
+                <span className="text-white text-md font-bold">{name}</span>
+                <span className="text-gray-400 text-xs">{type}</span>
 
-            <div className="mt-2 text-xs text-gray-300">
-                {stats.power && <div>Power: {stats.power}</div>}
-                {stats.speed && <div>Speed: {stats.speed}</div>}
-                {stats.ability && <div>Ability: {stats.ability}</div>}
-                {stats.defend && <div>Defend: {stats.defend}</div>}
-                {stats.damage && <div>Damage: {stats.damage}</div>}
-                {stats.attack && <div>Attack: {stats.attack}</div>}
+                <div className="mt-2 text-xs text-gray-300">
+                    {stats.power && <div>Power: {stats.power}</div>}
+                    {stats.speed && <div>Speed: {stats.speed}</div>}
+                    {stats.ability && <div>Ability: {stats.ability}</div>}
+                    {stats.defend && <div>Defend: {stats.defend}</div>}
+                    {stats.damage && <div>Damage: {stats.damage}</div>}
+                    {stats.attack && <div>Attack: {stats.attack}</div>}
+                </div>
+
+                <div className="absolute bottom-0 left-0 right-0 h-5 w-full rounded-b-lg opacity-50" style={{ background: `linear-gradient(to top, ${rarityColor}, transparent)` }}></div>
             </div>
 
-            <div className="absolute bottom-0 left-0 right-0 h-5 w-full rounded-b-lg opacity-50" style={{ background: `linear-gradient(to top, ${rarityColor}, transparent)` }}></div>
-
-            {isDialogOpen && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" onClick={handleCloseDialog}>
-                    <div className="bg-gray-800 p-4 rounded-lg" onClick={(e) => e.stopPropagation()}>
-                        <h2 className="text-white text-lg text-center font-bold">{name}</h2>
-                        {error && <div className="text-red-500 text-sm mb-2 text-center">{error}</div>}
-                        <button className="mt-5 px-4 py-2 bg-blue-500 text-white rounded m-2" onClick={handleEquip}>Equip</button>
-                        <button className="mt-5 ml-2 px-4 py-2 bg-gray-500 text-white rounded m-2" onClick={handleCloseDialog}>Close</button>
+            <div>
+                {isDialogOpen && (
+                    <div className="fixed inset-0 flex items-center justify-center" onClick={handleCloseDialog}>
+                        <div className="p-4 rounded-lg bg-black bg-opacity-50 backdrop-blur-md" onClick={(e) => e.stopPropagation()}>
+                            <h2 className="text-white text-lg text-center font-bold">{name}</h2>
+                            {error && <div className="text-red-500 text-sm mb-2 text-center">{error}</div>}
+                            <button className="mt-5 px-4 py-2 bg-blue-500 text-white rounded m-2" onClick={handleEquip}>Equip</button>
+                            <button className="mt-5 ml-2 px-4 py-2 bg-gray-500 text-white rounded m-2" onClick={handleCloseDialog}>Close</button>
+                        </div>
                     </div>
-                </div>
-            )}
+                )}
+            </div>
         </div>
     );
 };

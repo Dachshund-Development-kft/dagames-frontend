@@ -4,6 +4,8 @@
 
 body {
     background-color: #0F1015;
+    background-image: url('/bg.png');
+    background-size: cover;
     font-size: large;
     overflow-x: hidden;
 }

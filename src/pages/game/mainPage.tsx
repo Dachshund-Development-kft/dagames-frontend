@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import NavLayoutGame from '../../components/navLayoutGame';
+import NavLayoutGame from '../../components/nav';
 import { me, badges } from '../../api/me';
 import NewsLayout from '../../components/news';
 import SetupLayout from '../../components/setupLayout';
@@ -120,7 +120,7 @@ const PlayPage = () => {
     if (loading) return <Loading />;
 
     return (
-        <main className='flex flex-col items-center justify-center min-h-screen bg-[#0F1015]' style={{ backgroundImage: "url(/blobs.svg)" }}>
+        <main className='flex flex-col items-center justify-center min-h-screen'>
             <NavLayoutGame />
             <NewsLayout />
             <AlertLayout />

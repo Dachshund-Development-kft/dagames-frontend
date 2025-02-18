@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import NavLayoutGame from '../../components/navLayoutGame';
+import NavLayoutGame from '../../components/nav';
 import { me } from '../../api/me';
 
 const SettingsPage: React.FC = () => {
@@ -19,9 +19,9 @@ const SettingsPage: React.FC = () => {
     }, []);
 
     return (
-        <main className='flex flex-col items-center justify-center min-h-screen bg-[#0F1015]' style={{ backgroundImage: "url(/blobs.svg)" }}>
+        <main className='flex flex-col items-center justify-center min-h-screen'>
             <NavLayoutGame />
-            <div className='flex flex-grow items-center justify-center gap-4'>
+            <div className='flex flex-grow items-center justify-center gap-4 text-white'>
                 <h1>settings go here</h1>
             </div>
         </main>
