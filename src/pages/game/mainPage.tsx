@@ -5,6 +5,7 @@ import NewsLayout from '../../components/news';
 import SetupLayout from '../../components/setupLayout';
 import socket from '../../api/socket';
 import AlertLayout from '../../components/alert';
+import Loading from '../../components/loading';
 
 const ProfileModal = ({ user, onClose }: { user: any, onClose: () => void }) => {
     if (!user) return null;
@@ -63,6 +64,7 @@ const PlayPage = () => {
     const [user, setUser] = useState<{ username: string; pfp: string; lvl: number; rank: string; badges: any[]; isNew: boolean, xp: number, xpNeeded: number } | null>(null);
     const [showProfileModal, setShowProfileModal] = useState(false);
     const [showSetupLayout, setShowSetupLayout] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -90,12 +92,15 @@ const PlayPage = () => {
                             badges: []
                         });
                     }
+
+                    setLoading(false);
                 } catch (badgeError) {
                     console.error('Error fetching badges:', badgeError);
                     setUser({
                         ...userData,
                         badges: []
                     });
+                    setLoading(false);
                 }
             } catch (err) {
                 localStorage.removeItem('token');
@@ -111,6 +116,8 @@ const PlayPage = () => {
     const handleSetupComplete = () => {
         setShowSetupLayout(false);
     };
+
+    if (loading) return <Loading />;
 
     return (
         <main className='flex flex-col items-center justify-center min-h-screen bg-[#0F1015]' style={{ backgroundImage: "url(/blobs.svg)" }}>

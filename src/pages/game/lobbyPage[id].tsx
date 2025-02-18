@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import NavLayoutGame from '../../components/navLayoutGame';
 import { me } from '../../api/me';
 import socket from '../../api/socket';
+import Loading from '../../components/loading';
 
 const PlayPageID: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -83,7 +84,7 @@ const PlayPageID: React.FC = () => {
     }
 
     if (loading) {
-        return <div className='text-white'>Loading...</div>;
+        return <Loading />;
     }
 
     if (!lobbyData) {

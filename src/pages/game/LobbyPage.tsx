@@ -4,6 +4,7 @@ import { me } from '../../api/me';
 import socket from '../../api/socket';
 import { FaEye, FaEyeSlash, FaLock, FaTimes } from 'react-icons/fa';
 import { lobby } from '../../api/lobby';
+import Loading from '../../components/loading';
 
 interface Lobby {
     id: string;
@@ -131,12 +132,7 @@ const PlayPage: React.FC = () => {
     };
 
     if (loading) {
-        return (
-            <div className="fixed left-0 top-20 ml-4 p-4 bg-white shadow-lg rounded-lg">
-                <h2 className="text-xl font-bold mb-4">Active Lobbies</h2>
-                <div className="text-center text-gray-600">Loading...</div>
-            </div>
-        );
+        return <Loading />; // Itt használjuk a Loading komponenst
     }
 
     return (

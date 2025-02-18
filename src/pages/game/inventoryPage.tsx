@@ -3,6 +3,7 @@ import NavLayoutGame from '../../components/navLayoutGame';
 import { me } from '../../api/me';
 import InventoryItem from '../../components/InventoryItem';
 import { inventory } from '../../api/inventory';
+import Loading from '../../components/loading';
 
 interface InventoryItemProps {
     id: number;
@@ -22,11 +23,13 @@ interface InventoryItemProps {
 
 const InventoryPage: React.FC = () => {
     const [inventoryData, setInventoryData] = useState<InventoryItemProps[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
 
     const fetchInventoryData = async () => {
         try {
             const inventoryResponse = await inventory();
             setInventoryData(inventoryResponse);
+            setLoading(false);
         } catch (error) {
             console.error('Failed to fetch inventory:', error);
         }
@@ -53,6 +56,8 @@ const InventoryPage: React.FC = () => {
         if (!a.equipped && b.equipped) return 1;
         return 0;
     });
+
+    if (loading) return <Loading />;
 
     return (
         <main className='flex flex-col items-center justify-center min-h-screen bg-[#0F1015]' style={{ backgroundImage: "url(/blobs.svg)" }}>
