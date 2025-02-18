@@ -136,9 +136,9 @@ const InventoryPage: React.FC = () => {
                         <p className="text-lg font-bold text-white">Coins: {coins}</p>
                     </div>
                     <h1 className="text-2xl font-bold mb-4 text-white">Shop Items</h1>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 overflow-y-auto max-h-[80vh]">
                         {shopItems.map((item) => (
-                            <div key={item._id} className="p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer relative bg-black bg-opacity-30" onClick={() => handleItemClick(item.id)} >
+                            <div key={item._id} className="p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer relative bg-black bg-opacity-50 backdrop-blur-md" onClick={() => handleItemClick(item.id)} >
                                 {ownedItems.includes(item.id) && (
                                     <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-lg">
                                         <span className="text-red-500 text-2xl font-bold">Owned</span>
@@ -155,8 +155,8 @@ const InventoryPage: React.FC = () => {
                     </div>
 
                     {showPopup && selectedItem && (
-                        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                            <div className="bg-gray-800 p-6 rounded-lg w-full max-w-md">
+                        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80">
+                            <div className="bg-black bg-opacity-50 backdrop-blur-md p-6 rounded-lg w-full max-w-md">
                                 <h2 className="text-2xl font-bold mb-4 text-white">{selectedItem.name}</h2>
                                 <p className="text-gray-300 mb-4">{selectedItem.description}</p>
                                 <p className="text-green-500 font-bold mb-4">${selectedItem.price}</p>
