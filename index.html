@@ -1,15 +1,36 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/navLogo.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preload" as="image" href="/blobs.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="./src/index.css">
-    <title>Dachshund Games</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/navLogo.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preload" as="image" href="/bg.png" type="image/svg+xml">
+  <link rel="stylesheet" href="./src/index.css">
+  <title>Dachshund Games</title>
+  <style>
+    body {
+      background-color: #0F1015;
+      background-image: url('/bg.png');
+      background-size: cover;
+      font-size: large;
+      overflow-x: hidden;
+    }
+
+    :root::-webkit-scrollbar {
+      display: none;
+    }
+
+    :root {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
 </html>

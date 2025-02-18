@@ -50,14 +50,13 @@ const NavLayoutGame: React.FC = () => {
     }, [isMenuOpen]);
 
     return (
-        <div className="flex flex-row p-2 items-center w-full bg-black bg-opacity-30 backdrop-blur-lg relative">
+        <div className="flex flex-row p-2 items-center w-full bg-black bg-opacity-50 backdrop-blur-md">
             <div className="flex items-center gap-4 py-2">
                 {leftNavItems.map((item, index) => (
                     <Link
                         key={index}
                         to={item.path}
-                        className={`text-white transition-opacity duration-300 ${location.pathname === item.path ? "opacity-100" : "opacity-50 hover:opacity-100"}`}
-                    >
+                        className={`text-white transition-opacity duration-300 ${location.pathname === item.path ? "opacity-100" : "opacity-50 hover:opacity-100"}`}>
                         {item.icon}
                     </Link>
                 ))}

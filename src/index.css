@@ -1,20 +1,3 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-body {
-    background-color: #0F1015;
-    background-image: url('/bg.png');
-    background-size: cover;
-    font-size: large;
-    overflow-x: hidden;
-}
-
-:root::-webkit-scrollbar {
-    display: none;
-}
-
-:root {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}

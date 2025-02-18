@@ -195,12 +195,12 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ id, name, icon, type, isE
                     {stats.attack && <div>Attack: {stats.attack}</div>}
                 </div>
 
-                <div className="absolute bottom-0 left-0 right-0 h-5 w-full rounded-b-lg opacity-50" style={{ background: `linear-gradient(to top, ${rarityColor}, transparent)` }}></div>
+                <div className="absolute bottom-0 left-0 right-0 h-5 w-full rounded-b-lg" style={{ background: `linear-gradient(to top, ${rarityColor}, transparent)` }}></div>
             </div>
 
             <div>
                 {isDialogOpen && (
-                    <div className="fixed inset-0 flex items-center justify-center" onClick={handleCloseDialog}>
+                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50" onClick={handleCloseDialog}>
                         <div className="p-4 rounded-lg bg-black bg-opacity-50 backdrop-blur-md" onClick={(e) => e.stopPropagation()}>
                             <h2 className="text-white text-lg text-center font-bold">{name}</h2>
                             {error && <div className="text-red-500 text-sm mb-2 text-center">{error}</div>}
