@@ -180,9 +180,9 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ id, name, icon, type, isE
     };
 
     return (
-        <div className={`flex h-60 w-48 flex-col items-center p-4 bg-black bg-opacity-30 rounded-lg shadow-lg hover:bg-gray-700 transition duration-300 relative ${isEquipped && 'border-2 border-opacity-40 border-white'}`} onClick={!isEquipped ? handleItemClick : undefined}>
+        <div className={`flex h-60 w-48 flex-col items-center p-4 bg-black bg-opacity-30 rounded-lg shadow-lg hover:bg-gray-700 transition duration-300 relative ${isEquipped && 'border-4 border-opacity-70 border-white rounded-lg'}`} onClick={!isEquipped ? handleItemClick : undefined}>
             <img src={icon} alt={name} className="w-16 h-16 mb-2" />
-            <span className="text-white text-sm">{name}</span>
+            <span className="text-white text-md font-bold">{name}</span>
             <span className="text-gray-400 text-xs">{type}</span>
 
             <div className="mt-2 text-xs text-gray-300">
@@ -194,13 +194,13 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ id, name, icon, type, isE
                 {stats.attack && <div>Attack: {stats.attack}</div>}
             </div>
 
-            <div className="absolute bottom-0 left-0 right-0 h-2 rounded-b-lg" style={{ background: `linear-gradient(to right, ${rarityColor}, transparent)` }}></div>
+            <div className="absolute bottom-0 left-0 right-0 h-5 w-full rounded-b-lg opacity-50"style={{ background: `linear-gradient(to top, ${rarityColor}, transparent)` }}></div>
 
             {isDialogOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" onClick={handleCloseDialog}>
                     <div className="bg-gray-800 p-4 rounded-lg" onClick={(e) => e.stopPropagation()}>
                         <h2 className="text-white text-lg text-center font-bold">{name}</h2>
-                        {error && <div className="text-red-500 text-sm mb-2">{error}</div>}
+                        {error && <div className="text-red-500 text-sm mb-2 text-center">{error}</div>}
                         <button className="mt-5 px-4 py-2 bg-blue-500 text-white rounded m-2" onClick={handleEquip}>Equip</button>
                         <button className="mt-5 ml-2 px-4 py-2 bg-gray-500 text-white rounded m-2" onClick={handleCloseDialog}>Close</button>
                     </div>
