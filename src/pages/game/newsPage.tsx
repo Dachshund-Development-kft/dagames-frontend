@@ -3,7 +3,6 @@ import NavLayoutGame from '../../components/navLayoutGame';
 import { me } from '../../api/me';
 import NewsPageLayout from '../../components/newspage';
 
-
 const InventoryPage: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {

@@ -137,11 +137,7 @@ const InventoryPage: React.FC = () => {
                     <h1 className="text-2xl font-bold mb-4 text-white">Shop Items</h1>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                         {shopItems.map((item) => (
-                            <div
-                                key={item._id}
-                                className="p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer relative bg-black bg-opacity-30"
-                                onClick={() => handleItemClick(item.id)}
-                            >
+                            <div key={item._id} className="p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer relative bg-black bg-opacity-30" onClick={() => handleItemClick(item.id)} >
                                 {ownedItems.includes(item.id) && (
                                     <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-lg">
                                         <span className="text-red-500 text-2xl font-bold">Owned</span>
@@ -151,11 +147,7 @@ const InventoryPage: React.FC = () => {
                                 <p className="text-gray-500">{item.description}</p>
                                 <p className="text-green-600 font-bold">${item.price}</p>
                                 {item.image && (
-                                    <img
-                                        src={item.image}
-                                        alt={item.name}
-                                        className="mt-4 rounded-lg"
-                                    />
+                                    <img src={item.image} alt={item.name} className="mt-4 rounded-lg" />
                                 )}
                             </div>
                         ))}
@@ -168,26 +160,12 @@ const InventoryPage: React.FC = () => {
                                 <p className="text-gray-300 mb-4">{selectedItem.description}</p>
                                 <p className="text-green-500 font-bold mb-4">${selectedItem.price}</p>
                                 {selectedItem.image && (
-                                    <img
-                                        src={selectedItem.image}
-                                        alt={selectedItem.name}
-                                        className="mb-4 rounded-lg w-full"
-                                    />
+                                    <img src={selectedItem.image} alt={selectedItem.name} className="mb-4 rounded-lg w-full" />
                                 )}
-                                <button
-                                    onClick={handleBuyClick}
-                                    className={`w-full px-4 py-2 text-white rounded-lg transition-colors ${ownedItems.includes(selectedItem.id)
-                                        ? 'bg-gray-400 cursor-not-allowed'
-                                        : 'bg-blue-500 hover:bg-blue-600'
-                                        }`}
-                                    disabled={ownedItems.includes(selectedItem.id)}
-                                >
+                                <button onClick={handleBuyClick} className={`w-full px-4 py-2 text-white rounded-lg transition-colors ${ownedItems.includes(selectedItem.id) ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'}`} disabled={ownedItems.includes(selectedItem.id)}>
                                     {ownedItems.includes(selectedItem.id) ? 'Owned' : 'Buy Now'}
                                 </button>
-                                <button
-                                    onClick={handleClosePopup}
-                                    className="w-full mt-2 px-4 py-2 text-white bg-red-500 hover:bg-red-600 rounded-lg"
-                                >
+                                <button onClick={handleClosePopup} className="w-full mt-2 px-4 py-2 text-white bg-red-500 hover:bg-red-600 rounded-lg">
                                     Close
                                 </button>
                             </div>

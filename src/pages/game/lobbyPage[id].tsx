@@ -99,7 +99,7 @@ const PlayPageID: React.FC = () => {
                     <div className='bg-[#1E1F25] p-4 rounded-lg w-96'>
                         <h2 className='text-xl font-bold text-white mb-4'>Players in Lobby</h2>
                         <ul className='text-white'>
-                            {players && players.map((player, index) => ( // Ellenőrizzük, hogy a players létezik-e
+                            {players && players.map((player, index) => (
                                 <li key={index} className='flex items-center gap-2 mb-2'>
                                     <span>{player}</span>
                                 </li>

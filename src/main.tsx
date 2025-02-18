@@ -6,7 +6,6 @@ import {
 } from 'react-router-dom'
 import React from 'react'
 import ErrorPage from './pages/ErrorPage'
-import ForgotPassword from './pages/forgotPassword'
 import Register from './pages/registerPage'
 import LobbyPage from './pages/game/LobbyPage'
 import LogoutPage from './pages/logoutPage'
@@ -24,10 +23,6 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <MainPage />,
-  },
-  {
-    path: '/forgot-password',
-    element: <ForgotPassword />,
   },
   {
     path: '/register',

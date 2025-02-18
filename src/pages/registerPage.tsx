@@ -7,7 +7,7 @@ import { register } from '../api/register';
 const RegisterPage: React.FC = () => {
     const handleRegister = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         event.preventDefault();
-        
+
         const username = (document.getElementById('username') as HTMLInputElement)?.value || '';
         const password = (document.getElementById('password') as HTMLInputElement)?.value || '';
         const passwordAgain = (document.getElementById('passwordAgain') as HTMLInputElement)?.value || '';
@@ -52,9 +52,11 @@ const RegisterPage: React.FC = () => {
                         <button onClick={handleRegister} type="submit" className="bg-[#0F1015] text-white px-5 py-3 rounded-lg shadow-lg flex items-center justify-center gap-2 hover:opacity-90 transition-all duration-300 w-full mt-4">
                             Register
                         </button>
-                        <p>Have an account? <Link to="/login" className="text-blue-400 hover:underline">
-                            Log in
-                        </Link></p>
+                        <p>Have an account?
+                            <Link to="/login" className="text-blue-400 hover:underline">
+                                Log in
+                            </Link>
+                        </p>
                     </div>
                 </form>
             </main>

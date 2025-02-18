@@ -136,9 +136,8 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
                             {characters.map((character) => (
                                 <div
                                     key={character.id}
-                                    className={`cursor-pointer p-2 rounded-lg ${
-                                        selectedCharacter === character.id ? 'bg-blue-500' : 'bg-gray-700'
-                                    }`}
+                                    className={`cursor-pointer p-2 rounded-lg ${selectedCharacter === character.id ? 'bg-blue-500' : 'bg-gray-700'
+                                        }`}
                                     onClick={() => handleCharacterSelect(character.id)}
                                     onMouseEnter={(e) => handleMouseEnter('character', character.id, character.stats, e)}
                                     onMouseLeave={handleMouseLeave}
@@ -155,9 +154,8 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
                             {weapons.map((weapon) => (
                                 <div
                                     key={weapon.id}
-                                    className={`cursor-pointer p-2 rounded-lg ${
-                                        selectedWeapon === weapon.id ? 'bg-blue-500' : 'bg-gray-700'
-                                    }`}
+                                    className={`cursor-pointer p-2 rounded-lg ${selectedWeapon === weapon.id ? 'bg-blue-500' : 'bg-gray-700'
+                                        }`}
                                     onClick={() => handleWeaponSelect(weapon.id)}
                                     onMouseEnter={(e) => handleMouseEnter('weapon', weapon.id, weapon.stats, e)}
                                     onMouseLeave={handleMouseLeave}
@@ -168,23 +166,14 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
                             ))}
                         </div>
                     </div>
-                    <button
-                        onClick={handleSubmit}
-                        className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600"
-                    >
+                    <button onClick={handleSubmit} className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">
                         Confirm
                     </button>
                 </div>
             </div>
 
             {hoveredItem && (
-                <div
-                    className="absolute bg-[#2D2F3A] p-4 rounded-lg shadow-lg text-white"
-                    style={{
-                        top: hoverPosition.y + 10,
-                        left: hoverPosition.x + 10,
-                    }}
-                >
+                <div className="absolute bg-[#2D2F3A] p-4 rounded-lg shadow-lg text-white" style={{ top: hoverPosition.y + 10, left: hoverPosition.x + 10 }}>
                     <h4 className="font-bold mb-2">{hoveredItem.type === 'character' ? 'Chraracter stats' : 'Weapon Stats'}</h4>
                     {Object.entries(hoveredItem.stats).map(([key, value]) => (
                         <p key={key}>{`${key}: ${value}`}</p>

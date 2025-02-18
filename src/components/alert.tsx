@@ -37,12 +37,12 @@ const AlertLayout: React.FC = () => {
         socket.on('disconnect', () => {
             setNetworkReconnect(true);
         });
-        
+
         socket.on('connect', () => {
             setNetworkReconnect(false);
         });
 
-        socket.on('info', (data:any) => {
+        socket.on('info', (data: any) => {
             console.log(data)
         });
 

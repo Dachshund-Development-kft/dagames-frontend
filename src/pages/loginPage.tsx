@@ -40,27 +40,13 @@ const LoginPage: React.FC = () => {
                     <div className="flex flex-col gap-4 mt-10">
                         <div className="flex items-center bg-black bg-opacity-50 text-white rounded-lg p-3 focus-within:ring-2 focus-within:ring-blue-500 transition duration-300">
                             <FaUser className="text-gray-500 mr-2" />
-                            <input
-                                type="text"
-                                placeholder="Username"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                                className="bg-transparent flex-1 outline-none focus:ring-0 placeholder-gray-400"
-                            />
+                            <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} className="bg-transparent flex-1 outline-none focus:ring-0 placeholder-gray-400" />
                         </div>
                         <div className="flex items-center bg-black bg-opacity-50 text-white rounded-lg p-3 focus-within:ring-2 focus-within:ring-blue-500 transition duration-300">
                             <FaLock className="text-gray-500 mr-2" />
-                            <input
-                                type="password"
-                                placeholder="Password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="bg-transparent flex-1 outline-none focus:ring-0 placeholder-gray-400"
-                            />
+                            <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className="bg-transparent flex-1 outline-none focus:ring-0 placeholder-gray-400" />
                         </div>
-                        <button
-                            type="submit"
-                            className="bg-[#0F1015] text-white px-5 py-3 rounded-lg shadow-lg flex items-center justify-center gap-2 hover:bg-opacity-90 transition-all duration-300 w-full mt-4">
+                        <button type="submit" className="bg-[#0F1015] text-white px-5 py-3 rounded-lg shadow-lg flex items-center justify-center gap-2 hover:bg-opacity-90 transition-all duration-300 w-full mt-4">
                             Login
                         </button>
                         <br />

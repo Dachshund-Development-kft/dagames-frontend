@@ -24,10 +24,7 @@ const ProfileModal = ({ user, onClose }: { user: any, onClose: () => void }) => 
                         <div>
                             <p className="text-white">Level: {user.lvl}</p>
                             <div className="w-full bg-gray-700 rounded-full h-2 mt-2">
-                                <div
-                                    className="bg-blue-500 h-2 rounded-full"
-                                    style={{ width: user.xp / user.xpNeeded * 100 + '%' }}
-                                ></div>
+                                <div className="bg-blue-500 h-2 rounded-full" style={{ width: user.xp / user.xpNeeded * 100 + '%' }}></div>
                             </div>
                             <p className="text-white">Rank: {user.rank}</p>
                         </div>
@@ -108,7 +105,7 @@ const PlayPage = () => {
         };
 
         fetchData();
-        socket.emit('auth', {"token": localStorage.getItem('token')});
+        socket.emit('auth', { "token": localStorage.getItem('token') });
     }, []);
 
     const handleSetupComplete = () => {
@@ -134,10 +131,7 @@ const PlayPage = () => {
                                 <span className="ml-2">Rank: {user.rank}</span>
                             </div>
                             <div className="w-full bg-gray-700 rounded-full h-2 mt-2">
-                                <div
-                                    className="bg-blue-500 h-2 rounded-full"
-                                    style={{ width: user.xp / user.xpNeeded * 100 + '%' }}
-                                ></div>
+                                <div className="bg-blue-500 h-2 rounded-full" style={{ width: user.xp / user.xpNeeded * 100 + '%' }}></div>
                             </div>
                         </div>
                     </div>
