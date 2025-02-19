@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import NavLayoutGame from '../../components/nav';
-import { me } from '../../api/me';
 import Loading from '../../components/loading';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -30,10 +29,8 @@ const InventoryPage: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await me();
-                console.log(response.username);
-                const response2: ApiResponse = await getNews();
-                setNews(response2.news);
+                const response: ApiResponse = await getNews();
+                setNews(response.news);
                 setLoading(false);
             } catch (err) {
                 localStorage.removeItem('token');

@@ -1,23 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import NavLayoutGame from '../../components/nav';
-import { me } from '../../api/me';
 
 const SettingsPage: React.FC = () => {
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await me();
-                console.log(response.username);
-            } catch (err) {
-                localStorage.removeItem('token');
-                console.error(err);
-                window.location.href = '/login';
-            }
-        };
-
-        fetchData();
-    }, []);
-
     return (
         <main className='flex flex-col items-center justify-center min-h-screen'>
             <NavLayoutGame />

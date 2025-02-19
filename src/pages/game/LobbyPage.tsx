@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import NavLayoutGame from '../../components/nav';
-import { me } from '../../api/me';
 import socket from '../../api/socket';
 import { FaEye, FaEyeSlash, FaLock, FaTimes } from 'react-icons/fa';
 import { lobby } from '../../api/lobby';
@@ -23,19 +22,6 @@ const PlayPage: React.FC = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await me();
-                console.log(response.username);
-            } catch (err) {
-                localStorage.removeItem('token');
-                console.error(err);
-                window.location.href = '/login';
-            }
-        };
-
-        fetchData();
-
         const fetchLobbies = async () => {
             const token = localStorage.getItem('token');
 

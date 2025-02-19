@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import NavLayoutGame from '../../components/nav';
-import { me } from '../../api/me';
 import socket from '../../api/socket';
 import Loading from '../../components/loading';
 
@@ -12,19 +11,6 @@ const PlayPageID: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await me();
-                console.log(response.username);
-            } catch (err) {
-                localStorage.removeItem('token');
-                console.error(err);
-                window.location.href = '/login';
-            }
-        };
-
-        fetchData();
-
         if (!socket) {
             alert('Socket not connected');
         }

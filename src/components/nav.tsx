@@ -6,6 +6,7 @@ import { FaNewspaper, FaShop } from "react-icons/fa6";
 import { FiLogOut } from "react-icons/fi";
 import { MdInventory } from "react-icons/md";
 import { FaPlay } from "react-icons/fa";
+import { me } from '../api/me';
 
 const NavLayoutGame: React.FC = () => {
     const location = useLocation();
@@ -25,6 +26,24 @@ const NavLayoutGame: React.FC = () => {
         { path: "/shop", icon: <FaShop />, label: "Shop" },
         { path: "/news", icon: <FaNewspaper />, label: "News" }
     ];
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await me();
+
+                if (response) {
+                    return;
+                }
+            } catch (err) {
+                localStorage.removeItem('token');
+                console.error(err);
+                window.location.href = '/login';
+            }
+        };
+
+        fetchData();
+    }, []);
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {

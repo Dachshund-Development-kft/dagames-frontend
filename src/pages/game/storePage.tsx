@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import NavLayoutGame from '../../components/nav';
-import { me } from '../../api/me';
 import { fetchShopItems, fetchShopItemById, buyItem, ShopItem } from '../../api/shop';
 import { inventory } from '../../api/inventory';
 import { ToastContainer, toast, Bounce } from 'react-toastify';
@@ -16,17 +15,6 @@ const InventoryPage: React.FC = () => {
     const [showPopup, setShowPopup] = useState<boolean>(false);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await me();
-                console.log(response.username);
-            } catch (err) {
-                localStorage.removeItem('token');
-                console.error(err);
-                window.location.href = '/login';
-            }
-        };
-
         const loadData = async () => {
             try {
                 const userResponse = await fetch('https://api.dagames.online/v1/user/@me', {
@@ -57,7 +45,6 @@ const InventoryPage: React.FC = () => {
         };
 
         loadData();
-        fetchData();
     }, []);
 
     const handleItemClick = async (itemId: string) => {
