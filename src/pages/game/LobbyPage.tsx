@@ -132,7 +132,7 @@ const PlayPage: React.FC = () => {
     };
 
     if (loading) {
-        return <Loading />; // Itt használjuk a Loading komponenst
+        return <Loading />;
     }
 
     return (
@@ -177,7 +177,7 @@ const PlayPage: React.FC = () => {
 
                 {lobbyPopup && (
                     <div className='fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center'>
-                        <div className='bg-[#1E1F25] p-4 rounded-lg w-96'>
+                        <div className='bg-black bg-opacity-50 backdrop-blur-md p-4 rounded-lg w-96'>
                             <div className='flex justify-between items-center mb-4'>
                                 <h1 className='text-2xl font-bold text-white'>Lobby Settings</h1>
                                 <button onClick={() => setLobbyPopup(false)} className='text-white'>
@@ -189,7 +189,7 @@ const PlayPage: React.FC = () => {
                                 <input
                                     type='text'
                                     placeholder='Lobby Name'
-                                    className='bg-[#1E1F25] text-white p-2 w-full rounded-md border border-gray-600'
+                                    className='bg-black bg-opacity-70 text-white p-2 w-full rounded-md border border-gray-600'
                                     value={lobbyName}
                                     onChange={(e) => setLobbyName(e.target.value)}
                                 />
@@ -220,7 +220,7 @@ const PlayPage: React.FC = () => {
                                         <input
                                             type='password'
                                             placeholder='Lobby Password'
-                                            className='bg-[#1E1F25] text-white p-2 w-full rounded-md border border-gray-600'
+                                            className='bg-black bg-opacity-70 text-white p-2 w-full rounded-md border border-gray-600'
                                             value={lobbyPassword}
                                             onChange={(e) => setLobbyPassword(e.target.value)}
                                         />
