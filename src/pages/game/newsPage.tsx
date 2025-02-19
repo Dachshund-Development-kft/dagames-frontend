@@ -46,27 +46,29 @@ const InventoryPage: React.FC = () => {
     if (!news) return null;
 
     return (
-        <main className='flex flex-col items-center justify-center min-h-screen'>
+        <main className='flex flex-col items-center justify-center min-h-screen overflow-hidden'>
             <NavLayoutGame />
-            <div className='flex flex-grow items-center justify-center gap-4'>
-                <div className="space-y-8 max-w-2xl w-full mx-auto my-8">
-                    {news.map((item, index) => (
-                        <div key={index} className="bg-black bg-opacity-90 text-white p-8 rounded-lg shadow-lg">
-                            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-center">{item.name}</h2>
-                            <div className="overflow-y-auto max-h-96 prose prose-invert sm:max-h-[30rem] md:max-h-[35rem] lg:max-h-[40rem]">
-                                <ReactMarkdown remarkPlugins={[remarkGfm]}>{item.body}</ReactMarkdown>
+            <div className='flex flex-grow items-center justify-center w-full'>
+                <div className="w-full overflow-y-auto max-h-[calc(100vh-200px)] p-4 min-h-screen">
+                    <div className="space-y-8 max-w-2xl w-full mx-auto">
+                        {news.map((item, index) => (
+                            <div key={index} className="bg-black bg-opacity-90 text-white p-8 rounded-lg shadow-lg">
+                                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-center">{item.name}</h2>
+                                <div className="overflow-y-auto max-h-96 prose prose-invert sm:max-h-[30rem] md:max-h-[35rem] lg:max-h-[40rem]">
+                                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{item.body}</ReactMarkdown>
+                                </div>
+                                <br />
+                                <div className="flex items-center justify-center mb-6">
+                                    <img
+                                        src={item.author.avatar}
+                                        alt={item.author.name}
+                                        className="w-10 sm:w-12 md:w-14 h-10 sm:h-12 md:h-14 rounded-full mr-3"
+                                    />
+                                    <span className="text-sm sm:text-base md:text-lg">{item.author.name}</span>
+                                </div>
                             </div>
-                            <br />
-                            <div className="flex items-center justify-center mb-6">
-                                <img
-                                    src={item.author.avatar}
-                                    alt={item.author.name}
-                                    className="w-10 sm:w-12 md:w-14 h-10 sm:h-12 md:h-14 rounded-full mr-3"
-                                />
-                                <span className="text-sm sm:text-base md:text-lg">{item.author.name}</span>
-                            </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </div>
         </main>
