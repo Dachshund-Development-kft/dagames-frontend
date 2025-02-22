@@ -52,7 +52,7 @@ const InventoryPage: React.FC = () => {
                 <div className="w-full overflow-y-auto max-h-[calc(100vh-200px)] p-4 min-h-screen">
                     <div className="space-y-8 max-w-2xl w-full mx-auto">
                         {news.map((item, index) => (
-                            <div key={index} className="bg-black bg-opacity-90 text-white p-8 rounded-lg shadow-lg">
+                            <div key={index} className="bg-black bg-opacity-50 backdrop-blur-md text-white p-8 rounded-lg shadow-lg">
                                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-center">{item.name}</h2>
                                 <div className="overflow-y-auto max-h-96 prose prose-invert sm:max-h-[30rem] md:max-h-[35rem] lg:max-h-[40rem]">
                                     <ReactMarkdown remarkPlugins={[remarkGfm]}>{item.body}</ReactMarkdown>
