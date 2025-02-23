@@ -1,17 +1,16 @@
 import axios from 'axios';
 
-export const setup = async (weaponid: string, characterid: string) => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-        throw new Error('No token provided');
-    }
+if (!localStorage.getItem('url')) {
+    localStorage.setItem('url', 'https://api.dagames.online');
+}
 
+export const setup = async (weaponid: string, characterid: string) => {
     const response = await axios.post(
-        `https://api.dagames.online/v1/user/@me/setup`,
+        `${localStorage.getItem('url')}/v1/user/@me/setup`,
         { weaponItemid: weaponid, characterItemid: characterid },
         {
             headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
             },
         }
     );

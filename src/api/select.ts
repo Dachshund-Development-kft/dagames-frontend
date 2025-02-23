@@ -1,8 +1,12 @@
 import axios from 'axios';
 
+if (!localStorage.getItem('url')) {
+    localStorage.setItem('url', 'https://api.dagames.online');
+  }
+
 export const character = async (id: string) => {
     const response = await axios.post(
-        'https://api.dagames.online/v1/user/@me/character/select',
+        `${localStorage.getItem('url')}/v1/user/@me/character/select`,
         { itemid: id },
         {
             headers: {
@@ -15,7 +19,7 @@ export const character = async (id: string) => {
 
 export const weapon = async (id: string) => {
     const response = await axios.post(
-        'https://api.dagames.online/v1/user/@me/weapon/select',
+        `${localStorage.getItem('url')}/v1/user/@me/weapon/select`,
         { weaponid: id },
         {
             headers: {

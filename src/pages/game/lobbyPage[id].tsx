@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import NavLayoutGame from '../../components/nav';
 import socket from '../../api/socket';
 import Loading from '../../components/loading';
+import { lobbyId } from '../../api/lobby';
 
 const PlayPageID: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -60,12 +61,12 @@ const PlayPageID: React.FC = () => {
 
         const fetchLobbyData = async () => {
             try {
-                const response = await fetch(`https://api.dagames.online/v1/lobby/${id}`, {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`,
-                    },
-                });
-                const data = await response.json();
+                if (!id) {
+                    throw new Error('Lobby ID is undefined');
+                }
+
+                const response = await lobbyId(id);
+                const data = response.data;
                 setLobbyData(data);
                 setPlayers(data.players || []);
                 setLoading(false);

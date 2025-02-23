@@ -10,11 +10,15 @@ export interface ShopItem {
     __v: number;
 }
 
-const API_BASE_URL = 'https://api.dagames.online/v1/shop';
+if (!localStorage.getItem('url')) {
+    localStorage.setItem('url', 'https://api.dagames.online');
+}
+
+const API_BASE_URL = localStorage.getItem('url');
 
 export const fetchShopItems = async (): Promise<ShopItem[]> => {
     try {
-        const response = await fetch(`${API_BASE_URL}/`);
+        const response = await fetch(`${API_BASE_URL}/v1/shop`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -28,7 +32,7 @@ export const fetchShopItems = async (): Promise<ShopItem[]> => {
 
 export const fetchShopItemById = async (itemId: string): Promise<ShopItem> => {
     try {
-        const response = await fetch(`${API_BASE_URL}/${itemId}`);
+        const response = await fetch(`${API_BASE_URL}/v1/shop/${itemId}`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -42,7 +46,7 @@ export const fetchShopItemById = async (itemId: string): Promise<ShopItem> => {
 
 export const buyItem = async (itemId: string): Promise<{ success: boolean; message?: string }> => {
     try {
-        const response = await fetch('https://api.dagames.online/v1/user/@me/inventory/buy', {
+        const response = await fetch(`${API_BASE_URL}/v1/user/@me/inventory/buy`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
