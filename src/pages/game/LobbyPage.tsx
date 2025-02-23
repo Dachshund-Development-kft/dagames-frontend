@@ -173,35 +173,35 @@ const PlayPage: React.FC = () => {
 
                 {lobbyPopup && (
                     <div className='fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center'>
-                        <div className='bg-gray-800 p-6 rounded-lg w-96'>
+                        <div className='bg-black bg-opacity-50 backdrop-blur-md p-4 rounded-lg w-96'>
                             <div className='flex justify-between items-center mb-4'>
-                                <h1 className='text-2xl font-bold'>Lobby Settings</h1>
-                                <button onClick={() => setLobbyPopup(false)} className='text-gray-400 hover:text-white'>
+                                <h1 className='text-2xl font-bold text-white'>Lobby Settings</h1>
+                                <button onClick={() => setLobbyPopup(false)} className='text-white'>
                                     <FaTimes />
                                 </button>
                             </div>
                             <div className='mb-4'>
-                                <label className='block text-sm font-medium mb-2'>Lobby Name</label>
+                                <label className='text-white'>Lobby Name</label>
                                 <input
                                     type='text'
                                     placeholder='Lobby Name'
-                                    className='w-full p-2 bg-gray-700 text-white rounded-md border border-gray-600'
+                                    className='bg-black bg-opacity-70 text-white p-2 w-full rounded-md border border-gray-600'
                                     value={lobbyName}
                                     onChange={(e) => setLobbyName(e.target.value)}
                                 />
                             </div>
                             <div className='mb-4'>
-                                <label className='block text-sm font-medium mb-2'>Visibility</label>
-                                <div className='flex items-center gap-4'>
+                                <label className='text-white'>Visibility</label>
+                                <div className='flex items-center gap-4 mt-2'>
                                     <button
-                                        className={`flex items-center gap-2 p-2 rounded-md ${lobbyVisibility ? 'bg-blue-600' : 'bg-gray-700'}`}
+                                        className={`flex items-center gap-2 p-2 rounded-md ${lobbyVisibility ? 'bg-blue-500' : 'bg-gray-700'}`}
                                         onClick={() => handleVisibilityChange(true)}
                                     >
                                         <FaEye />
                                         <span>Public</span>
                                     </button>
                                     <button
-                                        className={`flex items-center gap-2 p-2 rounded-md ${!lobbyVisibility ? 'bg-blue-600' : 'bg-gray-700'}`}
+                                        className={`flex items-center gap-2 p-2 rounded-md ${!lobbyVisibility ? 'bg-blue-500' : 'bg-gray-700'}`}
                                         onClick={() => handleVisibilityChange(false)}
                                     >
                                         <FaEyeSlash />
@@ -211,12 +211,12 @@ const PlayPage: React.FC = () => {
                             </div>
                             {!lobbyVisibility && (
                                 <div className='mb-4'>
-                                    <label className='block text-sm font-medium mb-2'>Lobby Password</label>
+                                    <label className='text-white'>Lobby Password</label>
                                     <div className='relative'>
                                         <input
                                             type='password'
                                             placeholder='Lobby Password'
-                                            className='w-full p-2 bg-gray-700 text-white rounded-md border border-gray-600'
+                                            className='bg-black bg-opacity-70 text-white p-2 w-full rounded-md border border-gray-600'
                                             value={lobbyPassword}
                                             onChange={(e) => setLobbyPassword(e.target.value)}
                                         />
@@ -225,7 +225,7 @@ const PlayPage: React.FC = () => {
                                 </div>
                             )}
                             <button
-                                className='w-full bg-blue-600 text-white py-2 px-4 rounded-md text-lg mt-4 hover:bg-blue-700 transition-colors'
+                                className='text-white bg-blue-500 p-2 w-full rounded-md text-lg mt-4'
                                 onClick={() => {
                                     setLobbyPopup(false);
 

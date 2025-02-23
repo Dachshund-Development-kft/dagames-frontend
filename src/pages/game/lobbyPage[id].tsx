@@ -9,6 +9,8 @@ const PlayPageID: React.FC = () => {
     const [lobbyData, setLobbyData] = useState<any>(null);
     const [players, setPlayers] = useState<string[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const [ready, setReady] = useState<boolean>(false);
+    const [readyPlayers, setReadyPlayers] = useState<string[]>([]);
 
     useEffect(() => {
         if (!socket) {
@@ -18,16 +20,41 @@ const PlayPageID: React.FC = () => {
         socket.emit('auth', { token: localStorage.getItem('token') });
 
         socket.on('lobby_update', (data: any) => {
-            setPlayers(data.players || []);
+            if (data.players) {
+                setPlayers(data.players || []);
+            } else if (data.ready) {
+                setReadyPlayers(data.ready);
+            } else {
+                console.log('Failed to update lobby');
+            }
         });
 
         socket.on('lobby_message', (data: any) => {
             console.log(data.message);
-            alert(data.message);
+        });
+
+        socket.on('countdown', (data: any) => {
+            console.log(data.message);
+        });
+
+        socket.on('ready', (data: any) => {
+            if (data.success) {
+                setReady(true);
+            } else {
+                console.log('Failed to ready');
+            }
+        });
+
+        socket.on('unready', (data: any) => {
+            if (data.success) {
+                setReady(false);
+            } else {
+                console.log('Failed to unready');
+            }
         });
 
         socket.on('lobby_deleted', () => {
-            alert('Lobby deleted');
+            console.log('Lobby deleted');
             window.location.href = '/play';
         });
 
@@ -42,6 +69,10 @@ const PlayPageID: React.FC = () => {
                 setLobbyData(data);
                 setPlayers(data.players || []);
                 setLoading(false);
+
+                if (!data) {
+                    return window.location.href = '/play';
+                }
 
                 socket.emit('join', { id: data.id });
                 localStorage.setItem('lobby_id', data.id);
@@ -69,6 +100,28 @@ const PlayPageID: React.FC = () => {
         });
     }
 
+    const Ready = async () => {
+        const id = window.location.pathname.split('/')[2];
+        socket.emit('ready', { id: id });
+
+        socket.on('ready', (data: any) => {
+            if (data.success) {
+                console.log('Ready');
+            }
+        });
+    }
+
+    const unReady = async () => {
+        const id = window.location.pathname.split('/')[2];
+        socket.emit('unready', { id: id });
+
+        socket.on('unready', (data: any) => {
+            if (data.success) {
+                console.log('Unready');
+            }
+        });
+    }
+
     if (loading) {
         return <Loading />;
     }
@@ -88,11 +141,19 @@ const PlayPageID: React.FC = () => {
                         <ul className='text-white'>
                             {players && players.map((player, index) => (
                                 <li key={index} className='flex items-center gap-2 mb-2'>
-                                    <span>{player}</span>
+                                    <span style={{ color: readyPlayers.includes(player) ? 'green' : 'white' }}>
+                                        {player}
+                                    </span>
                                 </li>
                             ))}
                         </ul>
                         <button onClick={leaveLobby} className='bg-[#FF4D4F] text-white px-4 py-2 rounded-lg mt-4'>Leave Lobby</button>
+                        <br />
+                        {ready && (
+                            <button onClick={unReady} className='bg-[#20d523] text-white px-4 py-2 rounded-lg mt-4'>Unready</button>
+                        ) || (
+                                <button onClick={Ready} className='bg-[#20d523] text-white px-4 py-2 rounded-lg mt-4'>Ready</button>
+                            )}
                     </div>
                 </div>
             </main>
