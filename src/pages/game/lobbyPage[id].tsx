@@ -38,6 +38,10 @@ const PlayPageID: React.FC = () => {
             console.log(data.message);
         });
 
+        socket.on('countdown_complete', () => {
+            window.location.href = '/game';
+        });
+
         socket.on('ready', (data: any) => {
             if (data.success) {
                 setReady(true);
