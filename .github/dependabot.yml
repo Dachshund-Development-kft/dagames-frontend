@@ -5,7 +5,6 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-      days: ["monday", "tuesday", "wednesday", "thursday", "friday"]
     open-pull-requests-limit: 5
 
   # Enable version updates for Docker
