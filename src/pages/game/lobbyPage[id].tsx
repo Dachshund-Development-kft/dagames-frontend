@@ -38,11 +38,23 @@ const PlayPageID: React.FC = () => {
             console.log(data.message);
 
             const id = data.id
-            
+            const token = data.token
+
             if (data.success) {
-                window.location.href = '/game/' + id;
+                if (localStorage.getItem('game_id') || localStorage.getItem('game_token')) {
+                    localStorage.removeItem('game_id');
+                    localStorage.removeItem('game_token');
+                    console.log('Miért is volt ez neked fiam. Gém adat remúvolva');
+
+                    localStorage.setItem('game_id', id);
+                    localStorage.setItem('game_token', token);
+                } else {
+                    localStorage.setItem('game_id', id);
+                    localStorage.setItem('game_token', token);
+                    window.location.href = '/game/' + id 
+                }
             } else {
-                console.log('Failed to start game');
+                console.log('Mi a sigma')
             }
         });
 

@@ -18,6 +18,7 @@ import NewsPage from './pages/game/newsPage'
 import VerifyPage from './pages/verifyPage'
 import { Analytics } from "@vercel/analytics/react"
 import PlayPageID from './pages/game/lobbyPage[id]'
+import GamePage from './pages/game/gamePage'
 
 const router = createBrowserRouter([
   {
@@ -63,6 +64,10 @@ const router = createBrowserRouter([
   {
     path: '/play/:id',
     element: <PlayPageID />,
+  },
+  {
+    path: '/game/:id',
+    element: <GamePage />,
   },
   {
     path: '*',
