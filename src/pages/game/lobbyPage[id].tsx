@@ -37,10 +37,10 @@ const PlayPageID: React.FC = () => {
         socket.on('countdown', (data: any) => {
             console.log(data.message);
 
-            const id = data.id
-            const token = data.token
-
             if (data.success) {
+                const id = data.id
+                const token = data.token
+
                 if (localStorage.getItem('game_id') || localStorage.getItem('game_token')) {
                     localStorage.removeItem('game_id');
                     localStorage.removeItem('game_token');
@@ -54,7 +54,7 @@ const PlayPageID: React.FC = () => {
                     window.location.href = '/game/' + id 
                 }
             } else {
-                console.log('Mi a sigma')
+                return console.log('Mi a sigma');
             }
         });
 
