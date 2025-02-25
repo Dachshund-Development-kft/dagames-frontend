@@ -41,6 +41,7 @@ const GamePage: React.FC = () => {
             }
 
             let yourid;
+            console.log(yourid);
 
             socket.on('game_auth', (data: any) => {
                 if (data.success) {
