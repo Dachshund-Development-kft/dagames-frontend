@@ -19,6 +19,7 @@ interface ItemStats {
     defend?: { from: number; to: number };
     damage?: { from: number; to: number };
     attack?: { from: number; to: number };
+    agility?: { from: number; to: number };
 }
 
 const useDebounce = (value: string, delay: number) => {
@@ -127,6 +128,9 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ id, name, icon, type, isE
             if (itemData.stat_attack_from !== undefined) {
                 newItemStats.attack = { from: itemData.stat_attack_from, to: itemData.stat_attack_to };
             }
+            if (itemData.stat_agility_from !== undefined) {
+                newItemStats.agility = { from: itemData.stat_agility_from, to: itemData.stat_agility_to };
+            }
 
             setItemStats(newItemStats);
 
@@ -193,6 +197,7 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ id, name, icon, type, isE
                     {stats.defend && <div>Defend: {stats.defend}</div>}
                     {stats.damage && <div>Damage: {stats.damage}</div>}
                     {stats.attack && <div>Attack: {stats.attack}</div>}
+                    {stats.agility && <div>Agility: {stats.agility}</div>}
                 </div>
 
                 <div className="absolute bottom-0 left-0 right-0 h-5 w-full rounded-b-lg" style={{ background: `linear-gradient(to top, ${rarityColor}, transparent)` }}></div>
