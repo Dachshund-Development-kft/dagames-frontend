@@ -48,6 +48,7 @@ const PlayPageID: React.FC = () => {
 
                     localStorage.setItem('game_id', id);
                     localStorage.setItem('game_token', token);
+                    window.location.href = '/game/' + id 
                 } else {
                     localStorage.setItem('game_id', id);
                     localStorage.setItem('game_token', token);

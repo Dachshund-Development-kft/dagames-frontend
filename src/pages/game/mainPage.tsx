@@ -1,16 +1,20 @@
 import { useEffect, useState } from 'react';
 import NavLayoutGame from '../../components/nav';
 import { me, badges } from '../../api/me';
+import { matches } from '../../api/matches';
 import NewsLayout from '../../components/news';
 import SetupLayout from '../../components/setupLayout';
 import socket from '../../api/socket';
 import AlertLayout from '../../components/alert';
 import Loading from '../../components/loading';
+import MatchPopup from '../../components/matchPopup';
 
 const PlayPage = () => {
     const [user, setUser] = useState<{ username: string; pfp: string; lvl: number; rank: string; badges: any[]; isNew: boolean, xp: number, xpNeeded: number } | null>(null);
     const [showSetupLayout, setShowSetupLayout] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [matchPopup, setMatchPopup] = useState(false);
+    const [matchData, setMatchData] = useState<any>(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -55,12 +59,37 @@ const PlayPage = () => {
             }
         };
 
+        const handleid = async () => {
+            const url = window.location.href;
+            const matchId = url.split('?id=')[1];
+            if (!matchId) return;
+        
+            try {
+                const response = await matches(matchId);
+                setMatchData(response);
+                setMatchPopup(true);
+            } catch (err) {
+                console.error('Error fetching match data:', err);
+            }
+        };
+
+        handleid();
         fetchData();
         socket.emit('auth', { "token": localStorage.getItem('token') });
     }, []);
 
+    useEffect(() => {
+        console.log('Match Data:', matchData);
+        console.log('Match Popup:', matchPopup);
+    }, [matchData, matchPopup]);
+
     const handleSetupComplete = () => {
         setShowSetupLayout(false);
+    };
+
+    const handleCloseMatchPopup = () => {
+        setMatchPopup(false);
+        window.location.href = '/'
     };
 
     if (loading) return <Loading />;
@@ -107,6 +136,7 @@ const PlayPage = () => {
             )}
 
             {showSetupLayout && <SetupLayout onComplete={handleSetupComplete} />}
+            {matchPopup && <MatchPopup matchData={matchData} onClose={handleCloseMatchPopup} />}
         </main>
     );
 };
