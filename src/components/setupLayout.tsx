@@ -28,6 +28,7 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
                     stats: {
                         power: formatStatRange(item.stat_power_from, item.stat_power_to),
                         speed: formatStatRange(item.stat_speed_from, item.stat_speed_to),
+                        agility: formatStatRange(item.stat_agility_from, item.stat_agility_to)
                     },
                 }));
                 setCharacters(formattedCharacters);
