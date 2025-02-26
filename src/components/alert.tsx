@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { getNews } from '../api/news';
-import socket from '../api/socket';
 
 interface ApiResponse {
     maintenance: boolean;
@@ -32,10 +31,6 @@ const AlertLayout: React.FC = () => {
                 setMaintenanceMessage('API is currently down for maintenance.');
             }
         };
-
-        socket.on('info', (data: any) => {
-            console.log(data)
-        });
 
         fetchData();
     }, []);

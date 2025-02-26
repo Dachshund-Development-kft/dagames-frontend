@@ -48,8 +48,6 @@ const PlayPage: React.FC = () => {
             setError('Socket not connected');
         }
 
-        socket.emit('auth', { token: localStorage.getItem('token') });
-
         setTimeout(() => {
             if (localStorage.getItem('lobby_id')) {
                 console.log('Leaving lobby:', localStorage.getItem('lobby_id'));

@@ -21,8 +21,6 @@ const GamePage: React.FC = () => {
     const [lockbuttons, setLockbuttons] = useState<boolean>(false);
 
     useEffect(() => {
-        socket.emit('auth', { token: localStorage.getItem('token') });
-
         if (matchid === 'undefined') {
             window.location.href = '/play';
         }

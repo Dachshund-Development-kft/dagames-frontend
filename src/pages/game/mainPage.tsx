@@ -4,7 +4,6 @@ import { me, badges } from '../../api/me';
 import { matches } from '../../api/matches';
 import NewsLayout from '../../components/news';
 import SetupLayout from '../../components/setupLayout';
-import socket from '../../api/socket';
 import AlertLayout from '../../components/alert';
 import Loading from '../../components/loading';
 import MatchPopup from '../../components/matchPopup';
@@ -75,7 +74,6 @@ const PlayPage = () => {
 
         handleid();
         fetchData();
-        socket.emit('auth', { "token": localStorage.getItem('token') });
     }, []);
 
     const handleSetupComplete = () => {

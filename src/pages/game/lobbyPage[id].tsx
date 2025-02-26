@@ -19,8 +19,6 @@ const PlayPageID: React.FC = () => {
             alert('Socket not connected');
         }
 
-        socket.emit('auth', { token: localStorage.getItem('token') });
-
         socket.on('lobby_update', (data: any) => {
             if (data.players) {
                 setPlayers(data.players || []);
