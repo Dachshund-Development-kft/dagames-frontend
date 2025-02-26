@@ -106,6 +106,7 @@ const GamePage: React.FC = () => {
 
     const handleAction = (action: string) => {
         socket.emit('player_action', action);
+        setLockbuttons(true);
     };
 
     if (loading) {
