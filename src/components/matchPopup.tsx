@@ -3,6 +3,9 @@ const MatchPopup = ({ matchData, onClose }: { matchData: any, onClose: any }) =>
 
     const { players, winner, loser, rank, avarageRank, message, data } = matchData;
 
+    // Ellenőrizzük, hogy az avarageRank üres objektum-e
+    const averageRankDisplay = Object.keys(avarageRank).length === 0 ? "N/A" : avarageRank;
+
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
             <div className="bg-black bg-opacity-50 backdrop-blur-md p-6 rounded-lg max-w-md w-full text-white">
@@ -20,13 +23,17 @@ const MatchPopup = ({ matchData, onClose }: { matchData: any, onClose: any }) =>
                 </div>
                 <div className="mb-4">
                     <h3 className="text-xl font-semibold">Result</h3>
-                    <p><strong>Winner:</strong> {winner}</p>
-                    <p><strong>Loser:</strong> {loser}</p>
+                    <p><strong>Winner:</strong> {players.map((player: any) => {
+                        if (player.id === winner) return player.username;
+                    })}</p>
+                    <p><strong>Loser:</strong> {players.map((player: any) => {
+                        if (player.id === loser) return player.username;
+                    })}</p>
                 </div>
                 <div className="mb-4">
                     <h3 className="text-xl font-semibold">Rank</h3>
                     <p><strong>Your Rank:</strong> {rank}</p>
-                    <p><strong>Average Rank:</strong> {avarageRank}</p>
+                    <p><strong>Average Rank:</strong> {averageRankDisplay}</p>
                 </div>
                 <div className="mb-4">
                     <h3 className="text-xl font-semibold">Data</h3>

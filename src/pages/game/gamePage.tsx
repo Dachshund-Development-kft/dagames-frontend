@@ -18,6 +18,7 @@ const GamePage: React.FC = () => {
         character: { name: string; icon: string; type: string };
         weapon: { name: string; icon: string; type: string };
     } | null>(null);
+    const [lockbuttons, setLockbuttons] = useState<boolean>(false);
 
     useEffect(() => {
         socket.emit('auth', { token: localStorage.getItem('token') });
@@ -67,6 +68,8 @@ const GamePage: React.FC = () => {
                     const player1 = data.players[0];
                     const player2 = data.players[1];
 
+                    setLockbuttons(false);
+
                     if (player1.id === myId) {
                         setMyHealth(player1.health);
                         setEnemyHealth(player2.health);
@@ -82,6 +85,10 @@ const GamePage: React.FC = () => {
 
                 if (data.winner) {
                     setWinner(data.winner);
+                }
+
+                if (data.enemy_action) {
+                    setMessage(data.message);
                 }
 
                 if (data.match_over) {
@@ -141,12 +148,14 @@ const GamePage: React.FC = () => {
                                 <button
                                     className='bg-blue-500 text-white px-4 py-2 rounded mr-2'
                                     onClick={() => handleAction('attack')}
+                                    disabled={lockbuttons}
                                 >
                                     Támadás
                                 </button>
                                 <button
                                     className='bg-green-500 text-white px-4 py-2 rounded'
                                     onClick={() => handleAction('defend')}
+                                    disabled={lockbuttons}
                                 >
                                     Védekezés
                                 </button>
