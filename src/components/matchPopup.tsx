@@ -1,7 +1,7 @@
 const MatchPopup = ({ matchData, onClose }: { matchData: any, onClose: any }) => {
     if (!matchData) return null;
 
-    const { players, winner, loser, rank, avarageRank, message } = matchData;
+    const { players, winner, loser, rank, avarageRank, message, data } = matchData;
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
@@ -27,6 +27,12 @@ const MatchPopup = ({ matchData, onClose }: { matchData: any, onClose: any }) =>
                     <h3 className="text-xl font-semibold">Rank</h3>
                     <p><strong>Your Rank:</strong> {rank}</p>
                     <p><strong>Average Rank:</strong> {avarageRank}</p>
+                </div>
+                <div className="mb-4">
+                    <h3 className="text-xl font-semibold">Data</h3>
+                    <p><strong>XP:</strong> {data.xp}</p>
+                    <p><strong>Coins:</strong> {data.coins}</p>
+                    <p><strong>Items:</strong> {data.rounds + 1}</p>
                 </div>
                 <button
                     onClick={onClose}

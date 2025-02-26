@@ -78,11 +78,6 @@ const PlayPage = () => {
         socket.emit('auth', { "token": localStorage.getItem('token') });
     }, []);
 
-    useEffect(() => {
-        console.log('Match Data:', matchData);
-        console.log('Match Popup:', matchPopup);
-    }, [matchData, matchPopup]);
-
     const handleSetupComplete = () => {
         setShowSetupLayout(false);
     };
