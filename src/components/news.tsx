@@ -67,7 +67,7 @@ const NewsLayout: React.FC = () => {
 
                             <div className="text-center">
                                 <button onClick={handleClosePopup} className="bg-blue-500 px-6 py-2 rounded hover:bg-blue-600 sm:px-8 sm:py-3 md:px-10 md:py-4">
-                                    Bezárás
+                                    Close
                                 </button>
                             </div>
                         </div>
