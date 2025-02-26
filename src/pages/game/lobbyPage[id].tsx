@@ -12,6 +12,7 @@ const PlayPageID: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [ready, setReady] = useState<boolean>(false);
     const [readyPlayers, setReadyPlayers] = useState<string[]>([]);
+    const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
 
     useEffect(() => {
         if (!socket) {
@@ -48,11 +49,11 @@ const PlayPageID: React.FC = () => {
 
                     localStorage.setItem('game_id', id);
                     localStorage.setItem('game_token', token);
-                    window.location.href = '/game/' + id 
+                    window.location.href = '/game/' + id
                 } else {
                     localStorage.setItem('game_id', id);
                     localStorage.setItem('game_token', token);
-                    window.location.href = '/game/' + id 
+                    window.location.href = '/game/' + id
                 }
             } else {
                 return console.log('Mi a sigma');
@@ -122,7 +123,7 @@ const PlayPageID: React.FC = () => {
         });
     }
 
-    const Ready = async () => {
+    const handleReady = async () => {
         const id = window.location.pathname.split('/')[2];
         socket.emit('ready', { id: id });
 
@@ -131,10 +132,15 @@ const PlayPageID: React.FC = () => {
                 console.log('Ready');
             }
         });
+
+        setTimeout(() => {
+            setIsButtonDisabled(false);
+        }, 3000);
     }
 
-    const unReady = async () => {
+    const handleUnready = async () => {
         const id = window.location.pathname.split('/')[2];
+        setIsButtonDisabled(true);
         socket.emit('unready', { id: id });
 
         socket.on('unready', (data: any) => {
@@ -142,6 +148,10 @@ const PlayPageID: React.FC = () => {
                 console.log('Unready');
             }
         });
+
+        setTimeout(() => {
+            setIsButtonDisabled(false);
+        }, 3000);
     }
 
     if (loading) {
@@ -172,9 +182,9 @@ const PlayPageID: React.FC = () => {
                         <button onClick={leaveLobby} className='bg-[#FF4D4F] text-white px-4 py-2 rounded-lg mt-4'>Leave Lobby</button>
                         <br />
                         {ready && (
-                            <button onClick={unReady} className='bg-[#20d523] text-white px-4 py-2 rounded-lg mt-4'>Unready</button>
+                            <button onClick={handleUnready} disabled={isButtonDisabled} className='bg-[#20d523] text-white px-4 py-2 rounded-lg mt-4'>Unready</button>
                         ) || (
-                                <button onClick={Ready} className='bg-[#20d523] text-white px-4 py-2 rounded-lg mt-4'>Ready</button>
+                                <button onClick={handleReady} disabled={isButtonDisabled} className='bg-[#20d523] text-white px-4 py-2 rounded-lg mt-4'>Ready</button>
                             )}
                     </div>
                 </div>
