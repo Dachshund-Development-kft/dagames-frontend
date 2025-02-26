@@ -79,6 +79,10 @@ const GamePage: React.FC = () => {
                     }
                 }
 
+                if (data.action) {
+                    setLockbuttons(true);
+                }
+
                 if (data.message) {
                     setMessage(data.message);
                 }
@@ -106,7 +110,6 @@ const GamePage: React.FC = () => {
 
     const handleAction = (action: string) => {
         socket.emit('player_action', action);
-        setLockbuttons(true);
     };
 
     if (loading) {
