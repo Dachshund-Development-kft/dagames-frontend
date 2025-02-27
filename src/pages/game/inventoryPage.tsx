@@ -51,6 +51,13 @@ const InventoryPage: React.FC = () => {
         fetchData();
     }, []);
 
+    useEffect(() => {
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, []);
+
     const sortedInventoryData = [...inventoryData].sort((a, b) => {
         if (a.equipped && !b.equipped) return -1;
         if (!a.equipped && b.equipped) return 1;
@@ -60,10 +67,10 @@ const InventoryPage: React.FC = () => {
     if (loading) return <Loading />;
 
     return (
-        <main className='flex flex-col items-center justify-center min-h-screen'>
+        <main className='flex flex-col items-center justify-center min-h-screen overflow-hidden'>
             <NavLayoutGame />
             <div className='flex flex-grow items-center justify-center w-full max-w-[1400px] p-4'>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 2xl:grid-cols-6 gap-4 w-full h-[800px] overflow-y-auto p-4 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-800">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 2xl:grid-cols-6 gap-4 w-full h-[calc(100vh-200px)] overflow-y-auto p-4 scrollbar-hide">
                     {sortedInventoryData.map(item => (
                         <InventoryItem
                             key={item.id}
