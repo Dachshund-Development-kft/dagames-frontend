@@ -13,13 +13,15 @@ const PlayPageID: React.FC = () => {
     const [ready, setReady] = useState<boolean>(false);
     const [readyPlayers, setReadyPlayers] = useState<string[]>([]);
     const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
+    const [usernames, setUsernames] = useState<{ [key: string]: string }>({});
 
     useEffect(() => {
         if (!socket) {
             alert('Socket not connected');
+            return;
         }
 
-        socket.on('lobby_update', (data: any) => {
+        const handleLobbyUpdate = (data: any) => {
             if (data.players) {
                 setPlayers(data.players || []);
             } else if (data.ready) {
@@ -27,57 +29,56 @@ const PlayPageID: React.FC = () => {
             } else {
                 console.log('Failed to update lobby');
             }
-        });
+        };
 
-        socket.on('lobby_message', (data: any) => {
+        const handleLobbyMessage = (data: any) => {
             console.log(data.message);
-        });
+        };
 
-        socket.on('countdown', (data: any) => {
+        const handleCountdown = (data: any) => {
             console.log(data.message);
 
             if (data.success) {
-                const id = data.id
-                const token = data.token
+                const id = data.id;
+                const token = data.token;
 
-                if (localStorage.getItem('game_id') || localStorage.getItem('game_token')) {
-                    localStorage.removeItem('game_id');
-                    localStorage.removeItem('game_token');
-                    console.log('Miért is volt ez neked fiam. Gém adat remúvolva');
-
-                    localStorage.setItem('game_id', id);
-                    localStorage.setItem('game_token', token);
-                    window.location.href = '/game/' + id
-                } else {
-                    localStorage.setItem('game_id', id);
-                    localStorage.setItem('game_token', token);
-                    window.location.href = '/game/' + id
-                }
+                localStorage.removeItem('game_id');
+                localStorage.removeItem('game_token');
+                localStorage.setItem('game_id', id);
+                localStorage.setItem('game_token', token);
+                window.location.href = `/game/${id}`;
             } else {
-                return console.log('Mi a sigma');
+                console.log('Countdown failed');
             }
-        });
+        };
 
-        socket.on('ready', (data: any) => {
+        const handleReady = (data: any) => {
             if (data.success) {
                 setReady(true);
             } else {
                 console.log('Failed to ready');
             }
-        });
+        };
 
-        socket.on('unready', (data: any) => {
+        const handleUnready = (data: any) => {
             if (data.success) {
                 setReady(false);
             } else {
                 console.log('Failed to unready');
             }
-        });
+        };
 
-        socket.on('lobby_deleted', () => {
+        const handleLobbyDeleted = () => {
             console.log('Lobby deleted');
             window.location.href = '/play';
-        });
+        };
+
+        socket.on('lobby_update', handleLobbyUpdate);
+        socket.on('lobby_message', handleLobbyMessage);
+        socket.on('countdown', handleCountdown);
+        socket.on('ready', handleReady);
+        socket.on('unready', handleUnready);
+        socket.on('lobby_deleted', handleLobbyDeleted);
 
         const fetchLobbyData = async () => {
             try {
@@ -92,7 +93,8 @@ const PlayPageID: React.FC = () => {
                 setLoading(false);
 
                 if (!data) {
-                    return window.location.href = '/play';
+                    window.location.href = '/play';
+                    return;
                 }
 
                 socket.emit('join', { id: data.id });
@@ -100,12 +102,36 @@ const PlayPageID: React.FC = () => {
             } catch (err) {
                 console.error('Failed to fetch lobby data:', err);
                 setLoading(false);
-                return window.location.href = '/play';
+                window.location.href = '/play';
             }
         };
 
         fetchLobbyData();
+
+        return () => {
+            socket.off('lobby_update', handleLobbyUpdate);
+            socket.off('lobby_message', handleLobbyMessage);
+            socket.off('countdown', handleCountdown);
+            socket.off('ready', handleReady);
+            socket.off('unready', handleUnready);
+            socket.off('lobby_deleted', handleLobbyDeleted);
+        };
     }, [id]);
+
+    useEffect(() => {
+        const fetchUsernames = async () => {
+            const usernameMap: { [key: string]: string } = {};
+            for (const playerId of players) {
+                const username = await fetchUsername(playerId);
+                if (username) {
+                    usernameMap[playerId] = username;
+                }
+            }
+            setUsernames(usernameMap);
+        };
+
+        fetchUsernames();
+    }, [players]);
 
     const leaveLobby = async () => {
         const id = window.location.pathname.split('/')[2];
@@ -119,38 +145,48 @@ const PlayPageID: React.FC = () => {
                 alert('Failed to leave lobby');
             }
         });
-    }
+    };
 
     const handleReady = async () => {
         const id = window.location.pathname.split('/')[2];
+        setIsButtonDisabled(true);
         socket.emit('ready', { id: id });
-
-        socket.on('ready', (data: any) => {
-            if (data.success) {
-                console.log('Ready');
-            }
-        });
 
         setTimeout(() => {
             setIsButtonDisabled(false);
         }, 3000);
-    }
+    };
 
     const handleUnready = async () => {
         const id = window.location.pathname.split('/')[2];
         setIsButtonDisabled(true);
         socket.emit('unready', { id: id });
 
-        socket.on('unready', (data: any) => {
-            if (data.success) {
-                console.log('Unready');
-            }
-        });
-
         setTimeout(() => {
             setIsButtonDisabled(false);
         }, 3000);
-    }
+    };
+
+    const fetchUsername = async (userId: string) => {
+        try {
+            const response = await fetch(`https://api.dagames.online/v1/users/${userId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                return data.username;
+            } else {
+                console.error('Failed to fetch username');
+            }
+        } catch (err) {
+            console.error('Failed to fetch username:', err);
+        }
+    };
 
     if (loading) {
         return <Loading />;
@@ -165,25 +201,33 @@ const PlayPageID: React.FC = () => {
             <main className='flex flex-col items-center justify-center min-h-screen'>
                 <NavLayoutGame />
                 <div className='flex flex-grow items-center justify-center gap-4'>
-                    <h1 className='text-2xl font-bold text-white'>Lobby: {lobbyData.name}</h1>
-                    <div className='bg-[#1E1F25] p-4 rounded-lg w-96'>
-                        <h2 className='text-xl font-bold text-white mb-4'>Players in Lobby</h2>
-                        <ul className='text-white'>
-                            {players && players.map((player, index) => (
-                                <li key={index} className='flex items-center gap-2 mb-2'>
-                                    <span style={{ color: readyPlayers.includes(player) ? 'green' : 'white' }}>
-                                        {player}
-                                    </span>
-                                </li>
-                            ))}
-                        </ul>
-                        <button onClick={leaveLobby} className='bg-[#FF4D4F] text-white px-4 py-2 rounded-lg mt-4'>Leave Lobby</button>
-                        <br />
-                        {ready && (
-                            <button onClick={handleUnready} disabled={isButtonDisabled} className='bg-[#20d523] text-white px-4 py-2 rounded-lg mt-4'>Unready</button>
-                        ) || (
-                                <button onClick={handleReady} disabled={isButtonDisabled} className='bg-[#20d523] text-white px-4 py-2 rounded-lg mt-4'>Ready</button>
+                    <div className='bg-black bg-opacity-50 rounded-lg shadow-md backdrop-blur-md p-6'>
+                        <h1 className='text-2xl font-bold text-white mb-4'>Lobby: {lobbyData.name}</h1>
+                        <div className='overflow-y-auto max-h-[60vh] scrollbar-hide gap-4'>
+                            <h2 className='text-xl font-bold text-white mb-4'>Players in Lobby</h2>
+                            <ul className='text-white'>
+                                {players.map((player, index) => (
+                                    <li key={index} className='flex items-center gap-2 mb-2'>
+                                        <span style={{ color: readyPlayers.includes(player) ? 'green' : 'white' }}>
+                                            {usernames[player] || 'Loading...'}
+                                        </span>
+                                    </li>
+                                ))}
+                            </ul>
+                            <br />
+                            <button onClick={leaveLobby} className='bg-[#FF4D4F] text-white px-4 py-2 rounded-lg mt-4 mr-5'>
+                                Leave Lobby
+                            </button>
+                            {ready ? (
+                                <button onClick={handleUnready} disabled={isButtonDisabled} className='bg-[#20d523] text-white px-4 py-2 rounded-lg mt-4'>
+                                    Unready
+                                </button>
+                            ) : (
+                                <button onClick={handleReady} disabled={isButtonDisabled} className='bg-[#20d523] text-white px-4 py-2 rounded-lg mt-4'>
+                                    Ready
+                                </button>
                             )}
+                        </div>
                     </div>
                 </div>
             </main>

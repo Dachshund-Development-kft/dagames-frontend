@@ -11,6 +11,7 @@ interface Lobby {
     public: boolean;
     owner: string;
     players: number;
+    rank: string;
 }
 
 const PlayPage: React.FC = () => {
@@ -65,7 +66,7 @@ const PlayPage: React.FC = () => {
             }
         }, 1000);
     }, []);
-
+    
     const createLobby = () => {
         if (!socket) {
             setError('Socket not connected');
@@ -121,51 +122,55 @@ const PlayPage: React.FC = () => {
             <NavLayoutGame />
             <div className='flex flex-grow items-center justify-center gap-4 p-4'>
                 <div className='w-full max-w-4xl'>
-                    <h2 className="text-2xl font-bold mb-6 text-center">Active Lobbies</h2>
-                    {error && <div className="text-red-500 text-center mb-4">{error}</div>}
-                    <ul className="space-y-4">
-                        {lobbies.map((lobby) => (
-                            <li key={lobby.id} className="p-4 bg-gray-800 rounded-lg shadow-md">
-                                <div className="flex justify-between items-center mb-2">
-                                    <span className="font-medium text-lg">{lobby.name}</span>
-                                    <span className={`text-sm ${lobby.public ? 'text-green-400' : 'text-red-400'}`}>
-                                        {lobby.public ? 'Public' : 'Private'}
-                                    </span>
-                                </div>
-                                <div className="text-sm text-gray-400 mb-2">
-                                    Owner: {lobby.owner}
-                                </div>
-                                <div className="text-sm text-gray-400 mb-2">
-                                    Players: {lobby.players}/2
-                                </div>
-                                {!lobby.public && (
-                                    <div className="mb-2">
-                                        <input
-                                            type="password"
-                                            placeholder='Password'
-                                            id='pass'
-                                            className="w-full p-2 bg-gray-700 text-white rounded-md border border-gray-600"
-                                        />
-                                    </div>
-                                )}
-                                <button
-                                    onClick={() => handleJoinLobby(lobby.id)}
-                                    className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
-                                >
-                                    Join Lobby
-                                </button>
-                            </li>
-                        ))}
-                    </ul>
-
-                    <div className='mt-8 text-center'>
-                        <h1 className='text-2xl font-bold'>Create Lobby</h1>
+                <div className="bg-black bg-opacity-50 rounded-lg shadow-md backdrop-blur-md p-6 text-center">
+                        <h1 className='text-2xl font-bold text-white'>Create Lobby</h1>
                         <button
                             className='mt-4 bg-blue-600 text-white py-2 px-6 rounded-md text-lg hover:bg-blue-700 transition-colors'
                             onClick={createLobby}
                         >
                             Create
                         </button>
+                    </div>
+                    <div className="bg-black bg-opacity-50 rounded-lg shadow-md backdrop-blur-md p-6 mt-8">
+                        <h2 className="text-2xl font-bold mb-6 text-center text-white">Active Lobbies</h2>
+                        {error && <div className="text-red-500 text-center mb-4">{error}</div>}
+                        <div className="overflow-y-auto max-h-[60vh] scrollbar-hide grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4 w-full">
+                                {lobbies.map((lobby) => (
+                                    <div key={lobby.id} className="p-4 bg-black bg-opacity-70 rounded-lg shadow-md">
+                                        <div className="flex justify-between items-center mb-2">
+                                            <span className="font-medium text-lg text-white">{lobby.name}</span>
+                                            <span className={`text-sm ${lobby.public ? 'text-green-400' : 'text-red-400'}`}>
+                                                {lobby.public ? 'Public' : 'Private'}
+                                            </span>
+                                        </div>
+                                        <div className="text-sm text-gray-300 mb-2">
+                                            Lobby rang: {lobby.rank}
+                                        </div>
+                                        <div className="text-sm text-gray-300 mb-2">
+                                            Owner: {lobby.owner}
+                                        </div>
+                                        <div className="text-sm text-gray-300 mb-2">
+                                            Players: {lobby.players}/2
+                                        </div>
+                                        {!lobby.public && (
+                                            <div className="mb-2">
+                                                <input
+                                                    type="password"
+                                                    placeholder='Password'
+                                                    id='pass'
+                                                    className="w-full p-2 bg-black bg-opacity-80 text-white rounded-md border border-gray-600"
+                                                />
+                                            </div>
+                                        )}
+                                        <button
+                                            onClick={() => handleJoinLobby(lobby.id)}
+                                            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
+                                        >
+                                            Join Lobby
+                                        </button>
+                                    </div>
+                                ))}
+                        </div>
                     </div>
                 </div>
 
