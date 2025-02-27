@@ -39,7 +39,7 @@ const MatchPopup = ({ matchData, onClose }: { matchData: any, onClose: any }) =>
                     <h3 className="text-xl font-semibold">Data</h3>
                     <p><strong>XP:</strong> {data.xp}</p>
                     <p><strong>Coins:</strong> {data.coins}</p>
-                    <p><strong>Items:</strong> {data.rounds + 1}</p>
+                    <p><strong>Rounds:</strong> {data.rounds}</p>
                 </div>
                 <button
                     onClick={onClose}
