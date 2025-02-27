@@ -118,7 +118,7 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
     if (loading) {
         return (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                <div className="bg-[#1E1F25] p-6 rounded-lg shadow-lg w-96">
+                <div className="bg-black bg-opacity-50 backdrop-blur-md p-6 rounded-lg shadow-lg w-96">
                     <h2 className="text-2xl font-bold text-white mb-4">Loading...</h2>
                 </div>
             </div>
@@ -127,7 +127,7 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-[#1E1F25] p-6 rounded-lg shadow-lg max-w-2xl">
+            <div className="bg-black bg-opacity-50 backdrop-blur-md p-6 rounded-lg shadow-lg max-w-2xl">
                 <h2 className="text-2xl font-bold text-white mb-4">Choose your starter character and weapon!</h2>
                 {error && <p className="text-red-500 mb-4">{error}</p>}
                 <div className="space-y-4">
@@ -137,8 +137,7 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
                             {characters.map((character) => (
                                 <div
                                     key={character.id}
-                                    className={`cursor-pointer p-2 rounded-lg ${selectedCharacter === character.id ? 'bg-blue-500' : 'bg-gray-700'
-                                        }`}
+                                    className={`cursor-pointer p-2 rounded-lg ${selectedCharacter === character.id ? 'bg-blue-500' : 'backdrop-blur-md' }`}
                                     onClick={() => handleCharacterSelect(character.id)}
                                     onMouseEnter={(e) => handleMouseEnter('character', character.id, character.stats, e)}
                                     onMouseLeave={handleMouseLeave}
@@ -155,8 +154,7 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
                             {weapons.map((weapon) => (
                                 <div
                                     key={weapon.id}
-                                    className={`cursor-pointer p-2 rounded-lg ${selectedWeapon === weapon.id ? 'bg-blue-500' : 'bg-gray-700'
-                                        }`}
+                                    className={`cursor-pointer p-2 rounded-lg ${selectedWeapon === weapon.id ? 'bg-blue-500' : 'backdrop-blur-md' }`}
                                     onClick={() => handleWeaponSelect(weapon.id)}
                                     onMouseEnter={(e) => handleMouseEnter('weapon', weapon.id, weapon.stats, e)}
                                     onMouseLeave={handleMouseLeave}
@@ -174,7 +172,7 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
             </div>
 
             {hoveredItem && (
-                <div className="absolute bg-[#2D2F3A] p-4 rounded-lg shadow-lg text-white" style={{ top: hoverPosition.y + 10, left: hoverPosition.x + 10 }}>
+                <div className="absolute backdrop-blur-md bg-black bg-opacity-50 p-4 rounded-lg shadow-lg text-white" style={{ top: hoverPosition.y + 10, left: hoverPosition.x + 10 }}>
                     <h4 className="font-bold mb-2">{hoveredItem.type === 'character' ? 'Chraracter stats' : 'Weapon Stats'}</h4>
                     {Object.entries(hoveredItem.stats).map(([key, value]) => (
                         <p key={key}>{`${key}: ${value}`}</p>
