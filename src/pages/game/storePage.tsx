@@ -162,12 +162,12 @@ const StorePage: React.FC = () => {
 
                     {showPopup && selectedItem && (
                         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80">
-                            <div className="bg-black bg-opacity-50 backdrop-blur-md p-6 rounded-lg w-full max-w-md">
+                            <div className="bg-black bg-opacity-50 backdrop-blur-md p-6 rounded-lg w-full max-w-md max-h-[70vh] my-auto">
                                 <h2 className="text-2xl font-bold mb-4 text-white">{selectedItem.name}</h2>
                                 <p className="text-gray-300 mb-4">{selectedItem.description}</p>
                                 <p className="text-green-500 font-bold mb-4">${selectedItem.price}</p>
                                 {selectedItem.image && (
-                                    <img src={selectedItem.image} alt={selectedItem.name} className="mb-4 rounded-full w-full" />
+                                    <img src={selectedItem.image} alt={selectedItem.name} className="mb-4 rounded-full w-64 " />
                                 )}
                                 <div className="mb-4">
                                     <h3 className="text-xl font-bold text-white mb-2">Possible Stats</h3>
