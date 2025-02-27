@@ -142,7 +142,7 @@ const StorePage: React.FC = () => {
                                 <p className="text-gray-500">{item.description}</p>
                                 <p className="text-green-600 font-bold">${item.price}</p>
                                 {item.image && (
-                                    <img src={item.image} alt={item.name} className="mt-4 rounded-lg" />
+                                    <img src={item.image} alt={item.name} className="mt-4 rounded-full " />
                                 )}
                             </div>
                         ))}
@@ -155,7 +155,7 @@ const StorePage: React.FC = () => {
                                 <p className="text-gray-300 mb-4">{selectedItem.description}</p>
                                 <p className="text-green-500 font-bold mb-4">${selectedItem.price}</p>
                                 {selectedItem.image && (
-                                    <img src={selectedItem.image} alt={selectedItem.name} className="mb-4 rounded-lg w-full" />
+                                    <img src={selectedItem.image} alt={selectedItem.name} className="mb-4 rounded-full w-full" />
                                 )}
                                 <button onClick={handleBuyClick} className={`w-full px-4 py-2 text-white rounded-lg transition-colors ${ownedItems.includes(selectedItem.id) ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'}`} disabled={ownedItems.includes(selectedItem.id)}>
                                     {ownedItems.includes(selectedItem.id) ? 'Owned' : 'Buy Now'}
