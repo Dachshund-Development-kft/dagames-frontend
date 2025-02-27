@@ -116,54 +116,69 @@ const GamePage: React.FC = () => {
 
     return (
         <>
-            <main className='flex flex-col items-center justify-center min-h-screen'>
-                <div className='text-center'>
-                    <h1 className='text-2xl font-bold mb-4'>Harc</h1>
-                    <div className='mb-4'>
-                        <p>Életerőd: {myHealth}</p>
-                        <p>Ellenfél életereje: {enemyHealth}</p>
-                    </div>
-                    {playerInfo && enemyInfo && (
-                        <div className='flex justify-around mb-4'>
-                            <div>
-                                <h2 className='text-xl font-bold'>Te</h2>
-                                <img src={playerInfo.character.icon} alt={playerInfo.character.name} className='w-16 h-16' />
-                                <p>{playerInfo.character.name}</p>
-                                <img src={playerInfo.weapon.icon} alt={playerInfo.weapon.name} className='w-16 h-16' />
-                                <p>{playerInfo.weapon.name}</p>
-                            </div>
-                            <div>
-                                <h2 className='text-xl font-bold'>Ellenfél</h2>
-                                <img src={enemyInfo.character.icon} alt={enemyInfo.character.name} className='w-16 h-16' />
-                                <p>{enemyInfo.character.name}</p>
-                                <img src={enemyInfo.weapon.icon} alt={enemyInfo.weapon.name} className='w-16 h-16' />
-                                <p>{enemyInfo.weapon.name}</p>
-                            </div>
+            <main className='flex flex-col items-center justify-center min-h-screen text-white'>
+                <div className='absolute top-4 right-4 bg-black bg-opacity-50 rounded-lg p-4'>
+                    <h2 className='text-xl font-bold'>Ellenfél</h2>
+                    <p>Életerő: {enemyHealth}</p>
+                    {enemyInfo && (
+                        <div className='mt-2'>
+                            <img src={enemyInfo.character.icon} alt={enemyInfo.character.name} className='w-16 h-16' />
+                            <p>{enemyInfo.character.name}</p>
+                            <img src={enemyInfo.weapon.icon} alt={enemyInfo.weapon.name} className='w-16 h-16' />
+                            <p>{enemyInfo.weapon.name}</p>
                         </div>
                     )}
-                    {winner ? (
-                        <p>{winner === localStorage.getItem('user_id') ? 'Nyertél!' : 'Vesztettél!'}</p>
-                    ) : (
-                        <>
-                            <p>{message}</p>
-                            <div className='mt-4'>
+                </div>
+
+                <div className='absolute bottom-4 left-4 bg-black bg-opacity-50 rounded-lg p-4'>
+                    <h2 className='text-xl font-bold'>Te</h2>
+                    <p>Életerőd: {myHealth}</p>
+                    {playerInfo && (
+                        <div className='mt-2'>
+                            <img src={playerInfo.character.icon} alt={playerInfo.character.name} className='w-16 h-16' />
+                            <p>{playerInfo.character.name}</p>
+                            <img src={playerInfo.weapon.icon} alt={playerInfo.weapon.name} className='w-16 h-16' />
+                            <p>{playerInfo.weapon.name}</p>
+                        </div>
+                    )}
+                </div>
+
+                <div className='bg-black bg-opacity-50 p-4 rounded-lg'>
+                    {playerInfo && enemyInfo && (
+                        <div className='flex justify-center items-center gap-8 mt-16'>
+                            <img src={playerInfo.character.icon} alt={playerInfo.character.name} className='w-32 h-32' />
+                            <img src={enemyInfo.character.icon} alt={enemyInfo.character.name} className='w-32 h-32' />
+                        </div>
+                    )}
+
+                    <div className='mt-8 text-center'>
+                        <p className='text-lg'>{message}</p>
+                    </div>
+
+                    <div className='flex justify-center items-center gap-4 mt-8'>
+                        {winner ? (
+                            <p className='text-2xl font-bold mt-8'>
+                                {winner === localStorage.getItem('user_id') ? 'Nyertél!' : 'Vesztettél!'}
+                            </p>
+                        ) : (
+                            <div className='mt-8'>
                                 <button
-                                    className='bg-blue-500 text-white px-4 py-2 rounded mr-2'
+                                    className='bg-blue-500 text-white px-6 py-3 rounded-lg mr-4 hover:bg-blue-600 transition-colors'
                                     onClick={() => handleAction('attack')}
                                     disabled={lockbuttons}
                                 >
                                     Támadás
                                 </button>
                                 <button
-                                    className='bg-green-500 text-white px-4 py-2 rounded'
+                                    className='bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition-colors'
                                     onClick={() => handleAction('defend')}
                                     disabled={lockbuttons}
                                 >
                                     Védekezés
                                 </button>
                             </div>
-                        </>
-                    )}
+                        )}
+                    </div>
                 </div>
             </main>
         </>

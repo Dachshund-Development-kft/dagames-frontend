@@ -16,7 +16,7 @@ const MatchPopup = ({ matchData, onClose }: { matchData: any, onClose: any }) =>
                     {players.map((player: any, index: number) => (
                         <div key={index} className="mb-2">
                             <p><strong>Character:</strong> {player.character.name}</p>
-                            <p><strong>Health:</strong> {player.health}</p>
+                            <p><strong>Health:</strong> {player.health < 0 ? 0 : player.health}</p>
                             <p><strong>Weapon:</strong> {player.weapon.name}</p>
                         </div>
                     ))}
