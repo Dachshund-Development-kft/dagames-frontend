@@ -4,6 +4,7 @@ import NavLayoutGame from '../../components/nav';
 import socket from '../../api/socket';
 import Loading from '../../components/loading';
 import { lobbyId } from '../../api/lobby';
+import { user } from '../../api/me';
 
 const PlayPageID: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -122,7 +123,7 @@ const PlayPageID: React.FC = () => {
         const fetchUsernames = async () => {
             const usernameMap: { [key: string]: string } = {};
             for (const playerId of players) {
-                const username = await fetchUsername(playerId);
+                const username = await user(playerId);
                 if (username) {
                     usernameMap[playerId] = username;
                 }
@@ -165,27 +166,6 @@ const PlayPageID: React.FC = () => {
         setTimeout(() => {
             setIsButtonDisabled(false);
         }, 3000);
-    };
-
-    const fetchUsername = async (userId: string) => {
-        try {
-            const response = await fetch(`https://api.dagames.online/v1/users/${userId}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                },
-            });
-
-            const data = await response.json();
-            if (data.success) {
-                return data.username;
-            } else {
-                console.error('Failed to fetch username');
-            }
-        } catch (err) {
-            console.error('Failed to fetch username:', err);
-        }
     };
 
     if (loading) {
