@@ -25,22 +25,24 @@ const GamePage: React.FC = () => {
             window.location.href = '/play';
         }
 
-        setTimeout(() => {
-            const localMatchId = localStorage.getItem('game_id');
-            const localToken = localStorage.getItem('game_token');
+        const localMatchId = localStorage.getItem('game_id');
+        const localToken = localStorage.getItem('game_token');
 
-            if (localMatchId) {
-                if (localMatchId === matchid) {
-                    socket.emit('game_auth', { token: localToken, id: localMatchId });
-                } else {
-                    localStorage.removeItem('game_id');
-                    localStorage.removeItem('game_token');
-                    window.location.href = '/play';
+        let yourid;
+        console.log(yourid);
+
+        socket.on('auth', (data) => {
+            if (data.success) {
+                if (localMatchId) {
+                    if (localMatchId === matchid) {
+                        socket.emit('game_auth', { token: localToken, id: localMatchId });
+                    } else {
+                        localStorage.removeItem('game_id');
+                        localStorage.removeItem('game_token');
+                        window.location.href = '/play';
+                    }
                 }
             }
-
-            let yourid;
-            console.log(yourid);
 
             socket.on('game_auth', (data: any) => {
                 if (data.success) {
@@ -100,10 +102,10 @@ const GamePage: React.FC = () => {
                         window.location.href = `/?id=${matchid}`;
                     }, 500);
                 }
-            });
-        }, 1000);
+            })
+        })
 
-        setLoading(false);
+        setLoading(false)
     }, [matchid]);
 
     const handleAction = (action: string) => {
