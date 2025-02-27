@@ -19,7 +19,7 @@ export const character = async (id: string) => {
 
 export const weapon = async (id: string) => {
     const response = await axios.post(
-        `${localStorage.getItem('url')}/v1/user/@me/weapon/select`,
+        `${localStorage.getItem('url')}/v1/user/@me/item/select`,
         { weaponid: id },
         {
             headers: {
