@@ -7,9 +7,11 @@ const GamePage: React.FC = () => {
     const { id: matchid } = useParams<{ id: string }>();
     const [loading, setLoading] = useState<boolean>(true);
     const [myHealth, setMyHealth] = useState<number>(25);
-    const [enemyHealth, setEnemyHealth] = useState<number>(25);
+    const [enemyHealth, setEnemyHealth] = useState<number>(50);
     const [message, setMessage] = useState<string>('');
     const [winner, setWinner] = useState<string | null>(null);
+    const [startTime, setStartTime] = useState<Date | null>(null);
+    const [rounds, setRounds] = useState<number>(0);
     const [playerInfo, setPlayerInfo] = useState<{
         character: { name: string; icon: string; type: string };
         weapon: { name: string; icon: string; type: string };
@@ -18,7 +20,6 @@ const GamePage: React.FC = () => {
         character: { name: string; icon: string; type: string };
         weapon: { name: string; icon: string; type: string };
     } | null>(null);
-    const [lockbuttons, setLockbuttons] = useState<boolean>(false);
 
     useEffect(() => {
         if (matchid === 'undefined') {
@@ -60,6 +61,8 @@ const GamePage: React.FC = () => {
             socket.on('game_info', (data: any) => {
                 setPlayerInfo(data.player);
                 setEnemyInfo(data.enemy);
+                setStartTime(new Date(data.match.startTime));
+                setRounds(data.match.rounds);
             });
 
             socket.on('game_update', (data: any) => {
@@ -67,8 +70,6 @@ const GamePage: React.FC = () => {
                     const myId = localStorage.getItem('user_id');
                     const player1 = data.players[0];
                     const player2 = data.players[1];
-
-                    setLockbuttons(false);
 
                     if (player1.id === myId) {
                         setMyHealth(player1.health);
@@ -79,8 +80,8 @@ const GamePage: React.FC = () => {
                     }
                 }
 
-                if (data.action) {
-                    setLockbuttons(true);
+                if (data.match) {
+                    setRounds(data.match.rounds);
                 }
 
                 if (data.message) {
@@ -167,14 +168,12 @@ const GamePage: React.FC = () => {
                                 <button
                                     className='bg-blue-500 text-white px-6 py-3 rounded-lg mr-4 hover:bg-blue-600 transition-colors'
                                     onClick={() => handleAction('attack')}
-                                    disabled={lockbuttons}
                                 >
                                     Támadás
                                 </button>
                                 <button
                                     className='bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition-colors'
                                     onClick={() => handleAction('defend')}
-                                    disabled={lockbuttons}
                                 >
                                     Védekezés
                                 </button>
