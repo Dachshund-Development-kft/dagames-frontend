@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { character, weapon } from '../api/select';
 
@@ -83,69 +83,69 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ id, name, icon, type, isE
 
     const debouncedId = useDebounce(id, 500);
 
-    useEffect(() => {
-        const fetchItemData = async () => {
-            try {
-                if (itemCache[debouncedId]) {
-                    const itemData = itemCache[debouncedId];
-                    console.log('Item data loaded from cache:', itemData);
-                    processItemData(itemData);
-                    return;
-                }
-
-                console.log(itemStats);
-
-                const response = await axios.get(`https://api.dagames.online/v1/shop/${debouncedId}`);
-                const itemData = response.data;
-
-                itemCache[debouncedId] = itemData;
-                console.log('Item data fetched from API:', itemData);
-
+    const fetchItemData = useCallback(async () => {
+        try {
+            if (itemCache[debouncedId]) {
+                const itemData = itemCache[debouncedId];
+                console.log('Item data loaded from cache:', itemData);
                 processItemData(itemData);
-            } catch (error) {
-                console.error('Error fetching item data:', error);
-                setError('Failed to load item data');
-            }
-        };
-
-        const processItemData = (itemData: any) => {
-            const newItemStats: ItemStats = {};
-            if (itemData.stat_power_from !== undefined) {
-                newItemStats.power = { from: itemData.stat_power_from, to: itemData.stat_power_to };
-            }
-            if (itemData.stat_speed_from !== undefined) {
-                newItemStats.speed = { from: itemData.stat_speed_from, to: itemData.stat_speed_to };
-            }
-            if (itemData.stat_ability_from !== undefined) {
-                newItemStats.ability = { from: itemData.stat_ability_from, to: itemData.stat_ability_to };
-            }
-            if (itemData.stat_defense_from !== undefined) {
-                newItemStats.defend = { from: itemData.stat_defense_from, to: itemData.stat_defense_to };
-            }
-            if (itemData.stat_damage_from !== undefined) {
-                newItemStats.damage = { from: itemData.stat_damage_from, to: itemData.stat_damage_to };
-            }
-            if (itemData.stat_attack_from !== undefined) {
-                newItemStats.attack = { from: itemData.stat_attack_from, to: itemData.stat_attack_to };
-            }
-            if (itemData.stat_agility_from !== undefined) {
-                newItemStats.agility = { from: itemData.stat_agility_from, to: itemData.stat_agility_to };
+                return;
             }
 
-            setItemStats(newItemStats);
+            console.log(itemStats);
 
-            const calculatedRarity = calculateRarity(newItemStats, stats);
-            setRarityColor(getRarityColor(calculatedRarity));
-        };
+            const response = await axios.get(`https://api.dagames.online/v1/shop/${debouncedId}`);
+            const itemData = response.data;
 
-        fetchItemData();
+            itemCache[debouncedId] = itemData;
+            console.log('Item data fetched from API:', itemData);
+
+            processItemData(itemData);
+        } catch (error) {
+            console.error('Error fetching item data:', error);
+            setError('Failed to load item data');
+        }
     }, [debouncedId, stats]);
 
-    const handleItemClick = () => {
-        setIsDialogOpen(true);
-    };
+    const processItemData = useCallback((itemData: any) => {
+        const newItemStats: ItemStats = {};
+        if (itemData.stat_power_from !== undefined) {
+            newItemStats.power = { from: itemData.stat_power_from, to: itemData.stat_power_to };
+        }
+        if (itemData.stat_speed_from !== undefined) {
+            newItemStats.speed = { from: itemData.stat_speed_from, to: itemData.stat_speed_to };
+        }
+        if (itemData.stat_ability_from !== undefined) {
+            newItemStats.ability = { from: itemData.stat_ability_from, to: itemData.stat_ability_to };
+        }
+        if (itemData.stat_defense_from !== undefined) {
+            newItemStats.defend = { from: itemData.stat_defense_from, to: itemData.stat_defense_to };
+        }
+        if (itemData.stat_damage_from !== undefined) {
+            newItemStats.damage = { from: itemData.stat_damage_from, to: itemData.stat_damage_to };
+        }
+        if (itemData.stat_attack_from !== undefined) {
+            newItemStats.attack = { from: itemData.stat_attack_from, to: itemData.stat_attack_to };
+        }
+        if (itemData.stat_agility_from !== undefined) {
+            newItemStats.agility = { from: itemData.stat_agility_from, to: itemData.stat_agility_to };
+        }
 
-    const handleEquip = async () => {
+        setItemStats(newItemStats);
+
+        const calculatedRarity = calculateRarity(newItemStats, stats);
+        setRarityColor(getRarityColor(calculatedRarity));
+    }, [stats]);
+
+    useEffect(() => {
+        fetchItemData();
+    }, [fetchItemData]);
+
+    const handleItemClick = useCallback(() => {
+        setIsDialogOpen(true);
+    }, []);
+
+    const handleEquip = useCallback(async () => {
         try {
             let response;
 
@@ -175,13 +175,13 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ id, name, icon, type, isE
                 console.error('Error equipping item:', error);
             }
         }
-    };
+    }, [id, name, onEquip, type]);
 
-    const handleCloseDialog = (e: React.MouseEvent) => {
+    const handleCloseDialog = useCallback((e: React.MouseEvent) => {
         e.stopPropagation();
         setIsDialogOpen(false);
         setError(null);
-    };
+    }, []);
 
     return (
         <div>

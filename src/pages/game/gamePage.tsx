@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import socket from '../../api/socket';
 import Loading from '../../components/loading';
@@ -13,6 +13,7 @@ const GamePage: React.FC = () => {
     const [startTime, setStartTime] = useState<Date | null>(null);
     const [rounds, setRounds] = useState<number>(0);
     const [playerInfo, setPlayerInfo] = useState<{
+        char: string | undefined;
         character: { name: string; icon: string; type: string };
         weapon: { name: string; icon: string; type: string };
     } | null>(null);
@@ -32,6 +33,66 @@ const GamePage: React.FC = () => {
         let yourid;
         console.log(yourid);
 
+        const handleGameAuth = (data: any) => {
+            if (data.success) {
+                console.log('Game auth success');
+                localStorage.setItem('user_id', data.id);
+                yourid = data.id;
+            } else {
+                localStorage.removeItem('game_id');
+                localStorage.removeItem('game_token');
+                console.log('Game auth failed');
+                window.location.href = '/play';
+            }
+        };
+
+        const handleGameInfo = (data: any) => {
+            setPlayerInfo(data.player);
+            setEnemyInfo(data.enemy);
+            setStartTime(new Date(data.match.startTime));
+            setRounds(data.match.rounds);
+        };
+
+        const handleGameUpdate = (data: any) => {
+            if (data.players) {
+                const myId = localStorage.getItem('user_id');
+                const player1 = data.players[0];
+                const player2 = data.players[1];
+
+                if (player1.id === myId) {
+                    setMyHealth(player1.health);
+                    setEnemyHealth(player2.health);
+                } else {
+                    setMyHealth(player2.health);
+                    setEnemyHealth(player1.health);
+                }
+            }
+
+            if (data.match) {
+                setRounds(data.match.rounds);
+            }
+
+            if (data.message) {
+                setMessage(data.message);
+            }
+
+            if (data.winner) {
+                setWinner(data.winner);
+            }
+
+            if (data.enemy_action) {
+                setMessage(data.message);
+            }
+
+            if (data.match_over) {
+                setTimeout(() => {
+                    localStorage.removeItem('game_id');
+                    localStorage.removeItem('game_token');
+                    window.location.href = `/?id=${matchid}`;
+                }, 500);
+            }
+        };
+
         socket.on('auth', (data) => {
             if (data.success) {
                 if (localMatchId) {
@@ -44,74 +105,24 @@ const GamePage: React.FC = () => {
                     }
                 }
             }
+        });
 
-            socket.on('game_auth', (data: any) => {
-                if (data.success) {
-                    console.log('Game auth success');
-                    localStorage.setItem('user_id', data.id);
-                    yourid = data.id;
-                } else {
-                    localStorage.removeItem('game_id');
-                    localStorage.removeItem('game_token');
-                    console.log('Game auth failed');
-                    window.location.href = '/play';
-                }
-            });
+        socket.on('game_auth', handleGameAuth);
+        socket.on('game_info', handleGameInfo);
+        socket.on('game_update', handleGameUpdate);
 
-            socket.on('game_info', (data: any) => {
-                setPlayerInfo(data.player);
-                setEnemyInfo(data.enemy);
-                setStartTime(new Date(data.match.startTime));
-                setRounds(data.match.rounds);
-            });
+        setLoading(false);
 
-            socket.on('game_update', (data: any) => {
-                if (data.players) {
-                    const myId = localStorage.getItem('user_id');
-                    const player1 = data.players[0];
-                    const player2 = data.players[1];
-
-                    if (player1.id === myId) {
-                        setMyHealth(player1.health);
-                        setEnemyHealth(player2.health);
-                    } else {
-                        setMyHealth(player2.health);
-                        setEnemyHealth(player1.health);
-                    }
-                }
-
-                if (data.match) {
-                    setRounds(data.match.rounds);
-                }
-
-                if (data.message) {
-                    setMessage(data.message);
-                }
-
-                if (data.winner) {
-                    setWinner(data.winner);
-                }
-
-                if (data.enemy_action) {
-                    setMessage(data.message);
-                }
-
-                if (data.match_over) {
-                    setTimeout(() => {
-                        localStorage.removeItem('game_id');
-                        localStorage.removeItem('game_token');
-                        window.location.href = `/?id=${matchid}`;
-                    }, 500);
-                }
-            })
-        })
-
-        setLoading(false)
+        return () => {
+            socket.off('game_auth', handleGameAuth);
+            socket.off('game_info', handleGameInfo);
+            socket.off('game_update', handleGameUpdate);
+        };
     }, [matchid]);
 
-    const handleAction = (action: string) => {
+    const handleAction = useCallback((action: string) => {
         socket.emit('player_action', action);
-    };
+    }, []);
 
     if (loading) {
         return <Loading />;

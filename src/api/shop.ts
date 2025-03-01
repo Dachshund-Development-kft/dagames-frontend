@@ -1,4 +1,6 @@
 export interface ShopItem {
+    stat_speed_from(arg0: string, stat_speed_from: any, stat_speed_to: any): import("react").ReactNode;
+    stat_power_from(arg0: string, stat_power_from: any, stat_power_to: any): import("react").ReactNode;
     _id: string;
     id: string;
     name: string;

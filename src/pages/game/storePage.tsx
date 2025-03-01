@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import NavLayoutGame from '../../components/nav';
 import { fetchShopItems, fetchShopItemById, buyItem, ShopItem } from '../../api/shop';
 import { inventory } from '../../api/inventory';
@@ -13,40 +13,39 @@ const StorePage: React.FC = () => {
     const [ownedItems, setOwnedItems] = useState<string[]>([]);
     const [coins, setCoins] = useState<number>(0);
     const [showPopup, setShowPopup] = useState<boolean>(false);
-    
+
+    const loadData = useCallback(async () => {
+        try {
+            const userResponse = await fetch('https://api.dagames.online/v1/user/@me', {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+
+            if (!userResponse.ok) {
+                throw new Error('Failed to fetch user data');
+            }
+
+            const userData = await userResponse.json();
+            setCoins(userData.coins);
+
+            const items = await fetchShopItems();
+            setShopItems(items);
+
+            const inventoryResponse = await inventory();
+            const ownedItemIds = inventoryResponse.map((item: any) => item.id);
+            setOwnedItems(ownedItemIds);
+
+            setLoading(false);
+        } catch (err) {
+            setError('Failed to load shop items or inventory.');
+            setLoading(false);
+        }
+    }, []);
 
     useEffect(() => {
-        const loadData = async () => {
-            try {
-                const userResponse = await fetch('https://api.dagames.online/v1/user/@me', {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    }
-                });
-
-                if (!userResponse.ok) {
-                    throw new Error('Failed to fetch user data');
-                }
-
-                const userData = await userResponse.json();
-                setCoins(userData.coins);
-
-                const items = await fetchShopItems();
-                setShopItems(items);
-
-                const inventoryResponse = await inventory();
-                const ownedItemIds = inventoryResponse.map((item: any) => item.id);
-                setOwnedItems(ownedItemIds);
-
-                setLoading(false);
-            } catch (err) {
-                setError('Failed to load shop items or inventory.');
-                setLoading(false);
-            }
-        };
-
         loadData();
-    }, []);
+    }, [loadData]);
 
     const handleItemClick = async (itemId: string) => {
         try {

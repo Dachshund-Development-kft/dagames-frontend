@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import NavLayoutGame from '../../components/nav';
 import { me } from '../../api/me';
 import InventoryItem from '../../components/InventoryItem';
@@ -25,7 +25,7 @@ const InventoryPage: React.FC = () => {
     const [inventoryData, setInventoryData] = useState<InventoryItemProps[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
-    const fetchInventoryData = async () => {
+    const fetchInventoryData = useCallback(async () => {
         try {
             const inventoryResponse = await inventory();
             setInventoryData(inventoryResponse);
@@ -33,7 +33,7 @@ const InventoryPage: React.FC = () => {
         } catch (error) {
             console.error('Failed to fetch inventory:', error);
         }
-    };
+    }, []);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -49,7 +49,7 @@ const InventoryPage: React.FC = () => {
         };
 
         fetchData();
-    }, []);
+    }, [fetchInventoryData]);
 
     useEffect(() => {
         document.body.style.overflow = 'hidden';
@@ -58,11 +58,13 @@ const InventoryPage: React.FC = () => {
         };
     }, []);
 
-    const sortedInventoryData = [...inventoryData].sort((a, b) => {
-        if (a.equipped && !b.equipped) return -1;
-        if (!a.equipped && b.equipped) return 1;
-        return 0;
-    });
+    const sortedInventoryData = useMemo(() => {
+        return [...inventoryData].sort((a, b) => {
+            if (a.equipped && !b.equipped) return -1;
+            if (!a.equipped && b.equipped) return 1;
+            return 0;
+        });
+    }, [inventoryData]);
 
     if (loading) return <Loading />;
 
