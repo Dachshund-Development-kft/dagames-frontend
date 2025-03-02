@@ -6,11 +6,13 @@ import Loading from '../../components/loading';
 const GamePage: React.FC = () => {
     const { id: matchid } = useParams<{ id: string }>();
     const [loading, setLoading] = useState<boolean>(true);
-    const [myHealth, setMyHealth] = useState<number>(25);
-    const [enemyHealth, setEnemyHealth] = useState<number>(50);
+    const [myHealth, setMyHealth] = useState<number>(100);
+    const [enemyHealth, setEnemyHealth] = useState<number>(100);
     const [message, setMessage] = useState<string>('');
     const [winner, setWinner] = useState<string | null>(null);
-    const [startTime, setStartTime] = useState<Date | null>(null);
+    const [startDate, setStartDate] = useState<Date | null>(null);
+    const [startDates, setStartDates] = useState<string | null>(null);
+    const [startTime, setStartTime] = useState<string | null>(null);
     const [rounds, setRounds] = useState<number>(0);
     const [playerInfo, setPlayerInfo] = useState<{
         char: string | undefined;
@@ -49,7 +51,8 @@ const GamePage: React.FC = () => {
         const handleGameInfo = (data: any) => {
             setPlayerInfo(data.player);
             setEnemyInfo(data.enemy);
-            setStartTime(new Date(data.match.startTime));
+
+            setStartDate(new Date(data.match.startTime));
             setRounds(data.match.rounds);
         };
 
@@ -128,9 +131,40 @@ const GamePage: React.FC = () => {
         return <Loading />;
     }
 
+    const timer = setInterval(() => {
+        if (startDate) {
+            const currentDate = new Date();
+            const diff = Math.abs(startDate.getTime() - currentDate.getTime());
+            const minutes = Math.floor(diff / 60000);
+            const seconds = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+
+            const year = startDate.getFullYear();
+            const month = String(startDate.getMonth() + 1).padStart(2, '0');
+            const day = String(startDate.getDate()).padStart(2, '0');
+            const hours = String(startDate.getHours()).padStart(2, '0');
+            const minutesDate = String(startDate.getMinutes()).padStart(2, '0');
+            const secondsDate = String(startDate.getSeconds()).padStart(2, '0');
+
+            setStartDates(`${year}.${month}.${day} ${hours}:${minutesDate}:${secondsDate}`);
+            const timeLeft = `${minutes} perc ${seconds} másodperc`;
+            
+            setStartTime(timeLeft);
+        }
+    }, 1000);
+
+    if (winner) {
+        clearInterval(timer);
+    }
+
     return (
         <>
             <main className='flex flex-col items-center justify-center min-h-screen text-white'>
+                <div className='fixed top-0 bg-black bg-opacity-50 backdrop-blur-md m-5 p-12 rounded-md text-center'>
+                    <p className='text-xl font-bold'>Mérkőzés:</p>
+                    <p>Kezdés: {startDates}</p>
+                    <p>Eltelt idő: {startTime}</p>
+                    <p>Körök száma: {rounds}</p>
+                </div>
                 <div className='absolute top-4 right-4 bg-black bg-opacity-50 rounded-lg p-4'>
                     <h2 className='text-xl font-bold'>Ellenfél</h2>
                     <p>Életerő: {enemyHealth}</p>
