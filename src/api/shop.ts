@@ -1,5 +1,4 @@
 export interface ShopItem {
-    stat_agility_from: number;
     _id: string;
     id: string;
     name: string;
@@ -18,6 +17,8 @@ export interface ShopItem {
     stat_damage_from?: number;  
     stat_damage_to?: number;    
     stat_attack_from?: number;  
+    stat_agility_from: number;
+    stat_agility_to: number;
     stat_attack_to?: number;    
 }
 

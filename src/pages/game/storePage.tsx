@@ -105,7 +105,7 @@ const StorePage: React.FC = () => {
         return from === to ? `${from}` : `${from}-${to}`;
     };
 
-    const renderStat = (label: string, from: number, to: number): JSX.Element | null => {
+    const renderStat = (label: string, from: number | undefined, to: number | undefined): JSX.Element | null => {
         const statRange = formatStatRange(from, to);
         if (!statRange) return null;
         return <p>{`${label}: ${statRange}`}</p>;
@@ -171,12 +171,12 @@ const StorePage: React.FC = () => {
                                 <div className="mb-4">
                                     <h3 className="text-xl font-bold text-white mb-2">Possible Stats</h3>
                                     <div className="text-gray-300">
-                                        {renderStat('Power', selectedItem.stat_power_from || 0, selectedItem.stat_power_to || 0)}
-                                        {renderStat('Speed', selectedItem.stat_speed_from || 0, selectedItem.stat_speed_to || 0)}
-                                        {renderStat('Agility', selectedItem.stat_agility_from || 0, selectedItem.stat_agility_from || 0)}
-                                        {renderStat('Defense', selectedItem.stat_defense_from || 0, selectedItem.stat_defense_to || 0)}
-                                        {renderStat('Damage', selectedItem.stat_damage_from || 0, selectedItem.stat_damage_to || 0)}
-                                        {renderStat('Attack', selectedItem.stat_attack_from || 0, selectedItem.stat_attack_to || 0)}
+                                        {renderStat('Power', selectedItem.stat_power_from, selectedItem.stat_power_to)}
+                                        {renderStat('Speed', selectedItem.stat_speed_from, selectedItem.stat_speed_to)}
+                                        {renderStat('Agility', selectedItem.stat_agility_from, selectedItem.stat_agility_to)}
+                                        {renderStat('Defense', selectedItem.stat_defense_from, selectedItem.stat_defense_to)}
+                                        {renderStat('Damage', selectedItem.stat_damage_from, selectedItem.stat_damage_to)}
+                                        {renderStat('Attack', selectedItem.stat_attack_from, selectedItem.stat_attack_to)}
                                     </div>
                                 </div>
                                 <button onClick={handleBuyClick} className={`w-full px-4 py-2 text-white rounded-lg transition-colors ${ownedItems.includes(selectedItem.id) ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'}`} disabled={ownedItems.includes(selectedItem.id)}>
