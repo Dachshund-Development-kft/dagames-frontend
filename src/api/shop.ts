@@ -1,6 +1,5 @@
 export interface ShopItem {
-    stat_speed_from(arg0: string, stat_speed_from: any, stat_speed_to: any): import("react").ReactNode;
-    stat_power_from(arg0: string, stat_power_from: any, stat_power_to: any): import("react").ReactNode;
+    stat_agility_from: number;
     _id: string;
     id: string;
     name: string;
@@ -10,6 +9,16 @@ export interface ShopItem {
     image: string;
     created_at: string;
     __v: number;
+    stat_speed_from?: number;
+    stat_speed_to?: number;   
+    stat_power_from?: number; 
+    stat_power_to?: number;   
+    stat_defense_from?: number; 
+    stat_defense_to?: number;   
+    stat_damage_from?: number;  
+    stat_damage_to?: number;    
+    stat_attack_from?: number;  
+    stat_attack_to?: number;    
 }
 
 if (!localStorage.getItem('url')) {
