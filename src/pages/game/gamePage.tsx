@@ -14,6 +14,7 @@ const GamePage: React.FC = () => {
     const [startDates, setStartDates] = useState<string | null>(null);
     const [startTime, setStartTime] = useState<string | null>(null);
     const [rounds, setRounds] = useState<number>(0);
+    const [myPoints, setMyPoints] = useState<number>(2)
     const [playerInfo, setPlayerInfo] = useState<{
         char: string | undefined;
         character: { name: string; icon: string; type: string };
@@ -64,6 +65,7 @@ const GamePage: React.FC = () => {
 
                 if (player1.id === myId) {
                     setMyHealth(player1.health);
+                    setMyPoints(player1.power);
                     setEnemyHealth(player2.health);
                 } else {
                     setMyHealth(player2.health);
@@ -181,6 +183,7 @@ const GamePage: React.FC = () => {
                 <div className='absolute bottom-4 left-4 bg-black bg-opacity-50 rounded-lg p-4'>
                     <h2 className='text-xl font-bold'>Te</h2>
                     <p>Életerőd: {myHealth}</p>
+                    <p>Power: {myPoints}</p>
                     {playerInfo && (
                         <div className='mt-2'>
                             <img src={playerInfo.character.icon} alt={playerInfo.character.name} className='w-16 h-16' />
@@ -212,10 +215,23 @@ const GamePage: React.FC = () => {
                             <div className='mt-8'>
                                 <button
                                     className='bg-blue-500 text-white px-6 py-3 rounded-lg mr-4 hover:bg-blue-600 transition-colors'
-                                    onClick={() => handleAction('attack')}
+                                    onClick={() => handleAction('normal_attack')}
                                 >
-                                    Támadás
+                                    Normal Támadás
                                 </button>
+                                <button
+                                    className='bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-600 transition-colors'
+                                    onClick={() => handleAction('strong_attack')}
+                                >
+                                    Speciális Támadás
+                                </button>
+                                <button
+                                    className='bg-yellow-500 text-white px-6 py-3 rounded-lg hover:bg-yellow-600 transition-colors'
+                                    onClick={() => handleAction('weak_attack')}
+                                >
+                                    Gyenge Támadás
+                                </button>
+
                                 <button
                                     className='bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition-colors'
                                     onClick={() => handleAction('defend')}
