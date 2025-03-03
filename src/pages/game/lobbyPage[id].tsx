@@ -182,15 +182,15 @@ const PlayPageID: React.FC = () => {
                 <NavLayoutGame />
                 <div className='flex flex-grow items-center justify-center gap-4'>
                     <div className='bg-black bg-opacity-50 rounded-lg shadow-md backdrop-blur-md p-6'>
-                        <h1 className='text-2xl font-bold text-white mb-4'>Lobby: {lobbyData.name}</h1>
+                        <h1 className='text-2xl text-white mb-4 text-center'>Lobby: <span className='font-bold'>{lobbyData.name}</span></h1>
                         <div className='overflow-y-auto max-h-[60vh] scrollbar-hide gap-4'>
-                            <h2 className='text-xl font-bold text-white mb-4'>Players in Lobby</h2>
+                            <h2 className='text-xl text-white mb-4 text-center'>Players in Lobby</h2>
                             <ul className='text-white'>
                                 {players.map((player, index) => (
                                     <li key={index} className='flex items-center gap-2 mb-2'>
-                                        <span style={{ color: readyPlayers.includes(player) ? 'green' : 'white' }}>
-                                            {usernames[player] || 'Loading...'}
-                                        </span>
+                                            <span style={{ color: readyPlayers.includes(player) ? 'green' : 'white' }}>
+                                                {usernames[player] || 'Loading...'}
+                                            </span>
                                     </li>
                                 ))}
                             </ul>
@@ -199,11 +199,11 @@ const PlayPageID: React.FC = () => {
                                 Leave Lobby
                             </button>
                             {ready ? (
-                                <button onClick={handleUnready} disabled={isButtonDisabled} className='bg-[#20d523] text-white px-4 py-2 rounded-lg mt-4'>
+                                <button onClick={handleUnready} disabled={isButtonDisabled} className={`bg-[#20d523] text-white px-4 py-2 rounded-lg mt-4 ${isButtonDisabled ? ' cursor-not-allowed' : ''}`}>
                                     Unready
                                 </button>
                             ) : (
-                                <button onClick={handleReady} disabled={isButtonDisabled} className='bg-[#20d523] text-white px-4 py-2 rounded-lg mt-4'>
+                                <button onClick={handleReady} disabled={isButtonDisabled} className={`bg-[#20d523] text-white px-4 py-2 rounded-lg mt-4 ${isButtonDisabled ? ' cursor-not-allowed' : ''}`}>
                                     Ready
                                 </button>
                             )}
