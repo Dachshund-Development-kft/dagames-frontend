@@ -82,12 +82,8 @@ const GamePage: React.FC = () => {
                 setRounds(data.match.rounds);
             }
 
-            if (data.message) {
-                setMyMessage(data.message);
-            }
-
-            if (data.enemy_action) {
-                setEnemyMessage(data.message);
+            if (data.messages) {
+                setMessage(data.messages);
             }
 
             if (data.winner) {
