@@ -8,13 +8,15 @@ const GamePage: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [myHealth, setMyHealth] = useState<number>(100);
     const [enemyHealth, setEnemyHealth] = useState<number>(100);
-    const [message, setMessage] = useState<string>('');
+    const [myMessage, setMyMessage] = useState<string>('sigma');
+    const [enemyMessage, setEnemyMessage] = useState<string>('sigma');
     const [winner, setWinner] = useState<string | null>(null);
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [startDates, setStartDates] = useState<string | null>(null);
     const [startTime, setStartTime] = useState<string | null>(null);
     const [rounds, setRounds] = useState<number>(0);
     const [myPoints, setMyPoints] = useState<number>(2)
+    const [enemyPoints, setEnemyPoints] = useState<number>(2)
     const [playerInfo, setPlayerInfo] = useState<{
         char: string | undefined;
         character: { name: string; icon: string; type: string };
@@ -59,17 +61,20 @@ const GamePage: React.FC = () => {
 
         const handleGameUpdate = (data: any) => {
             if (data.players) {
-                const myId = localStorage.getItem('user_id');
+                const player2 = data.players[1];   const myId = localStorage.getItem('user_id');
                 const player1 = data.players[0];
-                const player2 = data.players[1];
+             
 
                 if (player1.id === myId) {
                     setMyHealth(player1.health);
                     setMyPoints(player1.power);
                     setEnemyHealth(player2.health);
+                    setEnemyPoints(player2.power);
                 } else {
                     setMyHealth(player2.health);
+                    setMyPoints(player2.power);
                     setEnemyHealth(player1.health);
+                    setEnemyPoints(player1.power);
                 }
             }
 
@@ -78,15 +83,15 @@ const GamePage: React.FC = () => {
             }
 
             if (data.message) {
-                setMessage(data.message);
+                setMyMessage(data.message);
+            }
+
+            if (data.enemy_action) {
+                setEnemyMessage(data.message);
             }
 
             if (data.winner) {
                 setWinner(data.winner);
-            }
-
-            if (data.enemy_action) {
-                setMessage(data.message);
             }
 
             if (data.match_over) {
@@ -170,6 +175,7 @@ const GamePage: React.FC = () => {
                 <div className='absolute top-4 right-4 bg-black bg-opacity-50 rounded-lg p-4'>
                     <h2 className='text-xl font-bold'>Ellenfél</h2>
                     <p>Életerő: {enemyHealth}</p>
+                    <p>Power: {enemyPoints}</p>
                     {enemyInfo && (
                         <div className='mt-2'>
                             <img src={enemyInfo.character.icon} alt={enemyInfo.character.name} className='w-16 h-16' />
@@ -203,7 +209,8 @@ const GamePage: React.FC = () => {
                     )}
 
                     <div className='mt-8 text-center'>
-                        <p className='text-lg'>{message}</p>
+                    <p className='text-lg'>{myMessage}</p>
+                    <p className='text-lg'>{enemyMessage}</p>
                     </div>
 
                     <div className='flex justify-center items-center gap-4 mt-8'>
