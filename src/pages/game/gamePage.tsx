@@ -69,6 +69,7 @@ const GamePage: React.FC = () => {
                     setEnemyHealth(player2.health);
                 } else {
                     setMyHealth(player2.health);
+                    setMyPoints(player2.power);
                     setEnemyHealth(player1.health);
                 }
             }
@@ -77,16 +78,12 @@ const GamePage: React.FC = () => {
                 setRounds(data.match.rounds);
             }
 
-            if (data.message) {
-                setMessage(data.message);
+            if (data.messages) {
+                setMessage(data.messages);
             }
 
             if (data.winner) {
                 setWinner(data.winner);
-            }
-
-            if (data.enemy_action) {
-                setMessage(data.message);
             }
 
             if (data.match_over) {
