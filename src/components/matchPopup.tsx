@@ -1,10 +1,17 @@
-const MatchPopup = ({ matchData, onClose }: { matchData: any, onClose: any }) => {
-    if (!matchData) return null;
+import { useState } from 'react';
+
+const MatchPopup = ({ matchData }: { matchData: any, onClose: any }) => {
+    const [isVisible, setIsVisible] = useState(true);
+
+    if (!matchData || !isVisible) return null;
 
     const { players, winner, loser, rank, avarageRank, message, data } = matchData;
 
-    // Ellenőrizzük, hogy az avarageRank üres objektum-e
     const averageRankDisplay = Object.keys(avarageRank).length === 0 ? "N/A" : avarageRank;
+
+    const handleClose = () => {
+        setIsVisible(false);
+    };
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
@@ -42,7 +49,7 @@ const MatchPopup = ({ matchData, onClose }: { matchData: any, onClose: any }) =>
                     <p><strong>Rounds:</strong> {data.rounds}</p>
                 </div>
                 <button
-                    onClick={onClose}
+                    onClick={handleClose}
                     className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                 >
                     Close
