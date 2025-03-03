@@ -8,8 +8,7 @@ const GamePage: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [myHealth, setMyHealth] = useState<number>(100);
     const [enemyHealth, setEnemyHealth] = useState<number>(100);
-    const [myMessage, setMyMessage] = useState<string>('sigma');
-    const [enemyMessage, setEnemyMessage] = useState<string>('sigma');
+    const [message, setMessage] = useState<string>('sigma');
     const [winner, setWinner] = useState<string | null>(null);
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [startDates, setStartDates] = useState<string | null>(null);
@@ -205,8 +204,7 @@ const GamePage: React.FC = () => {
                     )}
 
                     <div className='mt-8 text-center'>
-                    <p className='text-lg'>{myMessage}</p>
-                    <p className='text-lg'>{enemyMessage}</p>
+                    <p className='text-lg'>{message}</p>
                     </div>
 
                     <div className='flex justify-center items-center gap-4 mt-8'>
