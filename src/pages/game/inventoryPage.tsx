@@ -72,7 +72,7 @@ const InventoryPage: React.FC = () => {
         <main className='flex flex-col items-center justify-center min-h-screen overflow-hidden'>
             <NavLayoutGame />
             <div className='flex flex-grow items-center justify-center w-full max-w-[1400px] p-4'>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 2xl:grid-cols-6 gap-4 w-full h-[calc(100vh-200px)] overflow-y-auto p-4 scrollbar-hide">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 2xl:grid-cols-6 gap-4 w-full h-[calc(100vh-56px)] overflow-y-auto p-4 scrollbar-hide">
                     {sortedInventoryData.map(item => (
                         <InventoryItem
                             key={item.id}

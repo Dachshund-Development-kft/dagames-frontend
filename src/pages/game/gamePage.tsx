@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import socket from '../../api/socket';
 import Loading from '../../components/loading';
+import ProgressBar from '../../components/progressBar';
 
 const GamePage: React.FC = () => {
     const { id: matchid } = useParams<{ id: string }>();
@@ -169,8 +170,10 @@ const GamePage: React.FC = () => {
                 </div>
                 <div className='absolute top-4 right-4 bg-black bg-opacity-50 rounded-lg p-4'>
                     <h2 className='text-xl font-bold'>Ellenfél</h2>
-                    <p>Életerő: {enemyHealth}</p>
+                    <p>Health: {enemyHealth}</p>
+                    <ProgressBar value={enemyHealth} max={100} startColor="#FF0000" endColor="#00FF00" />
                     <p>Power: {enemyPoints}</p>
+                    <ProgressBar value={enemyPoints} max={5} startColor="#800080" endColor="##0000ff" />
                     {enemyInfo && (
                         <div className='mt-2'>
                             <img src={enemyInfo.character.icon} alt={enemyInfo.character.name} className='w-16 h-16' />
@@ -183,8 +186,10 @@ const GamePage: React.FC = () => {
 
                 <div className='absolute bottom-4 left-4 bg-black bg-opacity-50 rounded-lg p-4'>
                     <h2 className='text-xl font-bold'>Te</h2>
-                    <p>Életerőd: {myHealth}</p>
+                    <p>Health: {myHealth}</p>
+                    <ProgressBar value={myHealth} max={100} startColor="#FF0000" endColor="#00FF00" />
                     <p>Power: {myPoints}</p>
+                    <ProgressBar value={myPoints} max={5} startColor="#800080" endColor="##0000ff" />
                     {playerInfo && (
                         <div className='mt-2'>
                             <img src={playerInfo.character.icon} alt={playerInfo.character.name} className='w-16 h-16' />

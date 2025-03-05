@@ -56,7 +56,7 @@ const InventoryPage: React.FC = () => {
         <main className='flex flex-col items-center justify-center min-h-screen overflow-hidden'>
             <NavLayoutGame />
             <div className='flex flex-grow items-center justify-center w-full'>
-                <div className="w-full overflow-y-auto max-h-[calc(100vh-200px)] p-4 scrollbar-hide">
+                <div className="w-full overflow-y-auto max-h-[calc(100vh-56px)] p-4 scrollbar-hide">
                     <div className="space-y-8 max-w-2xl w-full mx-auto">
                         {news.map((item, index) => (
                             <div key={index} className="bg-black bg-opacity-50 backdrop-blur-md text-white p-8 rounded-lg shadow-lg">

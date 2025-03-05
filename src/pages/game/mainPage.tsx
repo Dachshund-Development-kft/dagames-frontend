@@ -121,7 +121,7 @@ const PlayPage = () => {
                                 )}
                             </div>
                             <div className="w-full bg-gray-700 rounded-full h-2 mt-2">
-                                <div className="bg-blue-500 h-2 rounded-full" style={{ width: user.xp / user.xpNeeded * 100 + '%' }}></div>
+                                <div className="bg-blue-500 h-2 rounded-full" style={{ width: `${Math.min((user.xp / user.xpNeeded) * 100, 100)}%` }}></div>
                             </div>
                         </div>
                     </div>

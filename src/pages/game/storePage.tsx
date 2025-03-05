@@ -122,7 +122,7 @@ const StorePage: React.FC = () => {
     return (
         <main className='flex flex-col items-center justify-center min-h-screen overflow-hidden'>
             <NavLayoutGame />
-            <div className='flex flex-grow items-center justify-center gap-4 p-4'>
+            <div className='flex flex-grow items-center justify-center gap-4 p-4 h-[calc(100vh-56px)]'>
                 <div className="flex flex-col items-center justify-center w-full max-w-[1400px] p-4">
                     <ToastContainer
                         position="top-right"
@@ -141,7 +141,7 @@ const StorePage: React.FC = () => {
                         <p className="text-lg font-bold text-white">Coins: {coins}</p>
                     </div>
                     <h1 className="text-2xl font-bold mb-4 text-white">Shop Items</h1>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 overflow-y-auto max-h-[80vh] scrollbar-hide">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 overflow-y-auto scrollbar-hide">
                         {shopItems.map((item) => (
                             <div key={item._id} className="p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer relative bg-black bg-opacity-50 backdrop-blur-md" onClick={() => handleItemClick(item.id)} >
                                 {ownedItems.includes(item.id) && (
