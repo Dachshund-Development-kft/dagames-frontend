@@ -5,6 +5,7 @@ import socket from '../../api/socket';
 import Loading from '../../components/loading';
 import { lobbyId } from '../../api/lobby';
 import { user } from '../../api/me';
+import ProfilePopout from '../../components/ProfilePopout';
 
 const PlayPageID: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -16,6 +17,7 @@ const PlayPageID: React.FC = () => {
     const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
     const [usernames, setUsernames] = useState<{ [key: string]: string }>({});
     const [countdown, setCountdown] = useState<number>(0);
+    const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null); // Track the selected player's ID
 
     useEffect(() => {
         if (!socket) {
@@ -38,7 +40,6 @@ const PlayPageID: React.FC = () => {
         };
 
         const handleCountdown = (data: any) => {
-            
             if (data.success) {
                 const id = data.id;
                 const token = data.token;
@@ -172,6 +173,14 @@ const PlayPageID: React.FC = () => {
         }, 500);
     };
 
+    const handlePlayerClick = (playerId: string) => {
+        setSelectedPlayerId(playerId);
+    };
+
+    const handleCloseProfilePopout = () => {
+        setSelectedPlayerId(null);
+    };
+
     if (loading) {
         return <Loading />;
     }
@@ -188,14 +197,19 @@ const PlayPageID: React.FC = () => {
                     <div className='bg-black bg-opacity-50 rounded-lg shadow-md backdrop-blur-md p-6'>
                         <h1 className='text-2xl text-white mb-4 text-center'>Lobby: <span className='font-bold'>{lobbyData.name}</span></h1>
                         <div className='overflow-y-auto max-h-[60vh] scrollbar-hide gap-4'>
-                            <h1 className='text-xl text-white mb-4 text-center'>Countdown: {countdown}</h1>
+                            {countdown > 0 && (
+                                <h1 className='text-xl text-white mb-4 text-center'>Countdown: {countdown}</h1>
+                            )}
                             <h2 className='text-xl text-white mb-4 text-center'>Players in Lobby</h2>
                             <ul className='text-white'>
                                 {players.map((player, index) => (
                                     <li key={index} className='flex items-center gap-2 mb-2'>
-                                            <span style={{ color: readyPlayers.includes(player) ? 'green' : 'white' }}>
-                                                {usernames[player] || 'Loading...'}
-                                            </span>
+                                        <span
+                                            onClick={() => handlePlayerClick(player)}
+                                            style={{ color: readyPlayers.includes(player) ? 'green' : 'white', cursor: 'pointer' }}
+                                        >
+                                            {usernames[player] || 'Loading...'}
+                                        </span>
                                     </li>
                                 ))}
                             </ul>
@@ -215,6 +229,16 @@ const PlayPageID: React.FC = () => {
                         </div>
                     </div>
                 </div>
+
+                {selectedPlayerId && (
+                    <>
+                        <div
+                            className='fixed inset-0 bg-black bg-opacity-50 z-40'
+                            onClick={handleCloseProfilePopout}
+                        />
+                        <ProfilePopout playerId={selectedPlayerId} />
+                    </>
+                )}
             </main>
         </>
     );

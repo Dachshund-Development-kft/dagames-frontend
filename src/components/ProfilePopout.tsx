@@ -9,6 +9,7 @@ interface Player {
     levels: {
         current: number;
         xp: number;
+        xpNeeded: number;
     };
     badges: {
         image: string;
@@ -35,14 +36,15 @@ const ProfilePopout: React.FC<ProfilePopoutProps> = ({ playerId }) => {
                 const username = userResponse.data.username;
 
                 const badgeData = userResponse.data.badges;
-
+                console.log(userResponse);
                 setPlayer({
                     username: username,
                     rank: userResponse.data.rank,
                     pfp: userResponse.data.pfp,
                     levels: {
-                        current: userResponse.data.level,
+                        current: userResponse.data.lvl,
                         xp: userResponse.data.xp,
+                        xpNeeded: userResponse.data.xpNeeded,
                     },
                     lastPlayed: userResponse.data.lastPlayed,
                     badges: badgeData,
@@ -59,7 +61,7 @@ const ProfilePopout: React.FC<ProfilePopoutProps> = ({ playerId }) => {
     }, [playerId]);
 
     if (loading) {
-        return <div>Loading...</div>;
+        return;
     }
 
     if (error) {
@@ -73,26 +75,35 @@ const ProfilePopout: React.FC<ProfilePopoutProps> = ({ playerId }) => {
     const { username, levels, badges, rank, lastPlayed, pfp } = player;
 
     return (
-        
-            <div className="absolute top-16 left-4 bg-[#1E1F26] p-4 rounded-lg shadow-lg z-50">
-                <h2 className="text-white text-lg font-bold">{username}</h2>
-                <img src={pfp} alt={username} className="w-16 h-16 rounded-full" />
-                <div className="mt-2">
-                    <h3 className="text-white font-semibold">Levels</h3>
-                    <p className="text-white">Current Level: {levels.current}</p>
-                    <p className="text-white">XP: {levels.xp}</p>
-                    <p className='text-white'>Rank: {rank}</p>
-                    <p className='text-white'>Last Played: {lastPlayed}</p>
+
+        <div className="absolute bg-black bg-opacity-70 p-4 rounded-lg shadow-lg z-50">
+            <h2 className="text-white text-lg font-bold">{username}</h2>
+            <img src={pfp} alt={username} className="w-16 h-16 rounded-full" />
+            <div className="mt-2">
+                <h3 className="text-white font-semibold">Levels</h3>
+                <p className="text-white">Current Level: {levels.current}</p>
+                <p className="text-white">XP: {levels.xp}</p>
+                <div className="w-full bg-gray-700 rounded-full h-2 mt-2">
+                    <div className="bg-blue-500 h-2 rounded-full" style={{ width: `${Math.min((levels.xp / levels.xpNeeded) * 100, 100)}%` }}></div>
                 </div>
-                <div className="mt-2">
-                    <h3 className="text-white font-semibold">Badges</h3>
-                    <div className="flex gap-2">
-                        {badges.map((badge, index) => (
-                            <img key={index} src={badge.image} alt={badge.name} className="w-8 h-8" />
-                        ))}
-                    </div>
+                <p className='text-white'>Rank: {rank}</p>
+                <p className='text-white'>Last Played: {lastPlayed}</p>
+            </div>
+            <div className="mt-2">
+                <h3 className="text-white font-semibold">Badges</h3>
+                <div className="flex gap-2">
+                    {badges.map((badge: any, index: number) => (
+                        <img
+                            key={index}
+                            src={badge.icon}
+                            alt={badge.name}
+                            className="w-8 h-8"
+                            title={badge.name}
+                        />
+                    ))}
                 </div>
             </div>
+        </div>
     );
 };
 
