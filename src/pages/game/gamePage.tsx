@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import socket from '../../api/socket';
 import Loading from '../../components/loading';
 import ProgressBar from '../../components/progressBar';
+import ProfilePopout from '../../components/ProfilePopout';
 
 const GamePage: React.FC = () => {
     const { id: matchid } = useParams<{ id: string }>();
@@ -17,6 +18,9 @@ const GamePage: React.FC = () => {
     const [rounds, setRounds] = useState<number>(0);
     const [myPoints, setMyPoints] = useState<number>(2)
     const [enemyPoints, setEnemyPoints] = useState<number>(2)
+    const [myId, setMyId] = useState<string>('asd');
+    const [enemyId, setEnemeyId] = useState<string>('asd');
+    const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
     const [playerInfo, setPlayerInfo] = useState<{
         char: string | undefined;
         character: { name: string; icon: string; type: string };
@@ -57,6 +61,9 @@ const GamePage: React.FC = () => {
 
             setStartDate(new Date(data.match.startTime));
             setRounds(data.match.rounds);
+            setMyId(data.player.id);
+            setEnemeyId(data.enemy.id);
+            
         };
 
         const handleGameUpdate = (data: any) => {
@@ -68,13 +75,17 @@ const GamePage: React.FC = () => {
                 if (player1.id === myId) {
                     setMyHealth(player1.health);
                     setMyPoints(player1.power);
+                    setMyId(player1.id);
                     setEnemyHealth(player2.health);
                     setEnemyPoints(player2.power);
+                    setEnemeyId(player2.id);
                 } else {
                     setMyHealth(player2.health);
                     setMyPoints(player2.power);
+                    setMyId(player2.id);
                     setEnemyHealth(player1.health);
                     setEnemyPoints(player1.power);
+                    setEnemeyId(player1.id);
                 }
             }
 
@@ -159,6 +170,14 @@ const GamePage: React.FC = () => {
         clearInterval(timer);
     }
 
+    const handlePlayerClick = (playerId: string) => {
+        setSelectedPlayerId(playerId);
+    };
+
+    const handleCloseProfilePopout = () => {
+        setSelectedPlayerId(null);
+    };
+
     return (
         <>
             <main className='flex flex-col items-center justify-center min-h-screen text-white'>
@@ -168,7 +187,7 @@ const GamePage: React.FC = () => {
                     <p>Eltelt idő: {startTime}</p>
                     <p>Körök száma: {rounds}</p>
                 </div>
-                <div className='absolute top-4 right-4 bg-black bg-opacity-50 rounded-lg p-4'>
+                <div className='absolute top-4 right-4 bg-black bg-opacity-50 rounded-lg p-4' onClick={() => handlePlayerClick(enemyId)}>
                     <h2 className='text-xl font-bold'>Ellenfél</h2>
                     <p>Health: {enemyHealth}</p>
                     <ProgressBar value={enemyHealth} max={100} startColor="#FF0000" endColor="#00FF00" />
@@ -184,7 +203,7 @@ const GamePage: React.FC = () => {
                     )}
                 </div>
 
-                <div className='absolute bottom-4 left-4 bg-black bg-opacity-50 rounded-lg p-4'>
+                <div className='absolute bottom-4 left-4 bg-black bg-opacity-50 rounded-lg p-4' onClick={() => handlePlayerClick(myId)}>
                     <h2 className='text-xl font-bold'>Te</h2>
                     <p>Health: {myHealth}</p>
                     <ProgressBar value={myHealth} max={100} startColor="#FF0000" endColor="#00FF00" />
@@ -248,6 +267,15 @@ const GamePage: React.FC = () => {
                         )}
                     </div>
                 </div>
+                {selectedPlayerId && (
+                    <>
+                        <div
+                            className='fixed inset-0 bg-black bg-opacity-50 z-40'
+                            onClick={handleCloseProfilePopout}
+                        />
+                        <ProfilePopout playerId={selectedPlayerId} />
+                    </>
+                )}
             </main>
         </>
     );

@@ -17,7 +17,7 @@ const PlayPageID: React.FC = () => {
     const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
     const [usernames, setUsernames] = useState<{ [key: string]: string }>({});
     const [countdown, setCountdown] = useState<number>(0);
-    const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null); // Track the selected player's ID
+    const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
 
     useEffect(() => {
         if (!socket) {
