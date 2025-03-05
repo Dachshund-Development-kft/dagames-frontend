@@ -15,7 +15,7 @@ const PlayPage = () => {
     const [loading, setLoading] = useState(true);
     const [matchPopup, setMatchPopup] = useState(false);
     const [matchData, setMatchData] = useState<any>(null);
-    const [showProfilePopout, setShowProfilePopout] = useState(false); // State to control ProfilePopout visibility
+    const [showProfilePopout, setShowProfilePopout] = useState(false); 
 
     useEffect(() => {
         const fetchData = async () => {
@@ -88,7 +88,7 @@ const PlayPage = () => {
     };
 
     const toggleProfilePopout = () => {
-        setShowProfilePopout(!showProfilePopout); // Toggle ProfilePopout visibility
+        setShowProfilePopout(!showProfilePopout); 
     };
     console.log(user?.id);
 
