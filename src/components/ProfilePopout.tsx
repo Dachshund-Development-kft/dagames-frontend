@@ -89,6 +89,7 @@ const ProfilePopout: React.FC<ProfilePopoutProps> = ({ playerId }) => {
                 <p className='text-white'>Rank: {rank}</p>
                 <p className='text-white'>Last Played: {lastPlayed}</p>
             </div>
+            {/*
             <div className="mt-2">
                 <h3 className="text-white font-semibold">Badges</h3>
                 <div className="flex gap-2">
@@ -103,6 +104,7 @@ const ProfilePopout: React.FC<ProfilePopoutProps> = ({ playerId }) => {
                     ))}
                 </div>
             </div>
+            */}
         </div>
     );
 };
