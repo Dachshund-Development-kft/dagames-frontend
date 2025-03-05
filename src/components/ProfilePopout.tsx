@@ -73,25 +73,26 @@ const ProfilePopout: React.FC<ProfilePopoutProps> = ({ playerId }) => {
     const { username, levels, badges, rank, lastPlayed, pfp } = player;
 
     return (
-        <div className="absolute top-16 left-4 bg-[#1E1F26] p-4 rounded-lg shadow-lg z-50">
-            <h2 className="text-white text-lg font-bold">{username}</h2>
-            <img src={pfp} alt={username} className="w-16 h-16 rounded-full" />
-            <div className="mt-2">
-                <h3 className="text-white font-semibold">Levels</h3>
-                <p className="text-white">Current Level: {levels.current}</p>
-                <p className="text-white">XP: {levels.xp}</p>
-                <p className='text-white'>Rank: {rank}</p>
-                <p className='text-white'>Last Played: {lastPlayed}</p>
-            </div>
-            <div className="mt-2">
-                <h3 className="text-white font-semibold">Badges</h3>
-                <div className="flex gap-2">
-                    {badges.map((badge, index) => (
-                        <img key={index} src={badge.image} alt={badge.name} className="w-8 h-8" />
-                    ))}
+        
+            <div className="absolute top-16 left-4 bg-[#1E1F26] p-4 rounded-lg shadow-lg z-50">
+                <h2 className="text-white text-lg font-bold">{username}</h2>
+                <img src={pfp} alt={username} className="w-16 h-16 rounded-full" />
+                <div className="mt-2">
+                    <h3 className="text-white font-semibold">Levels</h3>
+                    <p className="text-white">Current Level: {levels.current}</p>
+                    <p className="text-white">XP: {levels.xp}</p>
+                    <p className='text-white'>Rank: {rank}</p>
+                    <p className='text-white'>Last Played: {lastPlayed}</p>
+                </div>
+                <div className="mt-2">
+                    <h3 className="text-white font-semibold">Badges</h3>
+                    <div className="flex gap-2">
+                        {badges.map((badge, index) => (
+                            <img key={index} src={badge.image} alt={badge.name} className="w-8 h-8" />
+                        ))}
+                    </div>
                 </div>
             </div>
-        </div>
     );
 };
 

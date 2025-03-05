@@ -139,7 +139,12 @@ const PlayPage = () => {
             )}
 
             {showProfilePopout && user && (
-                <ProfilePopout playerId={user?.id} />
+                <div>
+                    <div className='bg-black bg-opacity-50 w-full h-full fixed top-0 left-0 z-40' onClick={toggleProfilePopout}>
+                    
+                    </div>
+                    <ProfilePopout playerId={user?.id} />
+                </div>
             )}
 
             {showSetupLayout && <SetupLayout onComplete={handleSetupComplete} />}
