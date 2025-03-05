@@ -15,6 +15,7 @@ const PlayPageID: React.FC = () => {
     const [readyPlayers, setReadyPlayers] = useState<string[]>([]);
     const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
     const [usernames, setUsernames] = useState<{ [key: string]: string }>({});
+    const [countdown, setCountdown] = useState<number>(0);
 
     useEffect(() => {
         if (!socket) {
@@ -37,8 +38,7 @@ const PlayPageID: React.FC = () => {
         };
 
         const handleCountdown = (data: any) => {
-            console.log(data.message);
-
+            
             if (data.success) {
                 const id = data.id;
                 const token = data.token;
@@ -48,8 +48,12 @@ const PlayPageID: React.FC = () => {
                 localStorage.setItem('game_id', id);
                 localStorage.setItem('game_token', token);
                 window.location.href = `/game/${id}`;
+            } else if (data.message > 0 && data.message <= 5) {
+                console.log(`Game starting in ${data.message} seconds!`);
+                setCountdown(data.message);
             } else {
-                console.log('Countdown failed');
+                console.log('Failed to start game');
+                setCountdown(0);
             }
         };
 
@@ -155,7 +159,7 @@ const PlayPageID: React.FC = () => {
 
         setTimeout(() => {
             setIsButtonDisabled(false);
-        }, 3000);
+        }, 500);
     };
 
     const handleUnready = async () => {
@@ -165,7 +169,7 @@ const PlayPageID: React.FC = () => {
 
         setTimeout(() => {
             setIsButtonDisabled(false);
-        }, 3000);
+        }, 500);
     };
 
     if (loading) {
@@ -184,6 +188,9 @@ const PlayPageID: React.FC = () => {
                     <div className='bg-black bg-opacity-50 rounded-lg shadow-md backdrop-blur-md p-6'>
                         <h1 className='text-2xl text-white mb-4 text-center'>Lobby: <span className='font-bold'>{lobbyData.name}</span></h1>
                         <div className='overflow-y-auto max-h-[60vh] scrollbar-hide gap-4'>
+                            {countdown > 0 && (
+                                <h1 className='text-xl text-white mb-4 text-center'>Countdown: {countdown}</h1>
+                            )}
                             <h2 className='text-xl text-white mb-4 text-center'>Players in Lobby</h2>
                             <ul className='text-white'>
                                 {players.map((player, index) => (

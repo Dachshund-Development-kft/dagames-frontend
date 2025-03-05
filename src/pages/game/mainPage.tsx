@@ -7,13 +7,15 @@ import SetupLayout from '../../components/setupLayout';
 import AlertLayout from '../../components/alert';
 import Loading from '../../components/loading';
 import MatchPopup from '../../components/matchPopup';
+import ProfilePopout from '../../components/ProfilePopout';
 
 const PlayPage = () => {
-    const [user, setUser] = useState<{ username: string; pfp: string; lvl: number; rank: string; badges: any[]; isNew: boolean, xp: number, xpNeeded: number } | null>(null);
+    const [user, setUser] = useState<{ username: string; pfp: string; lvl: number; rank: string; badges: any[]; isNew: boolean, xp: number, xpNeeded: number, id: string } | null>(null);
     const [showSetupLayout, setShowSetupLayout] = useState(false);
     const [loading, setLoading] = useState(true);
     const [matchPopup, setMatchPopup] = useState(false);
     const [matchData, setMatchData] = useState<any>(null);
+    const [showProfilePopout, setShowProfilePopout] = useState(false); // State to control ProfilePopout visibility
 
     useEffect(() => {
         const fetchData = async () => {
@@ -82,8 +84,13 @@ const PlayPage = () => {
 
     const handleCloseMatchPopup = () => {
         setMatchPopup(false);
-        window.location.href = '/'
+        window.location.href = '/';
     };
+
+    const toggleProfilePopout = () => {
+        setShowProfilePopout(!showProfilePopout); // Toggle ProfilePopout visibility
+    };
+    console.log(user?.id);
 
     if (loading) return <Loading />;
 
@@ -97,7 +104,10 @@ const PlayPage = () => {
 
             {user && (
                 <div className="fixed top-20 left-4">
-                    <div className="bg-black bg-opacity-50 backdrop-blur-md p-4 rounded-lg flex items-center space-x-2">
+                    <div
+                        className="bg-black bg-opacity-50 backdrop-blur-md p-4 rounded-lg flex items-center space-x-2 cursor-pointer"
+                        onClick={toggleProfilePopout}
+                    >
                         <img src={user.pfp} alt="Profile" className="w-32 h-32 rounded-full" />
                         <div>
                             <span className="text-white font-bold">{user.username}</span>
@@ -126,6 +136,10 @@ const PlayPage = () => {
                         </div>
                     </div>
                 </div>
+            )}
+
+            {showProfilePopout && user && (
+                <ProfilePopout playerId={user?.id} />
             )}
 
             {showSetupLayout && <SetupLayout onComplete={handleSetupComplete} />}
