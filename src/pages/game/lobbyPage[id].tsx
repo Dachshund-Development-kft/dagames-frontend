@@ -188,9 +188,7 @@ const PlayPageID: React.FC = () => {
                     <div className='bg-black bg-opacity-50 rounded-lg shadow-md backdrop-blur-md p-6'>
                         <h1 className='text-2xl text-white mb-4 text-center'>Lobby: <span className='font-bold'>{lobbyData.name}</span></h1>
                         <div className='overflow-y-auto max-h-[60vh] scrollbar-hide gap-4'>
-                            {countdown > 0 && (
-                                <h1 className='text-xl text-white mb-4 text-center'>Countdown: {countdown}</h1>
-                            )}
+                            <h1 className='text-xl text-white mb-4 text-center'>Countdown: {countdown}</h1>
                             <h2 className='text-xl text-white mb-4 text-center'>Players in Lobby</h2>
                             <ul className='text-white'>
                                 {players.map((player, index) => (
