@@ -68,7 +68,9 @@ const InventoryPage: React.FC = () => {
         });
     }, [inventoryData]);
 
-    if (loading) return <Loading />;
+    if (loading) {
+        return <Loading />;
+    }
 
     return (
         <main className='flex flex-col items-center justify-center min-h-screen overflow-hidden'>
