@@ -3,6 +3,9 @@ import { FaUser, FaLock } from 'react-icons/fa';
 import { MdAlternateEmail } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { register } from '../api/register';
+import axios from 'axios';
+import { ToastContainer, toast, Bounce } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const RegisterPage: React.FC = () => {
     const handleRegister = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -14,17 +17,35 @@ const RegisterPage: React.FC = () => {
         const email = (document.getElementById('email') as HTMLInputElement)?.value || '';
 
         if (password !== passwordAgain) {
-            alert("Passwords do not match");
+            toast.error("Passwords do not match");
             return;
         }
 
-        const success = await register(username, password, email);
+        try {
+            const success = await register(username, password, email);
 
-        if (success) {
-            alert("User registered");
-            window.location.href = '/verify';
+            if (success) {
+                toast.success("User registered successfully");
+                window.location.href = '/verify';
+            } else {
+                toast.error("Registration failed. Please try again.");
+            }
+        } catch (error) {
+            console.error(error);
+            if (axios.isAxiosError(error)) {
+                if (error.response) {
+                    toast.error(error.response.data.message || 'An error occurred during registration');
+                } else if (error.request) {
+                    toast.error('Network error. Please check your connection.');
+                } else {
+                    toast.error('An unexpected error occurred');
+                }
+            } else {
+                toast.error('An unexpected error occurred');
+            }
         }
-    }
+    };
+
     return (
         <div className="flex flex-col min-h-screen text-white bg-cover bg-repeat-y" style={{ backgroundImage: "url(/blobs.svg)" }}>
             <main className="flex flex-grow items-center justify-center py-16">
@@ -56,6 +77,19 @@ const RegisterPage: React.FC = () => {
                     </div>
                 </form>
             </main>
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+                transition={Bounce}
+            />
         </div>
     );
 }
