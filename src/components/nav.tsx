@@ -7,6 +7,7 @@ import { FiLogOut } from "react-icons/fi";
 import { MdInventory } from "react-icons/md";
 import { FaPlay } from "react-icons/fa";
 import { me } from '../api/me';
+import { MdLeaderboard } from "react-icons/md";
 
 const NavLayoutGame: React.FC = () => {
     const location = useLocation();
@@ -21,6 +22,7 @@ const NavLayoutGame: React.FC = () => {
     ];
 
     const centerNavItems = [
+        { path: "/leaderboard", icon: <MdLeaderboard />, label: "Leaderboard" },
         { path: "/inventory", icon: <MdInventory />, label: "Inventory" },
         { path: "/play", icon: <FaPlay />, label: "Play" },
         { path: "/shop", icon: <FaShop />, label: "Shop" },
@@ -82,7 +84,7 @@ const NavLayoutGame: React.FC = () => {
             </div>
 
             <nav className="flex flex-row justify-center w-full">
-                <div className="flex flex-row items-center gap-8 pr-[104px]">
+                <div className="flex flex-row items-center gap-8 pr-[170px]">
                     {centerNavItems.map((item, index) => (
                         <div key={index} className={`flex flex-row items-center transition-opacity duration-300 ${location.pathname === item.path ? "opacity-100" : "opacity-50 hover:opacity-100"}`}>
                             <Link to={item.path} className="text-white flex items-center">
