@@ -49,7 +49,7 @@ const LoginPage: React.FC = () => {
                         <button type="submit" className="bg-[#0F1015] text-white px-5 py-3 rounded-lg shadow-lg flex items-center justify-center gap-2 hover:bg-opacity-90 transition-all duration-300 w-full mt-4">
                             Login
                         </button>
-                        <p>Don't have an account? <Link to="/register" className="text-blue-400 hover:underline">Sign Up</Link></p>
+                        <p>Don't have an account? <Link to="/register" className="text-blue-400 hover:underline">Register</Link></p>
                     </div>
                 </form>
             </main>
