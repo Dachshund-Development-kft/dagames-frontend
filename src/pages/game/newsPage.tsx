@@ -49,7 +49,9 @@ const InventoryPage: React.FC = () => {
         };
     }, []);
 
-    if (loading) return <Loading />;
+    if (loading) {
+        return <Loading />;
+    }
     if (!news) return null;
 
     return (
