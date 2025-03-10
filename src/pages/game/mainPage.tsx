@@ -16,7 +16,6 @@ const PlayPage = () => {
     const [matchPopup, setMatchPopup] = useState(false);
     const [matchData, setMatchData] = useState<any>(null);
     const [showProfilePopout, setShowProfilePopout] = useState(false);
-    const [lastMatchData, setLastMatchData] = useState<any>(null); // State for last match data
 
     useEffect(() => {
         const fetchData = async () => {
@@ -75,33 +74,8 @@ const PlayPage = () => {
             }
         };
 
-        const fetchLastMatch = async () => {
-            const token = localStorage.getItem('token');
-            if (!token) return;
-
-            try {
-                const response = await fetch('https://api.dagames.online/v1/user/@me/matches', {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to fetch last match data');
-                }
-
-                const data = await response.json();
-                if (data.length > 0) {
-                    setLastMatchData(data[0]); // Set the most recent match
-                }
-            } catch (err) {
-                console.error('Error fetching last match data:', err);
-            }
-        };
-
         handleid();
         fetchData();
-        fetchLastMatch(); // Fetch last match data
     }, []);
 
     const handleSetupComplete = () => {
@@ -177,39 +151,6 @@ const PlayPage = () => {
 
             {showSetupLayout && <SetupLayout onComplete={handleSetupComplete} />}
             {matchPopup && <MatchPopup matchData={matchData} onClose={handleCloseMatchPopup} />}
-
-            {/* Display Last Match Data */}
-            {lastMatchData && (
-                <div className="fixed bottom-4 right-4 bg-black bg-opacity-50 backdrop-blur-md p-6 rounded-lg max-w-md w-full text-white">
-                    <h2 className="text-2xl font-bold mb-4">Last Match</h2>
-                    <div className="mb-4">
-                        <h3 className="text-xl font-semibold">Players</h3>
-                        {lastMatchData.players.map((player: any, index: number) => (
-                            <div key={index} className="mb-2">
-                                <p><strong>Character:</strong> {player.character.name}</p>
-                                <p><strong>Health:</strong> {player.health < 0 ? 0 : player.health}</p>
-                                <p><strong>Weapon:</strong> {player.weapon.name}</p>
-                            </div>
-                        ))}
-                    </div>
-                    <div className="mb-4">
-                        <h3 className="text-xl font-semibold">Result</h3>
-                        <p><strong>Winner:</strong> {lastMatchData.players.find((player: any) => player.id === lastMatchData.winner)?.username}</p>
-                        <p><strong>Loser:</strong> {lastMatchData.players.find((player: any) => player.id === lastMatchData.loser)?.username}</p>
-                    </div>
-                    <div className="mb-4">
-                        <h3 className="text-xl font-semibold">Rank</h3>
-                        <p><strong>Your Rank:</strong> {lastMatchData.rank}</p>
-                        <p><strong>Average Rank:</strong> {Object.keys(lastMatchData.avarageRank).length === 0 ? "N/A" : lastMatchData.avarageRank}</p>
-                    </div>
-                    <div className="mb-4">
-                        <h3 className="text-xl font-semibold">Data</h3>
-                        <p><strong>XP:</strong> {lastMatchData.data.xp}</p>
-                        <p><strong>Coins:</strong> {lastMatchData.data.coins}</p>
-                        <p><strong>Rounds:</strong> {lastMatchData.data.rounds}</p>
-                    </div>
-                </div>
-            )}
         </main>
     );
 };

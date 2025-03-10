@@ -10,7 +10,7 @@ const GamePage: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [myHealth, setMyHealth] = useState<number>(100);
     const [enemyHealth, setEnemyHealth] = useState<number>(100);
-    const [message, setMessage] = useState<string>('sigma');
+    const [message, setMessage] = useState<string>('');
     const [winner, setWinner] = useState<string | null>(null);
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [startDates, setStartDates] = useState<string | null>(null);
@@ -18,8 +18,8 @@ const GamePage: React.FC = () => {
     const [rounds, setRounds] = useState<number>(0);
     const [myPoints, setMyPoints] = useState<number>(2)
     const [enemyPoints, setEnemyPoints] = useState<number>(2)
-    const [myId, setMyId] = useState<string>('asd');
-    const [enemyId, setEnemeyId] = useState<string>('asd');
+    const [myId, setMyId] = useState<string>('');
+    const [enemyId, setEnemeyId] = useState<string>('');
     const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
     const [playerInfo, setPlayerInfo] = useState<{
         char: string | undefined;
