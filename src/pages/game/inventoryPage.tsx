@@ -4,7 +4,6 @@ import { me } from '../../api/me';
 import InventoryItem from '../../components/InventoryItem';
 import { inventory } from '../../api/inventory';
 import Loading from '../../components/loading';
-import { ToastContainer, Bounce  } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 interface InventoryItemProps {
@@ -82,7 +81,6 @@ const InventoryPage: React.FC = () => {
                     ))}
                 </div>
             </div>
-            <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick={false} rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="dark" transition={Bounce} />
         </main>
     );
 };

@@ -21,6 +21,7 @@ import GamePage from './pages/game/gamePage'
 import LeaderboardPage from './pages/game/Leaderboard'
 import TermsOfService from './pages/game/tos'
 import ReportPopup from './components/reportPopup'
+import { ToastContainer, Bounce } from 'react-toastify'
 
 const router = createBrowserRouter([
   {
@@ -83,6 +84,7 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.Fragment>
+    <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick={false} rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="dark" transition={Bounce} className={'z-50'} />
     <Analytics/>
     <ReportPopup onClose={function (): void {
       throw new Error('Function not implemented.')

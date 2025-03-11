@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { ToastContainer, toast, Bounce } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const ReportPopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+const ReportPopup: React.FC<{ onClose: () => void }> = () => {
     const [type, setType] = useState<'bug' | 'idea'>('bug');
     const [from, setFrom] = useState<'frontend' | 'backend'>('frontend');
     const [description, setDescription] = useState('');
@@ -13,6 +13,8 @@ const ReportPopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         const handleKeyDown = (event: KeyboardEvent) => {
             if (event.altKey && event.key === 't') {
                 setIsVisible(prev => !prev);
+            } else if (event.key === 'Escape') {
+                setIsVisible(false);
             }
         };
 
@@ -42,14 +44,13 @@ const ReportPopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
             if (response.data.success) {
                 toast.success('Report submitted successfully!');
-                onClose();
                 setIsVisible(false);
             } else {
                 toast.error('Failed to submit report. Please try again.');
             }
         } catch (error) {
             console.error('Error submitting report:', error);
-            toast.error('An error occurred. Please try again.');
+            toast.error(`Error submitting report: ${error}`);
         }
     };
 
@@ -58,7 +59,8 @@ const ReportPopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     }
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div className="fixed inset-0 z-50">
+            <div className="flex items-center justify-center bg-black bg-opacity-50 fixed inset-0 z-50">
             <div className="bg-black bg-opacity-50 backdrop-blur-md rounded-2xl shadow-xl p-6 w-full max-w-md">
                 <h2 className="text-2xl font-bold text-white mb-4">Report an Issue or Suggest an Idea</h2>
                 <div className="space-y-4">
@@ -90,7 +92,7 @@ const ReportPopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     </div>
                 </div>
             </div>
-            <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick={false} rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="dark" transition={Bounce} className={'z-50'} />
+            </div>
         </div>
     );
 };

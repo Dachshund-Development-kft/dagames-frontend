@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { ToastContainer, toast, Bounce } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NavLayoutGame from '../../components/nav';
 import Loading from '../../components/loading';
@@ -131,7 +131,7 @@ const LeaderboardPage: React.FC = () => {
                     </div>
                 </div>
             </main>
-            <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick={false} rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="dark" transition={Bounce} />
+            
         </div>
     );
 };

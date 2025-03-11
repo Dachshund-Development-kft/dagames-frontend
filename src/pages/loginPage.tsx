@@ -3,7 +3,7 @@ import { FaUser, FaLock } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import AlertLayout from '../components/alert';
 import { login } from '../api/login';
-import { ToastContainer, toast, Bounce } from 'react-toastify';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -69,19 +69,6 @@ const LoginPage: React.FC = () => {
                     </div>
                 </form>
             </main>
-            <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick={false}
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="dark"
-                transition={Bounce}
-            />
         </div>
     );
 }
