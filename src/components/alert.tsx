@@ -38,7 +38,7 @@ const AlertLayout: React.FC = () => {
     return (
         <>
             {maintenanceMessage && (
-                <div className="fixed top-0 left-0 w-full bg-yellow-500 text-black p-4 text-center z-50">
+                <div className="fixed top-0 left-0 w-full bg-yellow-500 bg-opacity-30 backdrop-blur-md text-black p-4 text-center z-50">
                     {maintenanceMessage}
                 </div>
             )}

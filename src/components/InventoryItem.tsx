@@ -184,10 +184,10 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ id, name, icon, type, isE
 
     return (
         <div>
-            <div className={`p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer relative bg-black bg-opacity-50 backdrop-blur-md text-center ${isEquipped && 'border-4 border-opacity-70 border-white rounded-lg'}`} onClick={!isEquipped ? handleItemClick : undefined}>
-                <img src={icon} alt={name} className="mb-2 rounded-full" />
-                <p className="text-white text-xl font-bold">{name}</p>
-                <p className="text-gray-400 text-md ml-2">{type}</p>
+            <div className={`flex h-72 w-48 flex-col items-center p-4 bg-black bg-opacity-50 backdrop-blur-md rounded-lg shadow-lg hover:bg-opacity-80 transition duration-300 relative ${isEquipped && 'border-2 border-opacity-70 border-white rounded-lg'}`} onClick={!isEquipped ? handleItemClick : undefined}>
+                <img src={icon} alt={name} className="w-28 h-28 mb-2 rounded-full" />
+                <span className="text-white text-md font-bold">{name}</span>
+                <span className="text-gray-400 text-xs">{type}</span>
 
                 <div className="mt-2 text-sm text-gray-300 mb-2">
                     {stats.power && <div>Power: {stats.power}</div>}
@@ -204,7 +204,7 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ id, name, icon, type, isE
 
             <div>
                 {isDialogOpen && (
-                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50" onClick={handleCloseDialog}>
+                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50" onClick={handleCloseDialog}>
                         <div className="p-4 rounded-lg bg-black bg-opacity-50 backdrop-blur-md" onClick={(e) => e.stopPropagation()}>
                             <h2 className="text-white text-lg text-center font-bold">{name}</h2>
                             <button className="mt-5 px-4 py-2 bg-blue-500 text-white rounded m-2" onClick={handleEquip}>Equip</button>

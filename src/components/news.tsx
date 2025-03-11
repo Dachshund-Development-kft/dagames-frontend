@@ -50,7 +50,7 @@ const NewsLayout: React.FC = () => {
     return (
         <>
             {showPopup && news && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 z-10">
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 z-10">
                     <div className="bg-black bg-opacity-50 backdrop-blur-md text-white p-8 rounded-lg shadow-lg max-w-2xl w-full mx-4 sm:mx-6 md:mx-8 lg:mx-10 xl:mx-12 flex flex-col" style={{ maxHeight: '75vh', overflowY: 'auto' }}>
                         <div className="flex-1 overflow-y-auto">
                             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-center">{news.name}</h2>
