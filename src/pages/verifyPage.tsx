@@ -10,7 +10,6 @@ const VerifyPage: React.FC = () => {
         const fetchData = async () => {
             const urlParams = new URLSearchParams(window.location.search);
             const code = urlParams.get('code');
-
             if (code) {
                 try {
                     const response = await verify(code);
