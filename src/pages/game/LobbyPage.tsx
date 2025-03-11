@@ -172,7 +172,7 @@ const PlayPage: React.FC = () => {
                                         </div>
                                         {!lobby.public && (
                                             <div className="mb-2">
-                                                <input type="password"  placeholder='Password' id='pass' className="w-full p-2 bg-black bg-opacity-70 text-white rounded-md border border-gray-600" />
+                                                <input type="password" placeholder='Password' id='pass' className="w-full p-2 bg-black bg-opacity-70 text-white rounded-md border border-gray-600" />
                                             </div>
                                         )}
                                         <button onClick={() => handleJoinLobby(lobby.id)} className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors" >
