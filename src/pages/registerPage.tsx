@@ -17,13 +17,11 @@ const RegisterPage: React.FC = () => {
         const email = (document.getElementById('email') as HTMLInputElement)?.value || '';
         const tosChecked = (document.getElementById('tos') as HTMLInputElement)?.checked;
 
-        // Validate passwords match
         if (password !== passwordAgain) {
             toast.error("Passwords do not match");
             return;
         }
 
-        // Validate ToS checkbox
         if (!tosChecked) {
             toast.error("You must agree to the Terms of Service to register.");
             return;
@@ -78,8 +76,7 @@ const RegisterPage: React.FC = () => {
                             <FaLock className="text-gray-500 mr-2" />
                             <input id='passwordAgain' type="password" placeholder="Password again " className="bg-transparent flex-1 outline-none focus:ring-0" />
                         </div>
-                        {/* ToS Checkbox */}
-                        <div className="flex items-center">
+                        <div className='flex items-center mx-auto'>
                             <input id="tos" type="checkbox" className="mr-2" />
                             <label htmlFor="tos" className="text-xs text-gray-400">
                                 By registering you agree to our{' '}

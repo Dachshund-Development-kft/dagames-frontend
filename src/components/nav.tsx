@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { HiMiniHome } from "react-icons/hi2";
-import { IoSettingsSharp } from "react-icons/io5";
 import { FaNewspaper, FaShop } from "react-icons/fa6";
 import { FiLogOut } from "react-icons/fi";
 import { MdInventory } from "react-icons/md";
@@ -17,7 +16,6 @@ const NavLayoutGame: React.FC = () => {
 
     const leftNavItems = [
         { path: "/", icon: <HiMiniHome size={24} /> },
-        { path: "/settings", icon: <IoSettingsSharp size={24} /> },
         { path: "/logout", icon: <FiLogOut size={24} /> }
     ];
 

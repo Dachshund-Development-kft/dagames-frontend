@@ -9,7 +9,6 @@ import ErrorPage from './pages/ErrorPage'
 import Register from './pages/registerPage'
 import LobbyPage from './pages/game/LobbyPage'
 import LogoutPage from './pages/logoutPage'
-import SettingsPage from './pages/game/settingsPage'
 import LoginPage from './pages/loginPage'
 import MainPage from './pages/game/mainPage'
 import InventoryPage from './pages/game/inventoryPage'
@@ -38,10 +37,6 @@ const router = createBrowserRouter([
   {
     path: '/register',
     element: <Register />,
-  },
-  {
-    path: '/settings',
-    element: <SettingsPage />,
   },
   {
     path: '/play',

@@ -160,7 +160,7 @@ const StorePage: React.FC = () => {
                     </div>
 
                     {showPopup && selectedItem && (
-                        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80">
+                        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                             <div className="bg-black bg-opacity-50 backdrop-blur-md p-6 rounded-lg w-full max-w-md max-h-[70vh] my-auto">
                                 <h2 className="text-2xl font-bold mb-4 text-white">{selectedItem.name}</h2>
                                 <p className="text-gray-300 mb-4">{selectedItem.description}</p>

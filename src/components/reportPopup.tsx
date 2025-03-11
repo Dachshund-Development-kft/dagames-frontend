@@ -39,7 +39,7 @@ const ReportPopup: React.FC<{ onClose: () => void, userToken: string }> = ({ onC
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div className="bg-black bg-opacity-70 backdrop-blur-md rounded-2xl shadow-xl p-6 w-full max-w-md">
+            <div className="bg-black bg-opacity-50 backdrop-blur-md rounded-2xl shadow-xl p-6 w-full max-w-md">
                 <h2 className="text-2xl font-bold text-white mb-4">Report an Issue or Suggest an Idea</h2>
                 <div className="space-y-4">
                     <div>
