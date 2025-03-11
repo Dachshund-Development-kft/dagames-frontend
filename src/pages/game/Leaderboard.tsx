@@ -3,6 +3,7 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NavLayoutGame from '../../components/nav';
+import Loading from '../../components/loading';
 
 interface LeaderboardEntry {
     username: string;
@@ -17,6 +18,7 @@ const LeaderboardPage: React.FC = () => {
     const [leaderboardData, setLeaderboardData] = useState<LeaderboardEntry[]>([]);
     const [sortMode, setSortMode] = useState<'wins' | 'played' | 'coins' | 'level' | 'rank'>('wins');
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         fetchLeaderboardData();
@@ -44,6 +46,7 @@ const LeaderboardPage: React.FC = () => {
             }));
 
             setLeaderboardData(combinedData);
+            setLoading(false);
         } catch (error) {
             console.error('Failed to fetch leaderboard data:', error);
             toast.error('Failed to load leaderboard data');
@@ -70,8 +73,12 @@ const LeaderboardPage: React.FC = () => {
         }
     });
 
+    if (loading) {
+        return <Loading />;
+    }
+
     return (
-        <div className="flex flex-col min-h-screen text-white bg-cover bg-repeat-y" style={{ backgroundImage: "url(/blobs.svg)" }}>
+        <div className="flex flex-col min-h-screen text-white bg-cover bg-repeat-y">
             <NavLayoutGame />
             <main className="flex flex-grow items-center justify-center py-16">
                 <div className="bg-black bg-opacity-50 backdrop-blur-md rounded-2xl shadow-xl p-6 w-full max-w-4xl text-center">

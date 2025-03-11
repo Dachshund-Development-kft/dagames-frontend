@@ -3,9 +3,9 @@ import axios from 'axios';
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const ReportPopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
-    const [type, setType] = useState<'backend' | 'frontend'>('frontend');
-    const [category, setCategory] = useState<'bug' | 'idea'>('bug');
+const ReportPopup: React.FC<{ onClose: () => void, userToken: string }> = ({ onClose, userToken }) => {
+    const [type, setType] = useState<'bug' | 'idea'>('bug');
+    const [from, setFrom] = useState<'frontend' | 'backend'>('frontend');
     const [description, setDescription] = useState('');
 
     const handleSubmit = async () => {
@@ -15,10 +15,14 @@ const ReportPopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         }
 
         try {
-            const response = await axios.post('https://api.dagames.online/v1/report', {
+            const response = await axios.post('https://api.dagames.online/v1/user/@me/report', {
                 type,
-                category,
+                from,
                 description,
+            }, {
+                headers: {
+                    Authorization: `Bearer ${userToken}`,
+                },
             });
 
             if (response.data.success) {
@@ -41,8 +45,8 @@ const ReportPopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     <div>
                         <label className="block text-sm font-medium text-gray-300">Is it backend or frontend?</label>
                         <select
-                            value={type}
-                            onChange={(e) => setType(e.target.value as 'backend' | 'frontend')}
+                            value={from}
+                            onChange={(e) => setFrom(e.target.value as 'frontend' | 'backend')}
                             className="mt-1 block w-full p-2 bg-gray-800 text-white rounded-lg focus:ring-blue-500 focus:border-blue-500"
                         >
                             <option value="frontend">Frontend</option>
@@ -52,8 +56,8 @@ const ReportPopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     <div>
                         <label className="block text-sm font-medium text-gray-300">Is it a bug or idea?</label>
                         <select
-                            value={category}
-                            onChange={(e) => setCategory(e.target.value as 'bug' | 'idea')}
+                            value={type}
+                            onChange={(e) => setType(e.target.value as 'bug' | 'idea')}
                             className="mt-1 block w-full p-2 bg-gray-800 text-white rounded-lg focus:ring-blue-500 focus:border-blue-500"
                         >
                             <option value="bug">Bug</option>
@@ -87,18 +91,18 @@ const ReportPopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 </div>
             </div>
             <ToastContainer
-                        position="top-right"
-                        autoClose={5000}
-                        hideProgressBar={false}
-                        newestOnTop={false}
-                        closeOnClick={false}
-                        rtl={false}
-                        pauseOnFocusLoss
-                        draggable
-                        pauseOnHover
-                        theme="dark"
-                        transition={Bounce}
-                    />
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+                transition={Bounce}
+            />
         </div>
     );
 };
