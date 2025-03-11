@@ -95,7 +95,7 @@ const NavLayoutGame: React.FC = () => {
                 </div>
                 
                 <button ref={menuButtonRef} onClick={() => setIsMenuOpen(!isMenuOpen)} className="ml-auto text-white focus:outline-none mr-3">☰</button>
-                <div ref={menuRef} style={{ transform: `translateX(${isMenuOpen ? 0 : 1500}px)`, transition: 'transform 0.3s ease-in-out', marginTop: '3.5rem' }} className="fixed top-0 right-0 h-42 rounded-lg w-64 bg-black bg-opacity-70 backdrop-blur-md " >
+                <div ref={menuRef} style={{ transform: `translatey(${isMenuOpen ? 0 : -500}px)`, transition: 'transform 0.3s ease-in-out', marginTop: '3.5rem' }} className="fixed top-0 right-0 h-42 rounded-lg w-64 bg-black bg-opacity-70 backdrop-blur-md " >
                     <nav className="flex flex-col items-start p-4 z-50">
                         {centerNavItems.map((item, index) => (
                             <div key={index} className={`flex flex-row items-center transition-opacity duration-300 ${location.pathname === item.path ? "opacity-100" : "opacity-50 hover:opacity-100"}`}>
