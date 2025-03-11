@@ -115,13 +115,7 @@ const PlayPage = () => {
                                 {user.badges.length > 0 ? (
                                     <div className="flex space-x-2">
                                         {user.badges.map((badge: any, index: number) => (
-                                            <img
-                                                key={index}
-                                                src={badge.icon}
-                                                alt={badge.name}
-                                                className="w-8 h-8"
-                                                title={badge.name}
-                                            />
+                                            <img key={index} src={badge.icon} alt={badge.name} className="w-8 h-8" title={badge.name} />
                                         ))}
                                     </div>
                                 ) : (
@@ -138,10 +132,7 @@ const PlayPage = () => {
 
             {showProfilePopout && user && (
                 <>
-                    <div
-                        className='fixed inset-0 bg-black bg-opacity-50 z-40'
-                        onClick={toggleProfilePopout}
-                    />
+                    <div className='fixed inset-0 bg-black bg-opacity-50 z-40' onClick={toggleProfilePopout} />
                     <ProfilePopout playerId={user.id} />
                 </>
             )}

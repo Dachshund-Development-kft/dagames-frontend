@@ -204,10 +204,7 @@ const PlayPageID: React.FC = () => {
                             <ul className='text-white'>
                                 {players.map((player, index) => (
                                     <li key={index} className='flex items-center gap-2 mb-2'>
-                                        <span
-                                            onClick={() => handlePlayerClick(player)}
-                                            style={{ color: readyPlayers.includes(player) ? 'green' : 'white', cursor: 'pointer' }}
-                                        >
+                                        <span onClick={() => handlePlayerClick(player)} style={{ color: readyPlayers.includes(player) ? 'green' : 'white', cursor: 'pointer' }} >
                                             {usernames[player] || 'Loading...'}
                                         </span>
                                     </li>
@@ -232,10 +229,7 @@ const PlayPageID: React.FC = () => {
 
                 {selectedPlayerId && (
                     <>
-                        <div
-                            className='fixed inset-0 bg-black bg-opacity-50 z-40'
-                            onClick={handleCloseProfilePopout}
-                        />
+                        <div className='fixed inset-0 bg-black bg-opacity-50 z-40' onClick={handleCloseProfilePopout} />
                         <ProfilePopout playerId={selectedPlayerId} />
                     </>
                 )}

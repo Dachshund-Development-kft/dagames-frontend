@@ -135,13 +135,7 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
                         <h3 className="text-xl font-bold text-white mb-4">Characters</h3>
                         <div className="flex space-x-4">
                             {characters.map((character) => (
-                                <div
-                                    key={character.id}
-                                    className={`cursor-pointer p-2 rounded-lg ${selectedCharacter === character.id ? 'bg-blue-500' : 'backdrop-blur-md'}`}
-                                    onClick={() => handleCharacterSelect(character.id)}
-                                    onMouseEnter={(e) => handleMouseEnter('character', character.id, character.stats, e)}
-                                    onMouseLeave={handleMouseLeave}
-                                >
+                                <div key={character.id} className={`cursor-pointer p-2 rounded-lg ${selectedCharacter === character.id ? 'bg-blue-500' : 'backdrop-blur-md'}`} onClick={() => handleCharacterSelect(character.id)} onMouseEnter={(e) => handleMouseEnter('character', character.id, character.stats, e)} onMouseLeave={handleMouseLeave} >
                                     <img src={character.image} alt={character.name} className="w-32 h-32 rounded-full object-cover" />
                                     <p className="text-white text-center">{character.name}</p>
                                 </div>
@@ -152,13 +146,7 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
                         <h3 className="text-xl font-bold text-white mb-4">Weapons</h3>
                         <div className="flex space-x-4">
                             {weapons.map((weapon) => (
-                                <div
-                                    key={weapon.id}
-                                    className={`cursor-pointer p-2 rounded-lg ${selectedWeapon === weapon.id ? 'bg-blue-500' : 'backdrop-blur-md'}`}
-                                    onClick={() => handleWeaponSelect(weapon.id)}
-                                    onMouseEnter={(e) => handleMouseEnter('weapon', weapon.id, weapon.stats, e)}
-                                    onMouseLeave={handleMouseLeave}
-                                >
+                                <div key={weapon.id} className={`cursor-pointer p-2 rounded-lg ${selectedWeapon === weapon.id ? 'bg-blue-500' : 'backdrop-blur-md'}`} onClick={() => handleWeaponSelect(weapon.id)} onMouseEnter={(e) => handleMouseEnter('weapon', weapon.id, weapon.stats, e)} onMouseLeave={handleMouseLeave} >
                                     <img src={weapon.image} alt={weapon.name} className="w-32 h-32 rounded-full object-cover mx-auto" />
                                     <p className="text-white text-center">{weapon.name}</p>
                                 </div>
