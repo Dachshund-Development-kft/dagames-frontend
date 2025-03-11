@@ -193,7 +193,7 @@ const PlayPageID: React.FC = () => {
         <>
             <main className='flex flex-col items-center justify-center min-h-screen'>
                 <NavLayoutGame />
-                <div className='flex flex-grow items-center justify-center gap-4'>
+                <div className='flex flex-grow items-center justify-center gap-4 px-4'>
                     <div className='bg-black bg-opacity-50 rounded-lg shadow-md backdrop-blur-md p-6'>
                         <h1 className='text-2xl text-white mb-4 text-center'>Lobby: <span className='font-bold'>{lobbyData.name}</span></h1>
                         <div className='overflow-y-auto max-h-[60vh] scrollbar-hide gap-4'>

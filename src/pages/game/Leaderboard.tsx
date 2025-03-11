@@ -26,7 +26,6 @@ const LeaderboardPage: React.FC = () => {
 
     const fetchLeaderboardData = async () => {
         try {
-            // Fetch data for all modes
             const [winsResponse, playedResponse, coinsResponse, levelResponse, rankResponse] = await Promise.all([
                 axios.get('https://api.dagames.online/v1/leaderboard?mode=wins'),
                 axios.get('https://api.dagames.online/v1/leaderboard?mode=played'),
@@ -35,7 +34,6 @@ const LeaderboardPage: React.FC = () => {
                 axios.get('https://api.dagames.online/v1/leaderboard?mode=rank'),
             ]);
 
-            // Combine all data into a single array
             const combinedData: LeaderboardEntry[] = winsResponse.data.map((entry: any) => ({
                 username: entry.username,
                 wins: entry.wins || 0,
@@ -78,15 +76,15 @@ const LeaderboardPage: React.FC = () => {
     }
 
     return (
-        <div className="flex flex-col min-h-screen text-white bg-cover bg-repeat-y">
+        <div className="flex flex-col min-h-screen text-white bg-cover bg-repeat-y ">
             <NavLayoutGame />
-            <main className="flex flex-grow items-center justify-center py-16">
+            <main className="flex flex-grow items-center justify-center py-16 px-4">
                 <div className="bg-black bg-opacity-50 backdrop-blur-md rounded-2xl shadow-xl p-6 w-full max-w-4xl text-center">
                     <h2 className="text-3xl font-bold bg-white bg-clip-text">
                         Leaderboard
                     </h2>
                     <div className="mt-10">
-                        <div className="flex gap-4 mb-4">
+                        <div className="flex flex-wrap gap-4 mb-4">
                             <button
                                 onClick={() => handleSort('wins')}
                                 className={`px-4 py-2 rounded-lg ${sortMode === 'wins' ? 'bg-blue-500' : 'bg-gray-700'} hover:bg-opacity-90 transition-all duration-300`}
@@ -118,6 +116,7 @@ const LeaderboardPage: React.FC = () => {
                                 Rank {sortMode === 'rank' && (sortDirection === 'asc' ? '↑' : '↓')}
                             </button>
                         </div>
+                        <div className="overflow-auto max-h-96">
                         <table className="w-full text-left">
                             <thead>
                                 <tr>
@@ -142,6 +141,8 @@ const LeaderboardPage: React.FC = () => {
                                 ))}
                             </tbody>
                         </table>
+
+                        </div>
                     </div>
                 </div>
             </main>
