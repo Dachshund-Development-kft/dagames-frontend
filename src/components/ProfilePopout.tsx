@@ -72,11 +72,22 @@ const ProfilePopout: React.FC<ProfilePopoutProps> = ({ playerId }) => {
         return <div>No player data found.</div>;
     }
 
-    const { username, levels, badges, rank, lastPlayed, pfp } = player;
+    // 2025-03-10T22:03:21.805Z -> 1d and 2h ago
+    const dateThing = (date: string) => {
+        const currentDate = new Date();
+        const lastPlayed = new Date(date);
+        const diff = currentDate.getTime() - lastPlayed.getTime();
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+        return `${days}d and ${hours}h ago`;
+    }
+
+    const { username, levels, rank, lastPlayed, pfp } = player;
+    const LastPlay = dateThing(lastPlayed);
 
     return (
-
-        <div className="absolute bg-black bg-opacity-70 p-4 rounded-lg shadow-lg z-50">
+        <div className="absolute bg-black bg-opacity-50 p-4 rounded-lg shadow-lg z-50 backdrop-blur-md">
             <h2 className="text-white text-lg font-bold">{username}</h2>
             <img src={pfp} alt={username} className="w-16 h-16 rounded-full" />
             <div className="mt-2">
@@ -87,24 +98,8 @@ const ProfilePopout: React.FC<ProfilePopoutProps> = ({ playerId }) => {
                     <div className="bg-blue-500 h-2 rounded-full" style={{ width: `${Math.min((levels.xp / levels.xpNeeded) * 100, 100)}%` }}></div>
                 </div>
                 <p className='text-white'>Rank: {rank}</p>
-                <p className='text-white'>Last Played: {lastPlayed}</p>
+                <p className='text-white'>Last Played: {LastPlay}</p>
             </div>
-            {/*
-            <div className="mt-2">
-                <h3 className="text-white font-semibold">Badges</h3>
-                <div className="flex gap-2">
-                    {badges.map((badge: any, index: number) => (
-                        <img
-                            key={index}
-                            src={badge.icon}
-                            alt={badge.name}
-                            className="w-8 h-8"
-                            title={badge.name}
-                        />
-                    ))}
-                </div>
-            </div>
-            */}
         </div>
     );
 };

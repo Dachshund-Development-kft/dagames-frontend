@@ -3,19 +3,18 @@ import React from 'react';
 interface ProgressBarProps {
     value: number;
     max: number;
-    startColor: string; // Starting color (e.g., red)
-    endColor: string;   // Ending color (e.g., green)
+    startColor: string;
+    endColor: string;
 }
 
 const ProgressBar: React.FC<ProgressBarProps> = ({ value, max, startColor, endColor }) => {
     const percentage = (value / max) * 100;
 
-    // Function to interpolate between two colors based on the percentage
     const interpolateColor = (start: string, end: string, percent: number) => {
         const startRGB = hexToRgb(start);
         const endRGB = hexToRgb(end);
 
-        if (!startRGB || !endRGB) return startColor; // Fallback to startColor if invalid hex
+        if (!startRGB || !endRGB) return startColor;
 
         const r = Math.round(startRGB.r + (endRGB.r - startRGB.r) * (percent / 100));
         const g = Math.round(startRGB.g + (endRGB.g - startRGB.g) * (percent / 100));
@@ -24,7 +23,6 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ value, max, startColor, endCo
         return `rgb(${r}, ${g}, ${b})`;
     };
 
-    // Helper function to convert hex color to RGB
     const hexToRgb = (hex: string) => {
         const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
         return result
@@ -36,7 +34,6 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ value, max, startColor, endCo
             : null;
     };
 
-    // Calculate the current color based on the percentage
     const currentColor = interpolateColor(startColor, endColor, percentage);
 
     return (

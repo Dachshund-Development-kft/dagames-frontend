@@ -136,7 +136,7 @@ const PlayPage: React.FC = () => {
                         {error && <div className="text-red-500 text-center mb-4">{error}</div>}
                         <div className="overflow-y-auto max-h-[60vh] scrollbar-hide grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4 w-full">
                                 {lobbies.map((lobby) => (
-                                    <div key={lobby.id} className="p-4 bg-black bg-opacity-70 rounded-lg shadow-md">
+                                    <div key={lobby.id} className="p-4 bg-black bg-opacity-50 rounded-lg shadow-md">
                                         <div className="flex justify-between items-center mb-2">
                                             <span className="font-medium text-lg text-white">{lobby.name}</span>
                                             <span className={`text-sm ${lobby.public ? 'text-green-400' : 'text-red-400'}`}>
@@ -158,7 +158,7 @@ const PlayPage: React.FC = () => {
                                                     type="password"
                                                     placeholder='Password'
                                                     id='pass'
-                                                    className="w-full p-2 bg-black bg-opacity-80 text-white rounded-md border border-gray-600"
+                                                    className="w-full p-2 bg-black bg-opacity-70 text-white rounded-md border border-gray-600"
                                                 />
                                             </div>
                                         )}
