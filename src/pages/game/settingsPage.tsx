@@ -11,7 +11,7 @@ const PlayPage = () => {
     const [loading, setLoading] = useState(true);
     const [lastMatchData, setLastMatchData] = useState<any>(null);
     const [isReportPopupOpen, setIsReportPopupOpen] = useState(false);
-    const [isLastMatchPopupOpen, setIsLastMatchPopupOpen] = useState(false); // State for last match popup
+    const [isLastMatchPopupOpen, setIsLastMatchPopupOpen] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -83,7 +83,7 @@ const PlayPage = () => {
 
                 const data = await response.json();
                 if (data.length > 0) {
-                    setLastMatchData(data[0]); // Set the most recent match
+                    setLastMatchData(data[0]);
                 }
             } catch (err) {
                 console.error('Error fetching last match data:', err);
@@ -96,11 +96,11 @@ const PlayPage = () => {
     }, []);
 
     const handleShowLastMatchPopup = () => {
-        setIsLastMatchPopupOpen(true); // Open the last match popup
+        setIsLastMatchPopupOpen(true);
     };
 
     const handleCloseLastMatchPopup = () => {
-        setIsLastMatchPopupOpen(false); // Close the last match popup
+        setIsLastMatchPopupOpen(false);
     };
 
     if (loading) {
