@@ -189,11 +189,11 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ id, name, icon, type, isE
                 <span className="text-white text-md font-bold">{name}</span>
                 <span className="text-gray-400 text-xs">{type}</span>
 
-                <div className="mt-2 text-xs text-gray-300">
+                <div className="mt-2 text-sm text-gray-300 mb-2">
                     {stats.power && <div>Power: {stats.power}</div>}
                     {stats.speed && <div>Speed: {stats.speed}</div>}
                     {stats.ability && <div>Ability: {stats.ability}</div>}
-                    {stats.defend && <div>Defend: {stats.defend}</div>}
+                    {stats.defend && <div>Defense: {stats.defend}</div>}
                     {stats.damage && <div>Damage: {stats.damage}</div>}
                     {stats.attack && <div>Attack: {stats.attack}</div>}
                     {stats.agility && <div>Agility: {stats.agility}</div>}

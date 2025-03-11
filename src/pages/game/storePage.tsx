@@ -124,39 +124,29 @@ const StorePage: React.FC = () => {
             <NavLayoutGame />
             <div className='flex flex-grow items-center justify-center gap-4 p-4 h-[calc(100vh-56px)]'>
                 <div className="flex flex-col items-center justify-center w-full max-w-[1400px] p-4">
-                    <ToastContainer
-                        position="top-right"
-                        autoClose={5000}
-                        hideProgressBar={false}
-                        newestOnTop={false}
-                        closeOnClick={false}
-                        rtl={false}
-                        pauseOnFocusLoss
-                        draggable
-                        pauseOnHover
-                        theme="dark"
-                        transition={Bounce}
-                    />
+                    <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick={false} rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="dark" transition={Bounce} />
                     <div className="self-start mb-4">
                         <p className="text-lg font-bold text-white">Coins: {coins}</p>
                     </div>
                     <h1 className="text-2xl font-bold mb-4 text-white">Shop Items</h1>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 overflow-y-auto scrollbar-hide">
-                        {shopItems.map((item) => (
-                            <div key={item._id} className="p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer relative bg-black bg-opacity-50 backdrop-blur-md" onClick={() => handleItemClick(item.id)} >
-                                {ownedItems.includes(item.id) && (
-                                    <div className="">
-                                        <span className="text-red-500 text-2xl font-bold">Owned</span>
-                                    </div>
-                                )}
-                                <h2 className="text-xl font-semibold text-white">{item.name}</h2>
-                                <p className="text-gray-500">{item.description}</p>
-                                <p className="text-green-600 font-bold">${item.price}</p>
-                                {item.image && (
-                                    <img src={item.image} alt={item.name} className="mt-4 rounded-full " />
-                                )}
-                            </div>
-                        ))}
+                    <div className="w-full overflow-y-auto scrollbar-hide" style={{ maxHeight: 'calc(100vh - 200px)' }}>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                            {shopItems.map((item) => (
+                                <div key={item._id} className="p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer relative bg-black bg-opacity-50 backdrop-blur-md" onClick={() => handleItemClick(item.id)} >
+                                    {ownedItems.includes(item.id) && (
+                                        <div className="">
+                                            <span className="text-red-500 text-2xl font-bold">Owned</span>
+                                        </div>
+                                    )}
+                                    <h2 className="text-xl font-semibold text-white">{item.name}</h2>
+                                    <p className="text-gray-500">{item.description}</p>
+                                    <p className="text-green-600 font-bold">${item.price}</p>
+                                    {item.image && (
+                                        <img src={item.image} alt={item.name} className="mt-4 rounded-full " />
+                                    )}
+                                </div>
+                            ))}
+                        </div>
                     </div>
 
                     {showPopup && selectedItem && (
