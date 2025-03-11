@@ -115,9 +115,6 @@ const PlayPage = () => {
                     <button onClick={() => setIsReportPopupOpen(true)} className="mx-auto px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-300">
                         Report a bug
                     </button>
-                    <button onClick={handleShowLastMatchPopup} className="mx-auto px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition duration-300" >
-                        Show Last Match
-                    </button>
                     <h1 className='mx-auto font-bold px-4 py-2'>
                         <Link to="/tos" >
                             Terms of service and the other things
