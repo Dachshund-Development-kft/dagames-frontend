@@ -122,8 +122,8 @@ const PlayPage = () => {
                         Terms of service and the other things
                     </Link>
                 </h1>
-                {isReportPopupOpen && (
-                    <ReportPopup onClose={() => setIsReportPopupOpen(false)} />
+                {isReportPopupOpen && user && (
+                    <ReportPopup onClose={() => setIsReportPopupOpen(false)} userToken={user.id} />
                 )}
             </div>
 
