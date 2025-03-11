@@ -3,6 +3,9 @@ import { FaUser, FaLock } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import AlertLayout from '../components/alert';
 import { login } from '../api/login';
+import { ToastContainer, toast, Bounce } from 'react-toastify';
+import axios from 'axios';
+import 'react-toastify/dist/ReactToastify.css';
 
 const LoginPage: React.FC = () => {
     const [username, setUsername] = useState('');
@@ -19,19 +22,32 @@ const LoginPage: React.FC = () => {
 
         try {
             const response = await login(username, password);
-            
+
             if (response.token) {
                 localStorage.setItem('token', response.token);
                 window.location.href = '/';
+            } else {
+                toast.error('Invalid username or password');
             }
-        } catch (err) {
-            console.error(err);
+        } catch (error) {
+            console.error(error);
+            if (axios.isAxiosError(error)) {
+                if (error.response) {
+                    toast.error(error.response.data.message || 'An error occurred during login');
+                } else if (error.request) {
+                    toast.error('Network error. Please check your connection.');
+                } else {
+                    toast.error('An unexpected error occurred');
+                }
+            } else {
+                toast.error('An unexpected error occurred');
+            }
         }
     };
 
     return (
         <div className="flex flex-col min-h-screen text-white bg-cover bg-repeat-y bg-[url('/blobs.svg')]">
-            <AlertLayout/>
+            <AlertLayout />
             <main className="flex flex-grow items-center justify-center py-16">
                 <form onSubmit={handleLogin} className="bg-black bg-opacity-50 backdrop-blur-md rounded-2xl shadow-xl p-6 w-full max-w-sm text-center">
                     <h2 className="text-3xl font-bold text-white bg-clip-text text-transparent">
@@ -49,10 +65,23 @@ const LoginPage: React.FC = () => {
                         <button type="submit" className="bg-[#0F1015] text-white px-5 py-3 rounded-lg shadow-lg flex items-center justify-center gap-2 hover:bg-opacity-90 transition-all duration-300 w-full mt-4">
                             Login
                         </button>
-                        <p>Don't have an account? <Link to="/register" className="text-blue-400 hover:underline">Sign Up</Link></p>
+                        <p>Don't have an account? <Link to="/register" className="text-blue-400 hover:underline">Register</Link></p>
                     </div>
                 </form>
             </main>
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+                transition={Bounce}
+            />
         </div>
     );
 }

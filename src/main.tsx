@@ -19,11 +19,21 @@ import VerifyPage from './pages/verifyPage'
 import { Analytics } from "@vercel/analytics/react"
 import PlayPageID from './pages/game/lobbyPage[id]'
 import GamePage from './pages/game/gamePage'
+import LeaderboardPage from './pages/game/Leaderboard'
+import TermsOfService from './pages/game/tos'
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <MainPage />,
+  },
+  {
+    path: '/leaderboard',
+    element: <LeaderboardPage />,
+  },
+  {
+    path: '/tos',
+    element: <TermsOfService />,
   },
   {
     path: '/register',

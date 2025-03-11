@@ -59,7 +59,7 @@ const PlayPage: React.FC = () => {
                         localStorage.removeItem('lobby_id')
                         return window.location.href = '/play';
                     } else {
-                        console.log('Data niggered...')
+                        console.log('Data deleted...')
                         localStorage.removeItem('lobby_id')
                     }
                 });
@@ -144,7 +144,7 @@ const PlayPage: React.FC = () => {
                                             </span>
                                         </div>
                                         <div className="text-sm text-gray-300 mb-2">
-                                            Lobby rang: {lobby.rank}
+                                            Lobby rank: {lobby.rank}
                                         </div>
                                         <div className="text-sm text-gray-300 mb-2">
                                             Owner: {lobby.owner}

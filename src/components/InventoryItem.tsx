@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import { character, weapon } from '../api/select';
 
 interface InventoryItemProps {
@@ -77,7 +78,6 @@ const getRarityColor = (rarity: number): string => {
 
 const InventoryItem: React.FC<InventoryItemProps> = ({ id, name, icon, type, isEquipped, onEquip, stats = {} }) => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [error, setError] = useState<string | null>(null);
     const [itemStats, setItemStats] = useState<ItemStats>({});
     const [rarityColor, setRarityColor] = useState<string>('green');
 
@@ -103,7 +103,7 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ id, name, icon, type, isE
             processItemData(itemData);
         } catch (error) {
             console.error('Error fetching item data:', error);
-            setError('Failed to load item data');
+            toast.error('Failed to load item data');
         }
     }, [debouncedId, stats]);
 
@@ -163,15 +163,15 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ id, name, icon, type, isE
                 setIsDialogOpen(false);
                 if (onEquip) onEquip();
             } else {
-                setError(response.data.message || 'Failed to equip item');
+                toast.error(response.data.message || 'Failed to equip item');
                 console.error('Failed to equip item:', response.data.message);
             }
         } catch (error) {
             if (axios.isAxiosError(error)) {
-                setError(error.response?.data?.message || error.message);
+                toast.error(error.response?.data?.message || error.message);
                 console.error('Error equipping item:', error.message);
             } else {
-                setError('An unexpected error occurred');
+                toast.error('An unexpected error occurred');
                 console.error('Error equipping item:', error);
             }
         }
@@ -180,7 +180,6 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ id, name, icon, type, isE
     const handleCloseDialog = useCallback((e: React.MouseEvent) => {
         e.stopPropagation();
         setIsDialogOpen(false);
-        setError(null);
     }, []);
 
     return (
@@ -208,7 +207,6 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ id, name, icon, type, isE
                     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50" onClick={handleCloseDialog}>
                         <div className="p-4 rounded-lg bg-black bg-opacity-50 backdrop-blur-md" onClick={(e) => e.stopPropagation()}>
                             <h2 className="text-white text-lg text-center font-bold">{name}</h2>
-                            {error && <div className="text-red-500 text-sm mb-2 text-center">{error}</div>}
                             <button className="mt-5 px-4 py-2 bg-blue-500 text-white rounded m-2" onClick={handleEquip}>Equip</button>
                             <button className="mt-5 ml-2 px-4 py-2 bg-gray-500 text-white rounded m-2" onClick={handleCloseDialog}>Close</button>
                         </div>

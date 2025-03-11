@@ -3,6 +3,9 @@ import { FaUser, FaLock } from 'react-icons/fa';
 import { MdAlternateEmail } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { register } from '../api/register';
+import axios from 'axios';
+import { ToastContainer, toast, Bounce } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const RegisterPage: React.FC = () => {
     const handleRegister = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -12,19 +15,45 @@ const RegisterPage: React.FC = () => {
         const password = (document.getElementById('password') as HTMLInputElement)?.value || '';
         const passwordAgain = (document.getElementById('passwordAgain') as HTMLInputElement)?.value || '';
         const email = (document.getElementById('email') as HTMLInputElement)?.value || '';
+        const tosChecked = (document.getElementById('tos') as HTMLInputElement)?.checked;
 
+        // Validate passwords match
         if (password !== passwordAgain) {
-            alert("Passwords do not match");
+            toast.error("Passwords do not match");
             return;
         }
 
-        const success = await register(username, password, email);
-
-        if (success) {
-            alert("User registered");
-            window.location.href = '/verify';
+        // Validate ToS checkbox
+        if (!tosChecked) {
+            toast.error("You must agree to the Terms of Service to register.");
+            return;
         }
-    }
+
+        try {
+            const success = await register(username, password, email);
+
+            if (success) {
+                toast.success("User registered successfully");
+                window.location.href = '/verify';
+            } else {
+                toast.error("Registration failed. Please try again.");
+            }
+        } catch (error) {
+            console.error(error);
+            if (axios.isAxiosError(error)) {
+                if (error.response) {
+                    toast.error(error.response.data.message || 'An error occurred during registration');
+                } else if (error.request) {
+                    toast.error('Network error. Please check your connection.');
+                } else {
+                    toast.error('An unexpected error occurred');
+                }
+            } else {
+                toast.error('An unexpected error occurred');
+            }
+        }
+    };
+
     return (
         <div className="flex flex-col min-h-screen text-white bg-cover bg-repeat-y" style={{ backgroundImage: "url(/blobs.svg)" }}>
             <main className="flex flex-grow items-center justify-center py-16">
@@ -49,15 +78,47 @@ const RegisterPage: React.FC = () => {
                             <FaLock className="text-gray-500 mr-2" />
                             <input id='passwordAgain' type="password" placeholder="Password again " className="bg-transparent flex-1 outline-none focus:ring-0" />
                         </div>
-                        <button onClick={handleRegister} type="submit" className="bg-[#0F1015] text-white px-5 py-3 rounded-lg shadow-lg flex items-center justify-center gap-2 hover:opacity-90 transition-all duration-300 w-full mt-4">
+                        {/* ToS Checkbox */}
+                        <div className="flex items-center">
+                            <input id="tos" type="checkbox" className="mr-2" />
+                            <label htmlFor="tos" className="text-xs text-gray-400">
+                                By registering you agree to our{' '}
+                                <Link to="/tos" className="text-blue-400 hover:underline">
+                                    Terms of Service
+                                </Link>
+                            </label>
+                        </div>
+                        <button
+                            onClick={handleRegister}
+                            type="submit"
+                            className="bg-[#0F1015] text-white px-5 py-3 rounded-lg shadow-lg flex items-center justify-center gap-2 hover:opacity-90 transition-all duration-300 w-full mt-4"
+                        >
                             Register
                         </button>
-                        <p>Have an account? <Link to="/login" className="text-blue-400 hover:underline">Log in</Link></p>
+                        <p>
+                            Have an account?{' '}
+                            <Link to="/login" className="text-blue-400 hover:underline">
+                                Log in
+                            </Link>
+                        </p>
                     </div>
                 </form>
             </main>
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+                transition={Bounce}
+            />
         </div>
     );
-}
+};
 
 export default RegisterPage;

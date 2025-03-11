@@ -5,6 +5,7 @@ import socket from '../../api/socket';
 import Loading from '../../components/loading';
 import { lobbyId } from '../../api/lobby';
 import { user } from '../../api/me';
+import ProfilePopout from '../../components/ProfilePopout';
 
 const PlayPageID: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -15,6 +16,8 @@ const PlayPageID: React.FC = () => {
     const [readyPlayers, setReadyPlayers] = useState<string[]>([]);
     const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
     const [usernames, setUsernames] = useState<{ [key: string]: string }>({});
+    const [countdown, setCountdown] = useState<number>(0);
+    const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
 
     useEffect(() => {
         if (!socket) {
@@ -37,8 +40,6 @@ const PlayPageID: React.FC = () => {
         };
 
         const handleCountdown = (data: any) => {
-            console.log(data.message);
-
             if (data.success) {
                 const id = data.id;
                 const token = data.token;
@@ -48,8 +49,12 @@ const PlayPageID: React.FC = () => {
                 localStorage.setItem('game_id', id);
                 localStorage.setItem('game_token', token);
                 window.location.href = `/game/${id}`;
+            } else if (data.message > 0 && data.message <= 5) {
+                console.log(`Game starting in ${data.message} seconds!`);
+                setCountdown(data.message);
             } else {
-                console.log('Countdown failed');
+                console.log('Failed to start game');
+                setCountdown(0);
             }
         };
 
@@ -155,7 +160,7 @@ const PlayPageID: React.FC = () => {
 
         setTimeout(() => {
             setIsButtonDisabled(false);
-        }, 3000);
+        }, 500);
     };
 
     const handleUnready = async () => {
@@ -165,7 +170,15 @@ const PlayPageID: React.FC = () => {
 
         setTimeout(() => {
             setIsButtonDisabled(false);
-        }, 3000);
+        }, 500);
+    };
+
+    const handlePlayerClick = (playerId: string) => {
+        setSelectedPlayerId(playerId);
+    };
+
+    const handleCloseProfilePopout = () => {
+        setSelectedPlayerId(null);
     };
 
     if (loading) {
@@ -184,13 +197,19 @@ const PlayPageID: React.FC = () => {
                     <div className='bg-black bg-opacity-50 rounded-lg shadow-md backdrop-blur-md p-6'>
                         <h1 className='text-2xl text-white mb-4 text-center'>Lobby: <span className='font-bold'>{lobbyData.name}</span></h1>
                         <div className='overflow-y-auto max-h-[60vh] scrollbar-hide gap-4'>
+                            {countdown > 0 && (
+                                <h1 className='text-xl text-white mb-4 text-center'>Countdown: {countdown}</h1>
+                            )}
                             <h2 className='text-xl text-white mb-4 text-center'>Players in Lobby</h2>
                             <ul className='text-white'>
                                 {players.map((player, index) => (
                                     <li key={index} className='flex items-center gap-2 mb-2'>
-                                            <span style={{ color: readyPlayers.includes(player) ? 'green' : 'white' }}>
-                                                {usernames[player] || 'Loading...'}
-                                            </span>
+                                        <span
+                                            onClick={() => handlePlayerClick(player)}
+                                            style={{ color: readyPlayers.includes(player) ? 'green' : 'white', cursor: 'pointer' }}
+                                        >
+                                            {usernames[player] || 'Loading...'}
+                                        </span>
                                     </li>
                                 ))}
                             </ul>
@@ -210,6 +229,16 @@ const PlayPageID: React.FC = () => {
                         </div>
                     </div>
                 </div>
+
+                {selectedPlayerId && (
+                    <>
+                        <div
+                            className='fixed inset-0 bg-black bg-opacity-50 z-40'
+                            onClick={handleCloseProfilePopout}
+                        />
+                        <ProfilePopout playerId={selectedPlayerId} />
+                    </>
+                )}
             </main>
         </>
     );

@@ -1,24 +1,46 @@
 import React, { useEffect } from 'react';
 import { MdAlternateEmail } from 'react-icons/md';
 import { verify } from '../api/verify';
+import axios from 'axios';
+import { ToastContainer, toast, Bounce } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const VerifyPage: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             const urlParams = new URLSearchParams(window.location.search);
             const code = urlParams.get('code');
-
             if (code) {
                 try {
                     const response = await verify(code);
                     if (response.success) {
-                        window.location.href = '/login';
+                        toast.success("Verification successful! Redirecting to login...");
+                        setTimeout(() => {
+                            window.location.href = '/login';
+                        }, 2000);
+                    } else {
+                        toast.error(response.message || "Verification failed. Please try again.");
                     }
                 } catch (error) {
                     console.error('Failed to verify:', error);
+                    if (axios.isAxiosError(error)) {
+                        if (axios.isAxiosError(error)) {
+                            if (error.response) {
+                                toast.error(error.response.data.message || 'An error occurred during verification');
+                            } else if (error.request) {
+                                toast.error('Network error. Please check your connection.');
+                            } else {
+                                toast.error('An unexpected error occurred');
+                            }
+                        } else {
+                            toast.error('An unexpected error occurred');
+                        }
+                    } else {
+                        toast.error('An unexpected error occurred');
+                    }
                 }
             }
-        }
+        };
 
         fetchData();
     }, []);
@@ -30,12 +52,28 @@ const VerifyPage: React.FC = () => {
         try {
             const response = await verify(code);
             if (response.success) {
-                window.location.href = '/login';
+                toast.success("Verification successful! Redirecting to login...");
+                setTimeout(() => {
+                    window.location.href = '/login';
+                }, 2000); 
+            } else {
+                toast.error(response.message || "Verification failed. Please try again.");
             }
         } catch (error) {
             console.error('Failed to verify:', error);
+            if (axios.isAxiosError(error)) {
+                if (error.response) {
+                    toast.error(error.response.data.message || 'An error occurred during verification');
+                } else if (error.request) {
+                    toast.error('Network error. Please check your connection.');
+                } else {
+                    toast.error('An unexpected error occurred');
+                }
+            } else {
+                toast.error('An unexpected error occurred');
+            }
         }
-    }
+    };
 
     return (
         <div className="flex flex-col min-h-screen text-white bg-cover bg-repeat-y" style={{ backgroundImage: "url(/blobs.svg)" }}>
@@ -56,8 +94,21 @@ const VerifyPage: React.FC = () => {
                     </div>
                 </form>
             </main>
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+                transition={Bounce}
+            />
         </div>
     );
-}
+};
 
 export default VerifyPage;

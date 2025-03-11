@@ -4,6 +4,8 @@ import { me } from '../../api/me';
 import InventoryItem from '../../components/InventoryItem';
 import { inventory } from '../../api/inventory';
 import Loading from '../../components/loading';
+import { ToastContainer, Bounce  } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface InventoryItemProps {
     id: number;
@@ -66,13 +68,15 @@ const InventoryPage: React.FC = () => {
         });
     }, [inventoryData]);
 
-    if (loading) return <Loading />;
+    if (loading) {
+        return <Loading />;
+    }
 
     return (
         <main className='flex flex-col items-center justify-center min-h-screen overflow-hidden'>
             <NavLayoutGame />
-            <div className='flex flex-grow items-center justify-center w-full max-w-[1400px] p-4'>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 2xl:grid-cols-6 gap-4 w-full h-[calc(100vh-200px)] overflow-y-auto p-4 scrollbar-hide">
+            <div className='flex flex-grow items-center justify-center w-full max-w-[1400px]'>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 2xl:grid-cols-6 gap-4 w-full h-[calc(100vh-56px)] overflow-y-auto p-4 scrollbar-hide">
                     {sortedInventoryData.map(item => (
                         <InventoryItem
                             key={item.id}
@@ -87,6 +91,19 @@ const InventoryPage: React.FC = () => {
                     ))}
                 </div>
             </div>
+            <ToastContainer
+                        position="top-right"
+                        autoClose={5000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick={false}
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                        theme="dark"
+                        transition={Bounce}
+                    />
         </main>
     );
 };
