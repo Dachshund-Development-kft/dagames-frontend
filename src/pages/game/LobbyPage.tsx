@@ -23,7 +23,6 @@ const PlayPage: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    // Function to fetch lobbies
     const fetchLobbies = async () => {
         const token = localStorage.getItem('token');
 
@@ -44,13 +43,8 @@ const PlayPage: React.FC = () => {
     };
 
     useEffect(() => {
-        // Fetch lobbies immediately when the component mounts
         fetchLobbies();
-
-        // Set up an interval to fetch lobbies every second
         const intervalId = setInterval(fetchLobbies, 1000);
-
-        // Clean up the interval when the component unmounts
         return () => clearInterval(intervalId);
     }, []);
 
