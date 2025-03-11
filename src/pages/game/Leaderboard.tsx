@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NavLayoutGame from '../../components/nav';
 import Loading from '../../components/loading';
@@ -85,34 +85,19 @@ const LeaderboardPage: React.FC = () => {
                     </h2>
                     <div className="mt-10">
                         <div className="flex flex-wrap gap-4 mb-4">
-                            <button
-                                onClick={() => handleSort('wins')}
-                                className={`px-4 py-2 rounded-lg ${sortMode === 'wins' ? 'bg-blue-500' : 'bg-gray-700'} hover:bg-opacity-90 transition-all duration-300`}
-                            >
+                            <button onClick={() => handleSort('wins')} className={`px-4 py-2 rounded-lg ${sortMode === 'wins' ? 'bg-blue-500' : 'bg-gray-700'} hover:bg-opacity-90 transition-all duration-300`} >
                                 Wins {sortMode === 'wins' && (sortDirection === 'asc' ? '↑' : '↓')}
                             </button>
-                            <button
-                                onClick={() => handleSort('played')}
-                                className={`px-4 py-2 rounded-lg ${sortMode === 'played' ? 'bg-blue-500' : 'bg-gray-700'} hover:bg-opacity-90 transition-all duration-300`}
-                            >
+                            <button onClick={() => handleSort('played')} className={`px-4 py-2 rounded-lg ${sortMode === 'played' ? 'bg-blue-500' : 'bg-gray-700'} hover:bg-opacity-90 transition-all duration-300`} >
                                 Played {sortMode === 'played' && (sortDirection === 'asc' ? '↑' : '↓')}
                             </button>
-                            <button
-                                onClick={() => handleSort('coins')}
-                                className={`px-4 py-2 rounded-lg ${sortMode === 'coins' ? 'bg-blue-500' : 'bg-gray-700'} hover:bg-opacity-90 transition-all duration-300`}
-                            >
+                            <button onClick={() => handleSort('coins')} className={`px-4 py-2 rounded-lg ${sortMode === 'coins' ? 'bg-blue-500' : 'bg-gray-700'} hover:bg-opacity-90 transition-all duration-300`} >
                                 Coins {sortMode === 'coins' && (sortDirection === 'asc' ? '↑' : '↓')}
                             </button>
-                            <button
-                                onClick={() => handleSort('level')}
-                                className={`px-4 py-2 rounded-lg ${sortMode === 'level' ? 'bg-blue-500' : 'bg-gray-700'} hover:bg-opacity-90 transition-all duration-300`}
-                            >
+                            <button onClick={() => handleSort('level')} className={`px-4 py-2 rounded-lg ${sortMode === 'level' ? 'bg-blue-500' : 'bg-gray-700'} hover:bg-opacity-90 transition-all duration-300`} >
                                 Level {sortMode === 'level' && (sortDirection === 'asc' ? '↑' : '↓')}
                             </button>
-                            <button
-                                onClick={() => handleSort('rank')}
-                                className={`px-4 py-2 rounded-lg ${sortMode === 'rank' ? 'bg-blue-500' : 'bg-gray-700'} hover:bg-opacity-90 transition-all duration-300`}
-                            >
+                            <button onClick={() => handleSort('rank')} className={`px-4 py-2 rounded-lg ${sortMode === 'rank' ? 'bg-blue-500' : 'bg-gray-700'} hover:bg-opacity-90 transition-all duration-300`} >
                                 Rank {sortMode === 'rank' && (sortDirection === 'asc' ? '↑' : '↓')}
                             </button>
                         </div>
@@ -146,18 +131,7 @@ const LeaderboardPage: React.FC = () => {
                     </div>
                 </div>
             </main>
-            <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick={false}
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="dark"
-            />
+            <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick={false} rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="dark" transition={Bounce} />
         </div>
     );
 };

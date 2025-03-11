@@ -72,7 +72,6 @@ const ProfilePopout: React.FC<ProfilePopoutProps> = ({ playerId }) => {
         return <div>No player data found.</div>;
     }
 
-    // 2025-03-10T22:03:21.805Z -> 1d and 2h ago
     const dateThing = (date: string) => {
         const currentDate = new Date();
         const lastPlayed = new Date(date);

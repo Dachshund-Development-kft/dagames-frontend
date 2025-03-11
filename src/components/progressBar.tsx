@@ -38,13 +38,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ value, max, startColor, endCo
 
     return (
         <div className="w-full h-4 bg-gray-700 rounded-full overflow-hidden">
-            <div
-                className="h-full rounded-full"
-                style={{
-                    width: `${percentage}%`,
-                    backgroundColor: currentColor,
-                }}
-            />
+            <div className="h-full rounded-full" style={{  width: `${percentage}%`, backgroundColor: currentColor, }} />
         </div>
     );
 };

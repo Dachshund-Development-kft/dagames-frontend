@@ -78,32 +78,11 @@ const InventoryPage: React.FC = () => {
             <div className='flex flex-grow items-center justify-center w-full max-w-[1400px]'>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 w-full h-[calc(100vh-56px)] overflow-y-auto p-8 scrollbar-hide">
                     {sortedInventoryData.map(item => (
-                        <InventoryItem
-                            key={item.id}
-                            id={item.id.toString()}
-                            name={item.name}
-                            icon={item.icon}
-                            type={item.type}
-                            isEquipped={item.equipped}
-                            stats={item.stats}
-                            onEquip={fetchInventoryData}
-                        />
+                        <InventoryItem key={item.id} id={item.id.toString()} name={item.name}  icon={item.icon} type={item.type} isEquipped={item.equipped} stats={item.stats} onEquip={fetchInventoryData}  />
                     ))}
                 </div>
             </div>
-            <ToastContainer
-                        position="top-right"
-                        autoClose={5000}
-                        hideProgressBar={false}
-                        newestOnTop={false}
-                        closeOnClick={false}
-                        rtl={false}
-                        pauseOnFocusLoss
-                        draggable
-                        pauseOnHover
-                        theme="dark"
-                        transition={Bounce}
-                    />
+            <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick={false} rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="dark" transition={Bounce} />
         </main>
     );
 };

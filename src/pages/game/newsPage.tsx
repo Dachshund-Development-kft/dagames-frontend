@@ -68,11 +68,7 @@ const InventoryPage: React.FC = () => {
                                 </div>
                                 <br />
                                 <div className="flex items-center justify-center mb-6">
-                                    <img
-                                        src={item.author.avatar}
-                                        alt={item.author.name}
-                                        className="w-10 sm:w-12 md:w-14 h-10 sm:h-12 md:h-14 rounded-full mr-3"
-                                    />
+                                    <img src={item.author.avatar}  alt={item.author.name} className="w-10 sm:w-12 md:w-14 h-10 sm:h-12 md:h-14 rounded-full mr-3" />
                                     <span className="text-sm sm:text-base md:text-lg">{item.author.name}</span>
                                 </div>
                             </div>

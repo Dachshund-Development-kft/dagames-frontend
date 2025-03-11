@@ -44,65 +44,33 @@ const ReportPopup: React.FC<{ onClose: () => void, userToken: string }> = ({ onC
                 <div className="space-y-4">
                     <div>
                         <label className="block text-sm font-medium text-gray-300">Is it backend or frontend?</label>
-                        <select
-                            value={from}
-                            onChange={(e) => setFrom(e.target.value as 'frontend' | 'backend')}
-                            className="mt-1 block w-full p-2 bg-gray-800 text-white rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                        >
+                        <select value={from} onChange={(e) => setFrom(e.target.value as 'frontend' | 'backend')} className="mt-1 block w-full p-2 bg-gray-800 text-white rounded-lg focus:ring-blue-500 focus:border-blue-500" >
                             <option value="frontend">Frontend</option>
                             <option value="backend">Backend</option>
                         </select>
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-300">Is it a bug or idea?</label>
-                        <select
-                            value={type}
-                            onChange={(e) => setType(e.target.value as 'bug' | 'idea')}
-                            className="mt-1 block w-full p-2 bg-gray-800 text-white rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                        >
+                        <select value={type} onChange={(e) => setType(e.target.value as 'bug' | 'idea')} className="mt-1 block w-full p-2 bg-gray-800 text-white rounded-lg focus:ring-blue-500 focus:border-blue-500" >
                             <option value="bug">Bug</option>
                             <option value="idea">Idea</option>
                         </select>
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-300">Description</label>
-                        <textarea
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            className="mt-1 block w-full p-2 bg-gray-800 text-white rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                            rows={4}
-                            placeholder="Provide a detailed description..."
-                        />
+                        <textarea value={description} onChange={(e) => setDescription(e.target.value)} className="mt-1 block w-full p-2 bg-gray-800 text-white rounded-lg focus:ring-blue-500 focus:border-blue-500" rows={4} placeholder="Provide a detailed description..." />
                     </div>
                     <div className="flex justify-end gap-2">
-                        <button
-                            onClick={onClose}
-                            className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition duration-300"
-                        >
+                        <button onClick={onClose} className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition duration-300" >
                             Cancel
                         </button>
-                        <button
-                            onClick={handleSubmit}
-                            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300"
-                        >
+                        <button onClick={handleSubmit} className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300" >
                             Submit
                         </button>
                     </div>
                 </div>
             </div>
-            <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick={false}
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="dark"
-                transition={Bounce}
-            />
+            <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick={false} rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="dark" transition={Bounce} />
         </div>
     );
 };

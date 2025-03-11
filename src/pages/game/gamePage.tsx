@@ -200,7 +200,7 @@ const GamePage: React.FC = () => {
                         <div className='bg-black bg-opacity-50 p-4 rounded-lg'>
                             {playerInfo && enemyInfo && (
                                 <div className='flex justify-center items-center gap-8 mt-16'>
-                                    <img src={playerInfo.character.icon} alt={playerInfo.character.name} className='w-32 h-32' style={{ WebkitTransform: 'scaleX(-1)', transform: 'scaleX(-1)' }}  />
+                                    <img src={playerInfo.character.icon} alt={playerInfo.character.name} className='w-32 h-32' style={{ WebkitTransform: 'scaleX(-1)', transform: 'scaleX(-1)' }}   />
                                     <img src={enemyInfo.character.icon} alt={enemyInfo.character.name} className='w-32 h-32' />
                                 </div>
                             )}
@@ -216,29 +216,17 @@ const GamePage: React.FC = () => {
                                     </p>
                                 ) : (
                                     <div className='mt-8'>
-                                        <button
-                                            className='bg-blue-500 text-white px-6 py-3 rounded-lg mr-4 hover:bg-blue-600 transition-colors'
-                                            onClick={() => handleAction('normal_attack')}
-                                        >
+                                        <button className='bg-blue-500 text-white px-6 py-3 rounded-lg mr-4 hover:bg-blue-600 transition-colors' onClick={() => handleAction('normal_attack')} >
                                             Normal attack
                                         </button>
-                                        <button
-                                            className='bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-600 transition-colors'
-                                            onClick={() => handleAction('strong_attack')}
-                                        >
+                                        <button className='bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-600 transition-colors' onClick={() => handleAction('strong_attack')} >
                                             Special attack
                                         </button>
-                                        <button
-                                            className='bg-yellow-500 text-white px-6 py-3 rounded-lg hover:bg-yellow-600 transition-colors'
-                                            onClick={() => handleAction('weak_attack')}
-                                        >
+                                        <button className='bg-yellow-500 text-white px-6 py-3 rounded-lg hover:bg-yellow-600 transition-colors' onClick={() => handleAction('weak_attack')} >
                                             Weak attack
                                         </button>
 
-                                        <button
-                                            className='bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition-colors'
-                                            onClick={() => handleAction('defend')}
-                                        >
+                                        <button className='bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition-colors' onClick={() => handleAction('defend')} >
                                             Defend
                                         </button>
                                     </div>
@@ -282,10 +270,7 @@ const GamePage: React.FC = () => {
 
                     {selectedPlayerId && (
                         <>
-                            <div
-                                className='fixed inset-0 bg-black bg-opacity-50 z-40'
-                                onClick={handleCloseProfilePopout}
-                            />
+                            <div className='fixed inset-0 bg-black bg-opacity-50 z-40' onClick={handleCloseProfilePopout} />
                             <ProfilePopout playerId={selectedPlayerId} />
                         </>
                     )}
@@ -355,29 +340,17 @@ const GamePage: React.FC = () => {
                             </p>
                         ) : (
                             <div className='mt-8'>
-                                <button
-                                    className='bg-blue-500 text-white px-6 py-3 rounded-lg mr-4 hover:bg-blue-600 transition-colors'
-                                    onClick={() => handleAction('normal_attack')}
-                                >
+                                <button className='bg-blue-500 text-white px-6 py-3 rounded-lg mr-4 hover:bg-blue-600 transition-colors' onClick={() => handleAction('normal_attack')} >
                                     Normal attack
                                 </button>
-                                <button
-                                    className='bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-600 transition-colors'
-                                    onClick={() => handleAction('strong_attack')}
-                                >
+                                <button className='bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-600 transition-colors' onClick={() => handleAction('strong_attack')} >
                                     Special attack
                                 </button>
-                                <button
-                                    className='bg-yellow-500 text-white px-6 py-3 rounded-lg hover:bg-yellow-600 transition-colors'
-                                    onClick={() => handleAction('weak_attack')}
-                                >
+                                <button className='bg-yellow-500 text-white px-6 py-3 rounded-lg hover:bg-yellow-600 transition-colors' onClick={() => handleAction('weak_attack')} >
                                     Weak attack
                                 </button>
 
-                                <button
-                                    className='bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition-colors'
-                                    onClick={() => handleAction('defend')}
-                                >
+                                <button className='bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition-colors' onClick={() => handleAction('defend')} >
                                     Defend
                                 </button>
                             </div>
@@ -386,10 +359,7 @@ const GamePage: React.FC = () => {
                 </div>
                 {selectedPlayerId && (
                     <>
-                        <div
-                            className='fixed inset-0 bg-black bg-opacity-50 z-40'
-                            onClick={handleCloseProfilePopout}
-                        />
+                        <div className='fixed inset-0 bg-black bg-opacity-50 z-40' onClick={handleCloseProfilePopout} />
                         <ProfilePopout playerId={selectedPlayerId} />
                     </>
                 )}
