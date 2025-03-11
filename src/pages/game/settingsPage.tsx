@@ -108,23 +108,25 @@ const PlayPage = () => {
     }
 
     return (
-        <main className='flex flex-col items-center justify-center min-h-screen'>
+        <main className='flex flex-col items-center justify-center min-h-screen overflow-hidden'>
             <NavLayoutGame />
-            <div className='flex flex-grow flex-col items-center justify-center gap-4'>
-                <button onClick={() => setIsReportPopupOpen(true)} className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300">
-                    Report a bug
-                </button>
-                <button onClick={handleShowLastMatchPopup} className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition duration-300" >
-                    Show Last Match
-                </button>
-                <h1>
-                    <Link to="/tos" >
-                        Terms of service and the other things
-                    </Link>
-                </h1>
-                {isReportPopupOpen && user && (
-                    <ReportPopup onClose={() => setIsReportPopupOpen(false)} userToken={localStorage.getItem('token') || ''} />
-                )}
+            <div className="flex flex-grow items-center justify-center w-full">
+                <div className="bg-black bg-opacity-50 backdrop-blur-md p-6 rounded-lg max-w-md w-full text-white flex flex-col space-y-4">
+                    <button onClick={() => setIsReportPopupOpen(true)} className="mx-auto px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300">
+                        Report a bug
+                    </button>
+                    <button onClick={handleShowLastMatchPopup} className="mx-auto px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition duration-300" >
+                        Show Last Match
+                    </button>
+                    <h1 className='mx-auto font-bold px-4 py-2'>
+                        <Link to="/tos" >
+                            Terms of service and the other things
+                        </Link>
+                    </h1>
+                    {isReportPopupOpen && user && (
+                        <ReportPopup onClose={() => setIsReportPopupOpen(false)} userToken={localStorage.getItem('token') || ''} />
+                    )}
+                </div>
             </div>
 
             {isLastMatchPopupOpen && lastMatchData && (
