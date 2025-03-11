@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getShopItems } from '../api/shopItem';
 import { setup } from '../api/setup';
+import Loading from './loading';
 
 const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
     const [characters, setCharacters] = useState<{ id: string; name: string; image: string; stats?: any }[]>([]);
@@ -117,23 +118,19 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
 
     if (loading) {
         return (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                <div className="bg-black bg-opacity-50 backdrop-blur-md p-6 rounded-lg shadow-lg w-96">
-                    <h2 className="text-2xl font-bold text-white mb-4">Loading...</h2>
-                </div>
-            </div>
+            <Loading />
         );
     }
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-black bg-opacity-50 backdrop-blur-md p-6 rounded-lg shadow-lg max-w-2xl">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-black bg-opacity-50 backdrop-blur-md p-6 rounded-lg shadow-lg max-w-2xl w-full max-h-[75vh] overflow-y-auto">
                 <h2 className="text-2xl font-bold text-white mb-4">Choose your starter character and weapon!</h2>
                 {error && <p className="text-red-500 mb-4">{error}</p>}
                 <div className="space-y-4">
                     <div>
                         <h3 className="text-xl font-bold text-white mb-4">Characters</h3>
-                        <div className="flex space-x-4">
+                        <div className="flex flex-wrap gap-4">
                             {characters.map((character) => (
                                 <div key={character.id} className={`cursor-pointer p-2 rounded-lg ${selectedCharacter === character.id ? 'bg-blue-500' : 'backdrop-blur-md'}`} onClick={() => handleCharacterSelect(character.id)} onMouseEnter={(e) => handleMouseEnter('character', character.id, character.stats, e)} onMouseLeave={handleMouseLeave} >
                                     <img src={character.image} alt={character.name} className="w-32 h-32 rounded-full object-cover" />
@@ -144,7 +141,7 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
                     </div>
                     <div>
                         <h3 className="text-xl font-bold text-white mb-4">Weapons</h3>
-                        <div className="flex space-x-4">
+                        <div className="flex flex-wrap gap-4">
                             {weapons.map((weapon) => (
                                 <div key={weapon.id} className={`cursor-pointer p-2 rounded-lg ${selectedWeapon === weapon.id ? 'bg-blue-500' : 'backdrop-blur-md'}`} onClick={() => handleWeaponSelect(weapon.id)} onMouseEnter={(e) => handleMouseEnter('weapon', weapon.id, weapon.stats, e)} onMouseLeave={handleMouseLeave} >
                                     <img src={weapon.image} alt={weapon.name} className="w-32 h-32 rounded-full object-cover mx-auto" />

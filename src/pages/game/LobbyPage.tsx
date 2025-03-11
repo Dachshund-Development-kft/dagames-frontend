@@ -113,6 +113,27 @@ const PlayPage: React.FC = () => {
         }
     };
 
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            setLobbyPopup(false);
+
+            socket.emit('create_lobby', {
+                name: lobbyName,
+                public: lobbyVisibility,
+                password: lobbyPassword
+            });
+
+            socket.on('create_lobby', (data) => {
+                console.log('Lobby created:', data);
+
+                if (data.id) {
+                    window.location.href = `/play/${data.id}`;
+                    console.log('Redirecting to lobby:', data.id);
+                }
+            });
+        }
+    };
+
     if (loading) {
         return <Loading />;
     }
@@ -151,7 +172,7 @@ const PlayPage: React.FC = () => {
                                         </div>
                                         {!lobby.public && (
                                             <div className="mb-2">
-                                                <input type="password"  placeholder='Password' id='pass' className="w-full p-2 bg-black bg-opacity-70 text-white rounded-md border border-gray-600" />
+                                                <input type="password" placeholder='Password' id='pass' className="w-full p-2 bg-black bg-opacity-70 text-white rounded-md border border-gray-600" />
                                             </div>
                                         )}
                                         <button onClick={() => handleJoinLobby(lobby.id)} className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors" >
@@ -174,7 +195,7 @@ const PlayPage: React.FC = () => {
                             </div>
                             <div className='mb-4'>
                                 <label className='text-white'>Lobby Name</label>
-                                <input type='text' placeholder='Lobby Name' className='bg-black bg-opacity-70 text-white p-2 w-full rounded-md border border-gray-600' value={lobbyName} onChange={(e) => setLobbyName(e.target.value)} />
+                                <input type='text' placeholder='Lobby Name' className='bg-black bg-opacity-70 text-white p-2 w-full rounded-md border border-gray-600' value={lobbyName} onChange={(e) => setLobbyName(e.target.value)} onKeyDown={handleKeyDown}/>
                             </div>
                             <div className='mb-4'>
                                 <label className='text-white'>Visibility</label>
