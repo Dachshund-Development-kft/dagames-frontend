@@ -93,11 +93,10 @@ const NavLayoutGame: React.FC = () => {
                         </Link>
                     ))}
                 </div>
-
-                <button ref={menuButtonRef} onClick={() => setIsMenuOpen(!isMenuOpen)} className="ml-auto text-white focus:outline-none">☰</button>
-
-                <div ref={menuRef} className={`fixed top-0 right-0 h-42 rounded-lg w-64 bg-black bg-opacity-70 backdrop-blur-md transform transition-transform duration-300 ease-in-out ${isMenuOpen ? 'translate-x-0 mt-14' : 'translate-x-full mt-14'}`} >
-                    <nav className={`flex flex-col items-start p-4 z-50`}>
+                
+                <button ref={menuButtonRef} onClick={() => setIsMenuOpen(!isMenuOpen)} className="ml-auto text-white focus:outline-none mr-3">☰</button>
+                <div ref={menuRef} style={{ transform: `translateX(${isMenuOpen ? 0 : 1500}px)`, transition: 'transform 0.3s ease-in-out', marginTop: '3.5rem' }} className="fixed top-0 right-0 h-42 rounded-lg w-64 bg-black bg-opacity-70 backdrop-blur-md " >
+                    <nav className="flex flex-col items-start p-4 z-50">
                         {centerNavItems.map((item, index) => (
                             <div key={index} className={`flex flex-row items-center transition-opacity duration-300 ${location.pathname === item.path ? "opacity-100" : "opacity-50 hover:opacity-100"}`}>
                                 <Link to={item.path} className="text-white flex items-center">
@@ -113,7 +112,6 @@ const NavLayoutGame: React.FC = () => {
             </div>
         );
     }
-
 
     return (
         <div className="flex flex-row p-2 items-center w-full bg-black bg-opacity-50 backdrop-blur-md z-50">
