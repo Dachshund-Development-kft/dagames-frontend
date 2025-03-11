@@ -20,6 +20,7 @@ import PlayPageID from './pages/game/lobbyPage[id]'
 import GamePage from './pages/game/gamePage'
 import LeaderboardPage from './pages/game/Leaderboard'
 import TermsOfService from './pages/game/tos'
+import ReportPopup from './components/reportPopup'
 
 const router = createBrowserRouter([
   {
@@ -83,6 +84,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.Fragment>
     <Analytics/>
+    <ReportPopup onClose={function (): void {
+      throw new Error('Function not implemented.')
+    } }/>
     <RouterProvider router={router} />
   </React.Fragment>
 )

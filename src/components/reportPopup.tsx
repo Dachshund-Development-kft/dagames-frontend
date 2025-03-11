@@ -1,12 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const ReportPopup: React.FC<{ onClose: () => void, userToken: string }> = ({ onClose, userToken }) => {
+const ReportPopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     const [type, setType] = useState<'bug' | 'idea'>('bug');
     const [from, setFrom] = useState<'frontend' | 'backend'>('frontend');
     const [description, setDescription] = useState('');
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.altKey && event.key === 't') {
+                setIsVisible(prev => !prev);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, []);
 
     const handleSubmit = async () => {
         if (!description.trim()) {
@@ -21,13 +36,14 @@ const ReportPopup: React.FC<{ onClose: () => void, userToken: string }> = ({ onC
                 description,
             }, {
                 headers: {
-                    Authorization: `Bearer ${userToken}`,
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
             });
 
             if (response.data.success) {
                 toast.success('Report submitted successfully!');
                 onClose();
+                setIsVisible(false);
             } else {
                 toast.error('Failed to submit report. Please try again.');
             }
@@ -36,6 +52,10 @@ const ReportPopup: React.FC<{ onClose: () => void, userToken: string }> = ({ onC
             toast.error('An error occurred. Please try again.');
         }
     };
+
+    if (!isVisible) {
+        return null;
+    }
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -61,7 +81,7 @@ const ReportPopup: React.FC<{ onClose: () => void, userToken: string }> = ({ onC
                         <textarea value={description} onChange={(e) => setDescription(e.target.value)} className="mt-1 block w-full p-2 bg-gray-800 text-white rounded-lg focus:ring-blue-500 focus:border-blue-500" rows={4} placeholder="Provide a detailed description..." />
                     </div>
                     <div className="flex justify-end gap-2">
-                        <button onClick={onClose} className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition duration-300" >
+                        <button onClick={() => setIsVisible(false)} className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition duration-300" >
                             Cancel
                         </button>
                         <button onClick={handleSubmit} className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300" >
@@ -70,7 +90,7 @@ const ReportPopup: React.FC<{ onClose: () => void, userToken: string }> = ({ onC
                     </div>
                 </div>
             </div>
-            <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick={false} rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="dark" transition={Bounce} />
+            <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick={false} rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="dark" transition={Bounce} className={'z-50'} />
         </div>
     );
 };

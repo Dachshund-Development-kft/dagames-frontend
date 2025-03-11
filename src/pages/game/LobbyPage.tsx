@@ -44,7 +44,7 @@ const PlayPage: React.FC = () => {
 
     useEffect(() => {
         fetchLobbies();
-        const intervalId = setInterval(fetchLobbies, 1000);
+        const intervalId = setInterval(fetchLobbies, 2500);
         return () => clearInterval(intervalId);
     }, []);
 
