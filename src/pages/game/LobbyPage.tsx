@@ -23,28 +23,38 @@ const PlayPage: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
+    // Function to fetch lobbies
+    const fetchLobbies = async () => {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            setError('No token found in localStorage');
+            setLoading(false);
+            return;
+        }
+
+        try {
+            const response = await lobby();
+            setLobbies(response.data);
+            setLoading(false);
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'An unknown error occurred');
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const fetchLobbies = async () => {
-            const token = localStorage.getItem('token');
-
-            if (!token) {
-                setError('No token found in localStorage');
-                setLoading(false);
-                return;
-            }
-
-            try {
-                const response = await lobby();
-                setLobbies(response.data);
-                setLoading(false);
-            } catch (err) {
-                setError(err instanceof Error ? err.message : 'An unknown error occurred');
-                setLoading(false);
-            }
-        };
-
+        // Fetch lobbies immediately when the component mounts
         fetchLobbies();
 
+        // Set up an interval to fetch lobbies every second
+        const intervalId = setInterval(fetchLobbies, 1000);
+
+        // Clean up the interval when the component unmounts
+        return () => clearInterval(intervalId);
+    }, []);
+
+    useEffect(() => {
         if (!socket) {
             setError('Socket not connected');
         }
@@ -195,7 +205,14 @@ const PlayPage: React.FC = () => {
                             </div>
                             <div className='mb-4'>
                                 <label className='text-white'>Lobby Name</label>
-                                <input type='text' placeholder='Lobby Name' className='bg-black bg-opacity-70 text-white p-2 w-full rounded-md border border-gray-600'  value={lobbyName} onChange={(e) => setLobbyName(e.target.value)}onKeyDown={handleKeyDown}/>
+                                <input 
+                                    type='text' 
+                                    placeholder='Lobby Name' 
+                                    className='bg-black bg-opacity-70 text-white p-2 w-full rounded-md border border-gray-600' 
+                                    value={lobbyName} 
+                                    onChange={(e) => setLobbyName(e.target.value)} 
+                                    onKeyDown={handleKeyDown}
+                                />
                             </div>
                             <div className='mb-4'>
                                 <label className='text-white'>Visibility</label>
