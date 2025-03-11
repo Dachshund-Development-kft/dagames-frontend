@@ -31,10 +31,6 @@ const ReportPopup: React.FC<{ onClose: () => void, userToken: string }> = ({ onC
             } else {
                 toast.error('Failed to submit report. Please try again.');
             }
-            if (response.status === 201) {
-                toast.success('Report submitted successfully!');
-                onClose();
-            }
         } catch (error) {
             console.error('Error submitting report:', error);
             toast.error('An error occurred. Please try again.');
