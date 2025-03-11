@@ -186,8 +186,8 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ id, name, icon, type, isE
         <div>
             <div className={`p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer relative bg-black bg-opacity-50 backdrop-blur-md text-center ${isEquipped && 'border-4 border-opacity-70 border-white rounded-lg'}`} onClick={!isEquipped ? handleItemClick : undefined}>
                 <img src={icon} alt={name} className="mb-2 rounded-full" />
-                <span className="text-white text-xl font-bold">{name}</span>
-                <span className="text-gray-400 text-md ml-2">{type}</span>
+                <p className="text-white text-xl font-bold">{name}</p>
+                <p className="text-gray-400 text-md ml-2">{type}</p>
 
                 <div className="mt-2 text-sm text-gray-300 mb-2">
                     {stats.power && <div>Power: {stats.power}</div>}
