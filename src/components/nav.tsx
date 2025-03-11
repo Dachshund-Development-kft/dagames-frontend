@@ -51,6 +51,13 @@ const NavLayoutGame: React.FC = () => {
     }, []);
 
     useEffect(() => {
+        /**
+         * Closes the menu when a click occurs outside the menu area and its toggle button.
+         *
+         * If the click event's target is not within the menu or the menu button, the menu state is updated to closed.
+         *
+         * @param event - The mouse event triggered by the user's click.
+         */
         function handleClickOutside(event: MouseEvent) {
             if (
                 menuRef.current &&
@@ -62,6 +69,11 @@ const NavLayoutGame: React.FC = () => {
             }
         }
 
+        /**
+         * Handles a scroll event by closing the navigation menu.
+         *
+         * This function is used as a scroll event listener to ensure the menu is hidden when the user scrolls.
+         */
         function handleScroll() {
             setIsMenuOpen(false);
         }
