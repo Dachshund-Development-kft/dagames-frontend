@@ -4,7 +4,7 @@ import { MdAlternateEmail } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { register } from '../api/register';
 import axios from 'axios';
-import { ToastContainer, toast, Bounce } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const RegisterPage: React.FC = () => {
@@ -101,19 +101,6 @@ const RegisterPage: React.FC = () => {
                     </div>
                 </form>
             </main>
-            <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick={false}
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="dark"
-                transition={Bounce}
-            />
         </div>
     );
 };

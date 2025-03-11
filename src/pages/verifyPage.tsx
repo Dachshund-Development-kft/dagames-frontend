@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { MdAlternateEmail } from 'react-icons/md';
 import { verify } from '../api/verify';
 import axios from 'axios';
-import { ToastContainer, toast, Bounce } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const VerifyPage: React.FC = () => {
@@ -94,19 +94,6 @@ const VerifyPage: React.FC = () => {
                     </div>
                 </form>
             </main>
-            <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick={false}
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="dark"
-                transition={Bounce}
-            />
         </div>
     );
 };
