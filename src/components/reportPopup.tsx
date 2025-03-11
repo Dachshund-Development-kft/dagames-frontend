@@ -44,7 +44,6 @@ const ReportPopup: React.FC<{ onClose: () => void }> = () => {
 
             if (response.data.success) {
                 toast.success('Report submitted successfully!');
-                console.log('Report submitted:', response.data);
                 setIsVisible(false);
             } else {
                 toast.error('Failed to submit report. Please try again.');
