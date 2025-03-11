@@ -5,6 +5,7 @@ import Loading from '../../components/loading';
 import ProgressBar from '../../components/progressBar';
 import ProfilePopout from '../../components/ProfilePopout';
 import { useMediaQuery } from 'react-responsive';
+import { toast } from 'react-toastify';
 
 const GamePage: React.FC = () => {
     const { id: matchid } = useParams<{ id: string }>();
@@ -71,9 +72,10 @@ const GamePage: React.FC = () => {
 
         const handleGameUpdate = (data: any) => {
             if (data.players) {
-                const player2 = data.players[1]; const myId = localStorage.getItem('user_id');
+                const player2 = data.players[1];
                 const player1 = data.players[0];
 
+                const myId = localStorage.getItem('user_id');
 
                 if (player1.id === myId) {
                     setMyHealth(player1.health);
@@ -102,6 +104,12 @@ const GamePage: React.FC = () => {
 
             if (data.winner) {
                 setWinner(data.winner);
+            }
+
+            if (data.action) {
+                toast.info(data.message);
+            } else {
+                toast.error(data.message);
             }
 
             if (data.match_over) {
@@ -183,7 +191,6 @@ const GamePage: React.FC = () => {
 
     if (!isDesktopOrLaptop) {
         return (
-
             <>
                 <main className='flex flex-col items-center justify-center min-h-screen text-white'>
                     <div className='toprow flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-md rounded-md'>
@@ -193,14 +200,13 @@ const GamePage: React.FC = () => {
                             <p>Elapsed time: {startTime}</p>
                             <p>Number of rounds: {rounds}</p>
                         </div>
-
                     </div>
 
                     <div className="middlerow flex items-center justify-center p-4">
                         <div className='bg-black bg-opacity-50 p-4 rounded-lg'>
                             {playerInfo && enemyInfo && (
                                 <div className='flex justify-center items-center gap-8 mt-16'>
-                                    <img src={playerInfo.character.icon} alt={playerInfo.character.name} className='w-32 h-32' style={{ WebkitTransform: 'scaleX(-1)', transform: 'scaleX(-1)' }}   />
+                                    <img src={playerInfo.character.icon} alt={playerInfo.character.name} className='w-32 h-32' style={{ WebkitTransform: 'scaleX(-1)', transform: 'scaleX(-1)' }} />
                                     <img src={enemyInfo.character.icon} alt={enemyInfo.character.name} className='w-32 h-32' />
                                 </div>
                             )}
