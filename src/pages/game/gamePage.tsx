@@ -297,106 +297,104 @@ const GamePage: React.FC = () => {
 
     return (
         <>
-            <main className='flex flex-col items-center justify-center min-h-screen text-white'>
-                <div className='row-span-2 col-span-2'>
-                    <div className=' bg-black bg-opacity-50 backdrop-blur-md m-5 p-12 rounded-md text-center'>
-                        <p className='text-xl font-bold'>Fight:</p>
-                        <p>Start: {startDates}</p>
-                        <p>Elapsed time: {startTime}</p>
-                        <p>Number of rounds: {rounds}</p>
+        <main className='flex flex-col items-center justify-center min-h-screen text-white'>
+            <div className='fixed top-0 bg-black bg-opacity-50 backdrop-blur-md m-5 p-12 rounded-md text-center'>
+                <p className='text-xl font-bold'>Fight:</p>
+                <p>Start: {startDates}</p>
+                <p>Elapsed time: {startTime}</p>
+                <p>Number of rounds: {rounds}</p>
+            </div>
+            <div className='absolute top-4 right-4 bg-black bg-opacity-50 rounded-lg p-4' onClick={() => handlePlayerClick(enemyId)}>
+                <h2 className='text-xl font-bold'>Enemy</h2>
+                <p>Health: {enemyHealth}</p>
+                <ProgressBar value={enemyHealth} max={100} startColor="#FF0000" endColor="#00FF00" />
+                <p>Power: {enemyPoints}</p>
+                <ProgressBar value={enemyPoints} max={5} startColor="#800080" endColor="##0000ff" />
+                {enemyInfo && (
+                    <div className='mt-2'>
+                        <img src={enemyInfo.character.icon} alt={enemyInfo.character.name} className='w-16 h-16' />
+                        <p>{enemyInfo.character.name}</p>
+                        <img src={enemyInfo.weapon.icon} alt={enemyInfo.weapon.name} className='w-16 h-16' />
+                        <p>{enemyInfo.weapon.name}</p>
                     </div>
-                    <div className='bg-black bg-opacity-50 rounded-lg p-4' onClick={() => handlePlayerClick(enemyId)}>
-                        <h2 className='text-xl font-bold'>Enemy</h2>
-                        <p>Health: {enemyHealth}</p>
-                        <ProgressBar value={enemyHealth} max={100} startColor="#FF0000" endColor="#00FF00" />
-                        <p>Power: {enemyPoints}</p>
-                        <ProgressBar value={enemyPoints} max={5} startColor="#800080" endColor="##0000ff" />
-                        {enemyInfo && (
-                            <div className='mt-2'>
-                                <img src={enemyInfo.character.icon} alt={enemyInfo.character.name} className='w-16 h-16' />
-                                <p>{enemyInfo.character.name}</p>
-                                <img src={enemyInfo.weapon.icon} alt={enemyInfo.weapon.name} className='w-16 h-16' />
-                                <p>{enemyInfo.weapon.name}</p>
-                            </div>
-                        )}
-                    </div>
-                </div>
-
-                <div className='absolute bottom-4 left-4 bg-black bg-opacity-50 rounded-lg p-4' onClick={() => handlePlayerClick(myId)}>
-                    <h2 className='text-xl font-bold'>You</h2>
-                    <p>Health: {myHealth}</p>
-                    <ProgressBar value={myHealth} max={100} startColor="#FF0000" endColor="#00FF00" />
-                    <p>Power: {myPoints}</p>
-                    <ProgressBar value={myPoints} max={5} startColor="#800080" endColor="##0000ff" />
-                    {playerInfo && (
-                        <div className='mt-2'>
-                            <img src={playerInfo.character.icon} alt={playerInfo.character.name} className='w-16 h-16' />
-                            <p>{playerInfo.character.name}</p>
-                            <img src={playerInfo.weapon.icon} alt={playerInfo.weapon.name} className='w-16 h-16' />
-                            <p>{playerInfo.weapon.name}</p>
-                        </div>
-                    )}
-                </div>
-
-                <div className='bg-black bg-opacity-50 p-4 rounded-lg'>
-                    {playerInfo && enemyInfo && (
-                        <div className='flex justify-center items-center gap-8 mt-16'>
-                            <img src={playerInfo.character.icon} alt={playerInfo.character.name} className='w-32 h-32' />
-                            <img src={enemyInfo.character.icon} alt={enemyInfo.character.name} className='w-32 h-32' />
-                        </div>
-                    )}
-
-                    <div className='mt-8 text-center'>
-                        <p className='text-lg'>{message}</p>
-                    </div>
-
-                    <div className='flex justify-center items-center gap-4 mt-8'>
-                        {winner ? (
-                            <p className='text-2xl font-bold mt-8'>
-                                {winner === localStorage.getItem('user_id') ? 'Nyertél!' : 'Vesztettél!'}
-                            </p>
-                        ) : (
-                            <div className='mt-8'>
-                                <button
-                                    className='bg-blue-500 text-white px-6 py-3 rounded-lg mr-4 hover:bg-blue-600 transition-colors'
-                                    onClick={() => handleAction('normal_attack')}
-                                >
-                                    Normal attack
-                                </button>
-                                <button
-                                    className='bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-600 transition-colors'
-                                    onClick={() => handleAction('strong_attack')}
-                                >
-                                    Special attack
-                                </button>
-                                <button
-                                    className='bg-yellow-500 text-white px-6 py-3 rounded-lg hover:bg-yellow-600 transition-colors'
-                                    onClick={() => handleAction('weak_attack')}
-                                >
-                                    Weak attack
-                                </button>
-
-                                <button
-                                    className='bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition-colors'
-                                    onClick={() => handleAction('defend')}
-                                >
-                                    Defend
-                                </button>
-                            </div>
-                        )}
-                    </div>
-                </div>
-                {selectedPlayerId && (
-                    <>
-                        <div
-                            className='fixed inset-0 bg-black bg-opacity-50 z-40'
-                            onClick={handleCloseProfilePopout}
-                        />
-                        <ProfilePopout playerId={selectedPlayerId} />
-                    </>
                 )}
-            </main>
-        </>
+            </div>
+
+            <div className='absolute bottom-4 left-4 bg-black bg-opacity-50 rounded-lg p-4' onClick={() => handlePlayerClick(myId)}>
+                <h2 className='text-xl font-bold'>You</h2>
+                <p>Health: {myHealth}</p>
+                <ProgressBar value={myHealth} max={100} startColor="#FF0000" endColor="#00FF00" />
+                <p>Power: {myPoints}</p>
+                <ProgressBar value={myPoints} max={5} startColor="#800080" endColor="##0000ff" />
+                {playerInfo && (
+                    <div className='mt-2'>
+                        <img src={playerInfo.character.icon} alt={playerInfo.character.name} className='w-16 h-16' />
+                        <p>{playerInfo.character.name}</p>
+                        <img src={playerInfo.weapon.icon} alt={playerInfo.weapon.name} className='w-16 h-16' />
+                        <p>{playerInfo.weapon.name}</p>
+                    </div>
+                )}
+            </div>
+
+            <div className='bg-black bg-opacity-50 p-4 rounded-lg'>
+                {playerInfo && enemyInfo && (
+                    <div className='flex justify-center items-center gap-8 mt-16'>
+                        <img src={playerInfo.character.icon} alt={playerInfo.character.name} className='w-32 h-32' />
+                        <img src={enemyInfo.character.icon} alt={enemyInfo.character.name} className='w-32 h-32' />
+                    </div>
+                )}
+
+                <div className='mt-8 text-center'>
+                <p className='text-lg'>{message}</p>
+                </div>
+
+                <div className='flex justify-center items-center gap-4 mt-8'>
+                    {winner ? (
+                        <p className='text-2xl font-bold mt-8'>
+                            {winner === localStorage.getItem('user_id') ? 'Nyertél!' : 'Vesztettél!'}
+                        </p>
+                    ) : (
+                        <div className='mt-8'>
+                            <button
+                                className='bg-blue-500 text-white px-6 py-3 rounded-lg mr-4 hover:bg-blue-600 transition-colors'
+                                onClick={() => handleAction('normal_attack')}
+                            >
+                                Normal attack
+                            </button>
+                            <button
+                                className='bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-600 transition-colors'
+                                onClick={() => handleAction('strong_attack')}
+                            >
+                                Special attack
+                            </button>
+                            <button
+                                className='bg-yellow-500 text-white px-6 py-3 rounded-lg hover:bg-yellow-600 transition-colors'
+                                onClick={() => handleAction('weak_attack')}
+                            >
+                                Weak attack 
+                            </button>
+
+                            <button
+                                className='bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition-colors'
+                                onClick={() => handleAction('defend')}
+                            >
+                                Defend
+                            </button>
+                        </div>
+                    )}
+                </div>
+            </div>
+            {selectedPlayerId && (
+                <>
+                    <div
+                        className='fixed inset-0 bg-black bg-opacity-50 z-40'
+                        onClick={handleCloseProfilePopout}
+                    />
+                    <ProfilePopout playerId={selectedPlayerId} />
+                </>
+            )}
+        </main>
+    </>
     );
 };
 
