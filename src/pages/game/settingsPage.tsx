@@ -112,7 +112,7 @@ const PlayPage = () => {
             <NavLayoutGame />
             <div className="flex flex-grow items-center justify-center w-full">
                 <div className="bg-black bg-opacity-50 backdrop-blur-md p-6 rounded-lg max-w-md w-full text-white flex flex-col space-y-4">
-                    <button onClick={() => setIsReportPopupOpen(true)} className="mx-auto px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300">
+                    <button onClick={() => setIsReportPopupOpen(true)} className="mx-auto px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-300">
                         Report a bug
                     </button>
                     <button onClick={handleShowLastMatchPopup} className="mx-auto px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition duration-300" >
