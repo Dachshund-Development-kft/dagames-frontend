@@ -123,7 +123,7 @@ const PlayPage = () => {
                     </Link>
                 </h1>
                 {isReportPopupOpen && user && (
-                    <ReportPopup onClose={() => setIsReportPopupOpen(false)} userToken={user.id} />
+                    <ReportPopup onClose={() => setIsReportPopupOpen(false)} userToken={localStorage.getItem('token') || ''} />
                 )}
             </div>
 

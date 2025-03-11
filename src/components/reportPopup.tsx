@@ -15,7 +15,7 @@ const ReportPopup: React.FC<{ onClose: () => void, userToken: string }> = ({ onC
         }
 
         try {
-            const response = await axios.post('https://api.dagames.online/v1/@me/report', {
+            const response = await axios.post('https://api.dagames.online/v1/user/@me/report', {
                 type,
                 from,
                 description,
