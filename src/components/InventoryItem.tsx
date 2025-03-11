@@ -184,16 +184,16 @@ const InventoryItem: React.FC<InventoryItemProps> = ({ id, name, icon, type, isE
 
     return (
         <div>
-            <div className={`flex h-72 w-48 flex-col items-center p-4 bg-black bg-opacity-50 backdrop-blur-md rounded-lg shadow-lg hover:bg-opacity-80 transition duration-300 relative ${isEquipped && 'border-4 border-opacity-70 border-white rounded-lg'}`} onClick={!isEquipped ? handleItemClick : undefined}>
-                <img src={icon} alt={name} className="w-28 h-28 mb-2 rounded-full" />
-                <span className="text-white text-md font-bold">{name}</span>
-                <span className="text-gray-400 text-xs">{type}</span>
+            <div className={`p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer relative bg-black bg-opacity-50 backdrop-blur-md text-center ${isEquipped && 'border-4 border-opacity-70 border-white rounded-lg'}`} onClick={!isEquipped ? handleItemClick : undefined}>
+                <img src={icon} alt={name} className="mb-2 rounded-full" />
+                <span className="text-white text-xl font-bold">{name}</span>
+                <span className="text-gray-400 text-md ml-2">{type}</span>
 
-                <div className="mt-2 text-xs text-gray-300">
+                <div className="mt-2 text-sm text-gray-300 mb-2">
                     {stats.power && <div>Power: {stats.power}</div>}
                     {stats.speed && <div>Speed: {stats.speed}</div>}
                     {stats.ability && <div>Ability: {stats.ability}</div>}
-                    {stats.defend && <div>Defend: {stats.defend}</div>}
+                    {stats.defend && <div>Defense: {stats.defend}</div>}
                     {stats.damage && <div>Damage: {stats.damage}</div>}
                     {stats.attack && <div>Attack: {stats.attack}</div>}
                     {stats.agility && <div>Agility: {stats.agility}</div>}

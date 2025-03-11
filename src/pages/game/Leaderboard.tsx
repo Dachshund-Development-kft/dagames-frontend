@@ -26,7 +26,6 @@ const LeaderboardPage: React.FC = () => {
 
     const fetchLeaderboardData = async () => {
         try {
-            // Fetch data for all modes
             const [winsResponse, playedResponse, coinsResponse, levelResponse, rankResponse] = await Promise.all([
                 axios.get('https://api.dagames.online/v1/leaderboard?mode=wins'),
                 axios.get('https://api.dagames.online/v1/leaderboard?mode=played'),
@@ -35,7 +34,6 @@ const LeaderboardPage: React.FC = () => {
                 axios.get('https://api.dagames.online/v1/leaderboard?mode=rank'),
             ]);
 
-            // Combine all data into a single array
             const combinedData: LeaderboardEntry[] = winsResponse.data.map((entry: any) => ({
                 username: entry.username,
                 wins: entry.wins || 0,
