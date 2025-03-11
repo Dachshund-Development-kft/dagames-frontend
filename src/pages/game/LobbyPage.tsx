@@ -195,7 +195,7 @@ const PlayPage: React.FC = () => {
                             </div>
                             <div className='mb-4'>
                                 <label className='text-white'>Lobby Name</label>
-                                <input type='text' placeholder='Lobby Name' className='bg-black bg-opacity-70 text-white p-2 w-full rounded-md border border-gray-600'  value={lobbyName} onChange={(e) => setLobbyName(e.target.value)}onKeyDown={handleKeyDown}/>
+                                <input type='text' placeholder='Lobby Name' className='bg-black bg-opacity-70 text-white p-2 w-full rounded-md border border-gray-600' value={lobbyName} onChange={(e) => setLobbyName(e.target.value)} onKeyDown={handleKeyDown}/>
                             </div>
                             <div className='mb-4'>
                                 <label className='text-white'>Visibility</label>
