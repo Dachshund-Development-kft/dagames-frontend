@@ -70,10 +70,33 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
 
     const handleCharacterSelect = (id: string) => {
         setSelectedCharacter(id);
+        setSelectedWeapon(null);
     };
 
     const handleWeaponSelect = (id: string) => {
         setSelectedWeapon(id);
+    };
+
+    const getFilteredWeapons = () => {
+        if (!selectedCharacter) {
+            return [];
+        }
+
+        const character = characters.find(c => c.id === selectedCharacter);
+        if (!character) {
+            return [];
+        }
+
+        switch (character.name) {
+            case 'Warrior':
+                return weapons.filter(weapon => ['Sword', 'Mace', 'Broadsword'].includes(weapon.name));
+            case 'Rogue':
+                return weapons.filter(weapon => ['Dagger', 'Sword'].includes(weapon.name));
+            case 'Priest':
+                return weapons.filter(weapon => ['Staff', 'Mace', 'Sword', 'Dagger'].includes(weapon.name));
+            default:
+                return [];
+        }
     };
 
     const handleSubmit = async () => {
@@ -85,7 +108,7 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
         try {
             const token = localStorage.getItem('token');
             if (!token) {
-                throw new Error('Unauthoried.');
+                throw new Error('Unauthorized.');
             }
 
             const response = await setup(selectedWeapon, selectedCharacter);
@@ -99,7 +122,7 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
             if (result.success) {
                 onComplete();
             } else {
-                throw new Error('The selsction was unsuccessfull');
+                throw new Error('The selection was unsuccessful');
             }
         } catch (error) {
             console.error('Error submitting selection:', error);
@@ -122,6 +145,8 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
         );
     }
 
+    const filteredWeapons = getFilteredWeapons();
+
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-black bg-opacity-50 backdrop-blur-md p-6 rounded-lg shadow-lg max-w-2xl w-full max-h-[75vh] overflow-y-auto">
@@ -141,14 +166,18 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
                     </div>
                     <div>
                         <h3 className="text-xl font-bold text-white mb-4">Weapons</h3>
-                        <div className="flex flex-wrap gap-4">
-                            {weapons.map((weapon) => (
-                                <div key={weapon.id} className={`cursor-pointer p-2 rounded-lg ${selectedWeapon === weapon.id ? 'bg-blue-500' : 'backdrop-blur-md'}`} onClick={() => handleWeaponSelect(weapon.id)} onMouseEnter={(e) => handleMouseEnter('weapon', weapon.id, weapon.stats, e)} onMouseLeave={handleMouseLeave} >
-                                    <img src={weapon.image} alt={weapon.name} className="w-32 h-32 rounded-full object-cover mx-auto" />
-                                    <p className="text-white text-center">{weapon.name}</p>
-                                </div>
-                            ))}
-                        </div>
+                        {!selectedCharacter ? (
+                            <p className="text-white">Please select a character to see available weapons.</p>
+                        ) : (
+                            <div className="flex flex-wrap gap-4">
+                                {filteredWeapons.map((weapon) => (
+                                    <div key={weapon.id} className={`cursor-pointer p-2 rounded-lg ${selectedWeapon === weapon.id ? 'bg-blue-500' : 'backdrop-blur-md'}`} onClick={() => handleWeaponSelect(weapon.id)} onMouseEnter={(e) => handleMouseEnter('weapon', weapon.id, weapon.stats, e)} onMouseLeave={handleMouseLeave} >
+                                        <img src={weapon.image} alt={weapon.name} className="w-32 h-32 rounded-full object-cover mx-auto" />
+                                        <p className="text-white text-center">{weapon.name}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
                     <button onClick={handleSubmit} className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">
                         Confirm
@@ -158,7 +187,7 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
 
             {hoveredItem && (
                 <div className="absolute backdrop-blur-md bg-black bg-opacity-50 p-4 rounded-lg shadow-lg text-white" style={{ top: hoverPosition.y + 10, left: hoverPosition.x + 10 }}>
-                    <h4 className="font-bold mb-2">{hoveredItem.type === 'character' ? 'Chraracter stats' : 'Weapon Stats'}</h4>
+                    <h4 className="font-bold mb-2">{hoveredItem.type === 'character' ? 'Character stats' : 'Weapon Stats'}</h4>
                     {Object.entries(hoveredItem.stats).map(([key, value]) => (
                         <p key={key}>{`${key}: ${value}`}</p>
                     ))}
