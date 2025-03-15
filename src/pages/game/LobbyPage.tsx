@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import NavLayoutGame from '../../components/nav';
 import socket from '../../api/socket';
 import { FaEye, FaEyeSlash, FaLock, FaTimes } from 'react-icons/fa';
+import { lobby } from '../../api/lobby';
 import Loading from '../../components/loading';
 
 interface Lobby {
