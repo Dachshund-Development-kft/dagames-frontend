@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import NavLayoutGame from '../../components/nav';
 import socket from '../../api/socket';
 import { FaEye, FaEyeSlash, FaLock, FaTimes } from 'react-icons/fa';
-import { lobby } from '../../api/lobby';
 import Loading from '../../components/loading';
 
 interface Lobby {
@@ -33,9 +32,16 @@ const PlayPage: React.FC = () => {
         }
 
         try {
-            const response = await lobby();
-            setLobbies(response.data);
-            setLoading(false);
+            socket.emit('get_lobbies');
+            socket.on('get_lobbies', (data: any) => {
+                if (data.success) {
+                    setLobbies(data.data);
+                    setLoading(false);
+                } else {
+                    setError(data.message);
+                    setLoading(false);
+                }
+            });
         } catch (err) {
             setError(err instanceof Error ? err.message : 'An unknown error occurred');
             setLoading(false);
