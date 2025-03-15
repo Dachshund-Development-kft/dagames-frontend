@@ -133,19 +133,19 @@ const StorePage: React.FC = () => {
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
                             {shopItems.map((item) => (
                                 <div key={item._id} className="p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer relative bg-black bg-opacity-50 backdrop-blur-md" onClick={() => handleItemClick(item.id)} >
-                                <div className="flex justify-between items-center">
-                                    <span className="text-xl font-semibold text-white">{item.name}</span>
-                                    {ownedItems.includes(item.id) && (
-                                        <span className="text-red-500 text-2xl font-bold mr-3">Owned</span>
+                                    
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-xl font-semibold text-white">{item.name}</span>
+                                        {ownedItems.includes(item.id) && (
+                                            <span className="text-red-500 text-2xl font-bold mr-3">Owned</span>
+                                        )}
+                                    </div>
+                                    <p className="text-gray-500">{item.description}</p>
+                                    <p className="text-green-600 font-bold">${item.price}</p>
+                                    {item.image && (
+                                        <img src={item.image} alt={item.name} className="mt-4 rounded-3xl" />
                                     )}
                                 </div>
-                                <p className="text-gray-500">{item.description}</p>
-                                <p className="text-green-600 font-bold">${item.price}</p>
-                                {item.image && (
-                                    <img src={item.image} alt={item.name} className="mt-4 rounded-3xl" />
-                                )}
-                            </div>
-                            
                             ))}
                         </div>
                     </div>
