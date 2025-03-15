@@ -70,7 +70,7 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
 
     const handleCharacterSelect = (id: string) => {
         setSelectedCharacter(id);
-        setSelectedWeapon(null); // Reset selected weapon when character changes
+        setSelectedWeapon(null);
     };
 
     const handleWeaponSelect = (id: string) => {
