@@ -206,8 +206,8 @@ const GamePage: React.FC = () => {
                         <div className='bg-black bg-opacity-50 p-4 rounded-lg'>
                             {playerInfo && enemyInfo && (
                                 <div className='flex justify-center items-center gap-8 mt-16'>
-                                    <img src={playerInfo.character.icon} alt={playerInfo.character.name} className='w-32 h-32' style={{ WebkitTransform: 'scaleX(-1)', transform: 'scaleX(-1)' }} />
-                                    <img src={enemyInfo.character.icon} alt={enemyInfo.character.name} className='w-32 h-32' />
+                                    <img src={playerInfo.character.icon} alt={playerInfo.character.name} className='w-32 h-32  ' style={{ WebkitTransform: 'scaleX(-1)', transform: 'scaleX(-1)' }} />
+                                    <img src={enemyInfo.character.icon} alt={enemyInfo.character.name} className='w-32 h-32  ' />
                                 </div>
                             )}
 
@@ -250,9 +250,9 @@ const GamePage: React.FC = () => {
                             <ProgressBar value={myPoints} max={5} startColor="#800080" endColor="##0000ff" />
                             {playerInfo && (
                                 <div className='mt-2'>
-                                    <img src={playerInfo.character.icon} alt={playerInfo.character.name} className='w-16 h-16' />
+                                    <img src={playerInfo.character.icon} alt={playerInfo.character.name} className='w-16 h-16  ' />
                                     <p>{playerInfo.character.name}</p>
-                                    <img src={playerInfo.weapon.icon} alt={playerInfo.weapon.name} className='w-16 h-16' />
+                                    <img src={playerInfo.weapon.icon} alt={playerInfo.weapon.name} className='w-16 h-16  ' />
                                     <p>{playerInfo.weapon.name}</p>
                                 </div>
                             )}
@@ -265,9 +265,9 @@ const GamePage: React.FC = () => {
                             <ProgressBar value={enemyPoints} max={5} startColor="#800080" endColor="##0000ff" />
                             {enemyInfo && (
                                 <div className='mt-2'>
-                                    <img src={enemyInfo.character.icon} alt={enemyInfo.character.name} className='w-16 h-16' />
+                                    <img src={enemyInfo.character.icon} alt={enemyInfo.character.name} className='w-16 h-16  ' />
                                     <p>{enemyInfo.character.name}</p>
-                                    <img src={enemyInfo.weapon.icon} alt={enemyInfo.weapon.name} className='w-16 h-16' />
+                                    <img src={enemyInfo.weapon.icon} alt={enemyInfo.weapon.name} className='w-16 h-16  ' />
                                     <p>{enemyInfo.weapon.name}</p>
                                 </div>
                             )}
@@ -303,9 +303,9 @@ const GamePage: React.FC = () => {
                     <ProgressBar value={enemyPoints} max={5} startColor="#800080" endColor="##0000ff" />
                     {enemyInfo && (
                         <div className='mt-2'>
-                            <img src={enemyInfo.character.icon} alt={enemyInfo.character.name} className='w-16 h-16' />
+                            <img src={enemyInfo.character.icon} alt={enemyInfo.character.name} className='w-16 h-16  ' />
                             <p>{enemyInfo.character.name}</p>
-                            <img src={enemyInfo.weapon.icon} alt={enemyInfo.weapon.name} className='w-16 h-16' />
+                            <img src={enemyInfo.weapon.icon} alt={enemyInfo.weapon.name} className='w-16 h-16  ' />
                             <p>{enemyInfo.weapon.name}</p>
                         </div>
                     )}
@@ -319,9 +319,9 @@ const GamePage: React.FC = () => {
                     <ProgressBar value={myPoints} max={5} startColor="#800080" endColor="##0000ff" />
                     {playerInfo && (
                         <div className='mt-2'>
-                            <img src={playerInfo.character.icon} alt={playerInfo.character.name} className='w-16 h-16' />
+                            <img src={playerInfo.character.icon} alt={playerInfo.character.name} className='w-16 h-16  ' />
                             <p>{playerInfo.character.name}</p>
-                            <img src={playerInfo.weapon.icon} alt={playerInfo.weapon.name} className='w-16 h-16' />
+                            <img src={playerInfo.weapon.icon} alt={playerInfo.weapon.name} className='w-16 h-16  ' />
                             <p>{playerInfo.weapon.name}</p>
                         </div>
                     )}
@@ -330,8 +330,8 @@ const GamePage: React.FC = () => {
                 <div className='bg-black bg-opacity-50 p-4 rounded-lg'>
                     {playerInfo && enemyInfo && (
                         <div className='flex justify-center items-center gap-8 mt-16'>
-                            <img src={playerInfo.character.icon} alt={playerInfo.character.name} className='w-32 h-32' style={{ WebkitTransform: 'scaleX(-1)', transform: 'scaleX(-1)' }} />
-                            <img src={enemyInfo.character.icon} alt={enemyInfo.character.name} className='w-32 h-32' />
+                            <img src={playerInfo.character.icon} alt={playerInfo.character.name} className='w-32 h-32  ' style={{ WebkitTransform: 'scaleX(-1)', transform: 'scaleX(-1)' }} />
+                            <img src={enemyInfo.character.icon} alt={enemyInfo.character.name} className='w-32 h-32  ' />
                         </div>
                     )}
 

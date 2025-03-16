@@ -143,7 +143,7 @@ const StorePage: React.FC = () => {
                                     <p className="text-gray-500">{item.description}</p>
                                     <p className="text-green-600 font-bold">${item.price}</p>
                                     {item.image && (
-                                        <img src={item.image} alt={item.name} className="mt-4 rounded-3xl pixelart" style={{ width: "100%" }} />
+                                        <img src={item.image} alt={item.name} className="mt-4 rounded-3xl  " style={{ width: "100%" }} />
                                     )}
                                 </div>
                             ))}
