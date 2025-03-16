@@ -252,7 +252,7 @@ const GamePage: React.FC = () => {
         return (
             <>
                 <main className='flex flex-col items-center justify-center min-h-screen text-white'>
-
+                    <div className="overflow-y-auto max-h-screen w-full">
                     <div className="middlerow flex items-center justify-center p-4">
                         <div className='bg-black bg-opacity-50 p-4 rounded-lg'>
                             <div className='text-center bg-black bg-opacity-50 p-4 rounded-lg'>
@@ -299,8 +299,8 @@ const GamePage: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className="flex items-center justify-center p-4 gap-4 bg-black bg-opacity-50 backdrop-blur-md rounded-md">
-                        <div className='bg-black bg-opacity-50 rounded-lg p-4' onClick={() => handlePlayerClick(myId)}>
+                    <div className="flex items-center justify-center p-4 gap-4 ">
+                        <div className='bg-black w-full bg-opacity-50 rounded-lg p-4' onClick={() => handlePlayerClick(myId)}>
                             <h2 className='text-xl font-bold'>You {myActionChosen && <span className="text-green-500">✔</span>}</h2>
                             <p>Health: {myHealth}</p>
                             <ProgressBar value={myHealth} max={100} startColor="#FF0000" endColor="#00FF00" />
@@ -315,7 +315,7 @@ const GamePage: React.FC = () => {
                                 </div>
                             )}
                         </div>
-                        <div className='bg-black bg-opacity-50 rounded-lg p-4' onClick={() => handlePlayerClick(enemyId)}>
+                        <div className='bg-black w-full bg-opacity-50 rounded-lg p-4' onClick={() => handlePlayerClick(enemyId)}>
                             <h2 className='text-xl font-bold'>Enemy {enemyActionChosen && <span className="text-green-500">✔</span>}</h2>
                             <p>Health: {enemyHealth}</p>
                             <ProgressBar value={enemyHealth} max={100} startColor="#FF0000" endColor="#00FF00" />
@@ -338,6 +338,7 @@ const GamePage: React.FC = () => {
                             <ProfilePopout playerId={selectedPlayerId} />
                         </>
                     )}
+                    </div>
                 </main>
             </>
 
