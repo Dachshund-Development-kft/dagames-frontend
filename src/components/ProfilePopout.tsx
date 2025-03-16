@@ -25,7 +25,7 @@ interface ProfilePopoutProps {
 const ProfilePopout: React.FC<ProfilePopoutProps> = ({ playerId }) => {
     const [player, setPlayer] = useState<Player | null>(null);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const [error] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchPlayerData = async () => {
@@ -53,7 +53,7 @@ const ProfilePopout: React.FC<ProfilePopoutProps> = ({ playerId }) => {
                 setLoading(false);
             } catch (err) {
                 console.error('Error fetching player data:', err);
-                setError('Failed to load player data');
+                toast.error('Failed to load player data');
                 setLoading(false);
             }
         };

@@ -17,11 +17,37 @@ const RegisterPage: React.FC = () => {
         const email = (document.getElementById('email') as HTMLInputElement)?.value || '';
         const tosChecked = (document.getElementById('tos') as HTMLInputElement)?.checked;
 
+        // Validate username
+        if (!username) {
+            toast.error("Username is required");
+            return;
+        }
+
+        // Validate email
+        if (!email) {
+            toast.error("Email is required");
+            return;
+        } else if (!/\S+@\S+\.\S+/.test(email)) {
+            toast.error("Email is invalid");
+            return;
+        }
+
+        // Validate password
+        if (!password) {
+            toast.error("Password is required");
+            return;
+        } else if (password.length < 8) {
+            toast.error("Password must be at least 8 characters long");
+            return;
+        }
+
+        // Validate password confirmation
         if (password !== passwordAgain) {
             toast.error("Passwords do not match");
             return;
         }
 
+        // Validate Terms of Service
         if (!tosChecked) {
             toast.error("You must agree to the Terms of Service to register.");
             return;

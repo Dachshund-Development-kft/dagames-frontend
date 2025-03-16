@@ -9,7 +9,7 @@ const StorePage: React.FC = () => {
     const [shopItems, setShopItems] = useState<ShopItem[]>([]);
     const [selectedItem, setSelectedItem] = useState<ShopItem | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
+    const [error] = useState<string | null>(null);
     const [ownedItems, setOwnedItems] = useState<string[]>([]);
     const [coins, setCoins] = useState<number>(0);
     const [showPopup, setShowPopup] = useState<boolean>(false);
