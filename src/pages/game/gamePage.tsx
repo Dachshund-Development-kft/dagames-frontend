@@ -126,9 +126,9 @@ const GamePage: React.FC = () => {
             if (data.players) {
                 const player2 = data.players[1];
                 const player1 = data.players[0];
-        
+
                 const myId = localStorage.getItem('user_id');
-        
+
                 if (player1.id === myId) {
                     setMyHealth(player1.health);
                     setMyPoints(player1.power);
@@ -145,22 +145,22 @@ const GamePage: React.FC = () => {
                     setEnemeyId(player1.id);
                 }
             }
-        
+
             if (data.match) {
                 setRounds(data.match.rounds);
             }
-        
+
             if (data.messages) {
                 setMessage0(data.messages[0]);
                 setMessage1(data.messages[1]);
                 setMyActionChosen(false);
                 setEnemyActionChosen(false);
             }
-        
+
             if (data.winner) {
                 setWinner(data.winner);
             }
-        
+
             if (data.action) {
                 if (data.action.playerId === myId) {
                     setMyActionChosen(true);
@@ -170,11 +170,11 @@ const GamePage: React.FC = () => {
             } else if (data.error) {
                 toast.error(data.error);
             }
-        
+
             if (data.self_action) {
                 setMyActionChosen(true);
             }
-        
+
             if (data.match_over) {
                 setTimeout(() => {
                     localStorage.removeItem('game_id');
@@ -252,17 +252,15 @@ const GamePage: React.FC = () => {
         return (
             <>
                 <main className='flex flex-col items-center justify-center min-h-screen text-white'>
-                    <div className='toprow flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-md rounded-md'>
-                        <div className=' p-4 text-center'>
-                            <p className='text-xl font-bold'>Fight:</p>
-                            <p>Start: {startDates}</p>
-                            <p>Elapsed time: {startTime}</p>
-                            <p>Number of rounds: {rounds}</p>
-                        </div>
-                    </div>
 
                     <div className="middlerow flex items-center justify-center p-4">
                         <div className='bg-black bg-opacity-50 p-4 rounded-lg'>
+                            <div className='text-center bg-black bg-opacity-50 p-4 rounded-lg'>
+                                <p className='text-xl font-bold'>Fight:</p>
+                                <p>Start: {startDates}</p>
+                                <p>Elapsed time: {startTime}</p>
+                                <p>Number of rounds: {rounds}</p>
+                            </div>
                             {playerInfo && enemyInfo && (
                                 <div className='flex justify-center items-center gap-8 mt-16'>
                                     <img src={playerInfo.character.icon} alt={playerInfo.character.name} className='w-32 h-32  ' style={{ WebkitTransform: 'scaleX(-1)', transform: 'scaleX(-1)' }} />
@@ -349,12 +347,7 @@ const GamePage: React.FC = () => {
     return (
         <DndProvider backend={HTML5Backend}>
             <main className='flex flex-col items-center justify-center min-h-screen text-white'>
-                <div className='fixed top-0 bg-black bg-opacity-50 backdrop-blur-md m-5 p-12 rounded-md text-center'>
-                    <p className='text-xl font-bold'>Fight:</p>
-                    <p>Start: {startDates}</p>
-                    <p>Elapsed time: {startTime}</p>
-                    <p>Number of rounds: {rounds}</p>
-                </div>
+
                 <div className='absolute top-4 right-4 bg-black bg-opacity-50 rounded-lg p-4' onClick={() => handlePlayerClick(enemyId)}>
                     <h2 className='text-xl font-bold'>Enemy {enemyActionChosen && <span className="text-green-500">✔</span>}</h2>
                     <p>Health: {enemyHealth}</p>
@@ -388,6 +381,12 @@ const GamePage: React.FC = () => {
                 </div>
 
                 <div className='bg-black bg-opacity-50 p-4 rounded-lg'>
+                    <div className='text-center bg-black bg-opacity-50 p-4 rounded-lg'>
+                        <p className='text-xl font-bold'>Fight:</p>
+                        <p>Start: {startDates}</p>
+                        <p>Elapsed time: {startTime}</p>
+                        <p>Number of rounds: {rounds}</p>
+                    </div>
                     {playerInfo && enemyInfo && (
                         <div className='flex justify-center items-center gap-8 mt-16'>
                             <img src={playerInfo.character.icon} alt={playerInfo.character.name} className='w-32 h-32  ' style={{ WebkitTransform: 'scaleX(-1)', transform: 'scaleX(-1)' }} />
