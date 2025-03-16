@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 interface Player {
     username: string;
@@ -65,7 +66,7 @@ const ProfilePopout: React.FC<ProfilePopoutProps> = ({ playerId }) => {
     }
 
     if (error) {
-        return <div>{error}</div>;
+        toast.error(error);
     }
 
     if (!player) {
@@ -96,8 +97,8 @@ const ProfilePopout: React.FC<ProfilePopoutProps> = ({ playerId }) => {
                 <div className="w-full bg-gray-700 rounded-full h-2 mt-2">
                     <div className="bg-blue-500 h-2 rounded-full" style={{ width: `${Math.min((levels.xp / levels.xpNeeded) * 100, 100)}%` }}></div>
                 </div>
-                <p className='text-white'>Rank: {rank}</p>
-                <p className='text-white'>Last Played: {LastPlay}</p>
+                <p className="text-white">Rank: {rank}</p>
+                <p className='text-white'>Last Played: {parseInt(LastPlay.split('d')[0]) > 20000 ? 'Never' : LastPlay}</p>
             </div>
         </div>
     );
