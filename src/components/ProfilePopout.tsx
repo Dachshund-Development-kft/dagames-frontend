@@ -89,7 +89,7 @@ const ProfilePopout: React.FC<ProfilePopoutProps> = ({ playerId }) => {
     return (
         <div className="absolute bg-black bg-opacity-50 p-4 rounded-lg shadow-lg z-50 backdrop-blur-md">
             <h2 className="text-white text-lg font-bold">{username}</h2>
-            <img src={pfp} alt={username} className="w-16 h-16 rounded-full" />
+            <img src={pfp} alt={username} className="w-16 h-16 rounded-full pixelart" />
             <div className="mt-2">
                 <h3 className="text-white font-semibold">Levels</h3>
                 <p className="text-white">Current Level: {levels.current}</p>
