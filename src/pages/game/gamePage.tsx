@@ -126,9 +126,9 @@ const GamePage: React.FC = () => {
             if (data.players) {
                 const player2 = data.players[1];
                 const player1 = data.players[0];
-
+        
                 const myId = localStorage.getItem('user_id');
-
+        
                 if (player1.id === myId) {
                     setMyHealth(player1.health);
                     setMyPoints(player1.power);
@@ -145,22 +145,22 @@ const GamePage: React.FC = () => {
                     setEnemeyId(player1.id);
                 }
             }
-
+        
             if (data.match) {
                 setRounds(data.match.rounds);
             }
-
+        
             if (data.messages) {
                 setMessage0(data.messages[0]);
                 setMessage1(data.messages[1]);
                 setMyActionChosen(false);
                 setEnemyActionChosen(false);
             }
-
+        
             if (data.winner) {
                 setWinner(data.winner);
             }
-
+        
             if (data.action) {
                 toast.info(data.message);
                 if (data.action.playerId === myId) {
@@ -171,7 +171,11 @@ const GamePage: React.FC = () => {
             } else if (data.error) {
                 toast.error(data.error);
             }
-
+        
+            if (data.self_action) {
+                setMyActionChosen(true);
+            }
+        
             if (data.match_over) {
                 setTimeout(() => {
                     localStorage.removeItem('game_id');
