@@ -3,6 +3,7 @@ import NavLayoutGame from '../../components/nav';
 import socket from '../../api/socket';
 import { FaEye, FaEyeSlash, FaLock, FaTimes } from 'react-icons/fa';
 import Loading from '../../components/loading';
+import { toast } from 'react-toastify';
 
 interface Lobby {
     id: string;
@@ -20,13 +21,12 @@ const PlayPage: React.FC = () => {
     const [lobbyPassword, setLobbyPassword] = useState<string>('');
     const [lobbies, setLobbies] = useState<Lobby[]>([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
 
     const fetchLobbies = async () => {
         const token = localStorage.getItem('token');
 
         if (!token) {
-            setError('No token found in localStorage');
+            toast.error('No token found in localStorage');
             setLoading(false);
             return;
         }
@@ -38,12 +38,12 @@ const PlayPage: React.FC = () => {
                     setLobbies(data.data);
                     setLoading(false);
                 } else {
-                    setError(data.message);
+                    toast.error(data.message);
                     setLoading(false);
                 }
             });
-        } catch (err) {
-            setError(err instanceof Error ? err.message : 'An unknown error occurred');
+        } catch (error) {
+            toast.error(error instanceof Error ? error.message : 'An unknown error occurred');
             setLoading(false);
         }
     };
@@ -56,7 +56,7 @@ const PlayPage: React.FC = () => {
 
     useEffect(() => {
         if (!socket) {
-            setError('Socket not connected');
+            toast.error('Socket not connected');
         }
 
         setTimeout(() => {
@@ -79,7 +79,7 @@ const PlayPage: React.FC = () => {
     
     const createLobby = () => {
         if (!socket) {
-            setError('Socket not connected');
+            toast.error('Socket not connected');
             return;
         }
 
@@ -105,7 +105,7 @@ const PlayPage: React.FC = () => {
                     localStorage.setItem('lobby_id', data.id);
                     return window.location.href = `/play/${data.id}`;
                 } else {
-                    setError('Failed to join lobby: ' + data.message);
+                    toast.error('Failed to join lobby: ' + data.message);
                 }
             });
         } else {
@@ -117,7 +117,7 @@ const PlayPage: React.FC = () => {
                     localStorage.setItem('lobby_id', data.id);
                     return window.location.href = `/play/${data.id}`;
                 } else {
-                    setError('Failed to join lobby: ' + data.message);
+                    toast.error('Failed to join lobby: ' + data.message);
                 }
             });
         }
@@ -161,7 +161,6 @@ const PlayPage: React.FC = () => {
                     </div> 
                     <div className="bg-black bg-opacity-50 rounded-lg shadow-md backdrop-blur-md p-6 mt-8">
                         <h2 className="text-2xl font-bold mb-6 text-center text-white">Active Lobbies</h2>
-                        {error && <div className="text-red-500 text-center mb-4">{error}</div>}
                         <div className="overflow-y-auto max-h-[60vh] scrollbar-hide grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4 w-full">
                                 {lobbies.map((lobby) => (
                                     <div key={lobby.id} className="p-4 bg-black bg-opacity-50 rounded-lg shadow-md">
