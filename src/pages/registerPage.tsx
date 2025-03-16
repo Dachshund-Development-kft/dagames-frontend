@@ -17,13 +17,11 @@ const RegisterPage: React.FC = () => {
         const email = (document.getElementById('email') as HTMLInputElement)?.value || '';
         const tosChecked = (document.getElementById('tos') as HTMLInputElement)?.checked;
 
-        // Validate username
         if (!username) {
             toast.error("Username is required");
             return;
         }
 
-        // Validate email
         if (!email) {
             toast.error("Email is required");
             return;
@@ -32,7 +30,6 @@ const RegisterPage: React.FC = () => {
             return;
         }
 
-        // Validate password
         if (!password) {
             toast.error("Password is required");
             return;
@@ -41,13 +38,11 @@ const RegisterPage: React.FC = () => {
             return;
         }
 
-        // Validate password confirmation
         if (password !== passwordAgain) {
             toast.error("Passwords do not match");
             return;
         }
 
-        // Validate Terms of Service
         if (!tosChecked) {
             toast.error("You must agree to the Terms of Service to register.");
             return;
