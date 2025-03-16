@@ -38,7 +38,7 @@ const StorePage: React.FC = () => {
 
             setLoading(false);
         } catch (err) {
-            setError('Failed to load shop items or inventory.');
+            toast.error('Failed to load shop items or inventory.');
             setLoading(false);
         }
     }, []);
@@ -54,9 +54,9 @@ const StorePage: React.FC = () => {
             setShowPopup(true);
         } catch (error) {
             if (error instanceof Error) {
-                setError(error.message || 'Failed to load item details.');
+                toast.error(error.message || 'Failed to load item details.');
             } else {
-                setError('Failed to load item details.');
+                toast.error('Failed to load item details.');
             }
         }
     };
@@ -81,9 +81,9 @@ const StorePage: React.FC = () => {
             }
         } catch (error) {
             if (error instanceof Error) {
-                setError(error.message || 'Failed to buy item.');
+                toast.error(error.message || 'Failed to buy item.');
             } else {
-                setError('Failed to buy item.');
+                toast.error('Failed to buy item.');
             }
         }
     };
@@ -116,7 +116,7 @@ const StorePage: React.FC = () => {
     }
 
     if (error) {
-        return <div className="text-red-500">{error}</div>;
+        toast.error(error);
     }
 
     return (
