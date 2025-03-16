@@ -80,7 +80,7 @@ const GamePage: React.FC = () => {
         return (
             <div
                 ref={drop}
-                className={`p-4 border-2 w-80 border-dashed ${canDrop ? 'border-green-500' : 'border-gray-500'} rounded-lg`}
+                className={`p-4 border-2 h-28 w-80 border-dashed ${canDrop ? 'border-green-500' : 'border-gray-500'} rounded-lg flex items-center justify-center text-center`}
             >
                 {isOver ? 'Release to perform action' : 'Drag action here'}
             </div>
@@ -162,7 +162,6 @@ const GamePage: React.FC = () => {
             }
         
             if (data.action) {
-                toast.info(data.message);
                 if (data.action.playerId === myId) {
                     setMyActionChosen(true);
                 } else {
