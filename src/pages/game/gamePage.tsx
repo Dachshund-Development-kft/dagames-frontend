@@ -16,7 +16,8 @@ const GamePage: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [myHealth, setMyHealth] = useState<number>(100);
     const [enemyHealth, setEnemyHealth] = useState<number>(100);
-    const [message, setMessage] = useState<string>('');
+    const [message0, setMessage0] = useState<string>('');
+    const [message1, setMessage1] = useState<string>('');
     const [winner, setWinner] = useState<string | null>(null);
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [startDates, setStartDates] = useState<string | null>(null);
@@ -150,7 +151,8 @@ const GamePage: React.FC = () => {
             }
 
             if (data.messages) {
-                setMessage(data.messages);
+                setMessage0(data.messages[0]);
+                setMessage1(data.messages[1]);
                 setMyActionChosen(false);
                 setEnemyActionChosen(false);
             }
@@ -266,7 +268,8 @@ const GamePage: React.FC = () => {
                             )}
 
                             <div className='mt-8 text-center'>
-                                <p className='text-lg'>{message}</p>
+                                <p className='text-lg'>{message0}</p>
+                                <p className='text-lg'>{message1}</p>
                             </div>
 
                             <div className='flex justify-center items-center gap-4 mt-8'>
@@ -390,7 +393,8 @@ const GamePage: React.FC = () => {
                     )}
 
                     <div className='mt-8 text-center'>
-                        <p className='text-lg'>{message}</p>
+                        <p className='text-lg'>{message0}</p>
+                        <p className='text-lg'>{message1}</p>
                     </div>
 
                     <div className='flex justify-center items-center gap-4 mt-8'>
@@ -400,12 +404,12 @@ const GamePage: React.FC = () => {
                             </p>
                         ) : (
                             <div className='mt-8 flex flex-wrap justify-center gap-4' style={{ maxWidth: '400px' }}>
-                                <ActionDropArea /> 
+                                <ActionDropArea />
                                 <ActionCard action="normal_attack" label="Normal attack" bgColor="bg-blue-500" />
                                 <ActionCard action="strong_attack" label="Special attack" bgColor="bg-red-500" />
                                 <ActionCard action="weak_attack" label="Weak attack" bgColor="bg-yellow-500" />
                                 <ActionCard action="defend" label="Defend" bgColor="bg-green-500" />
-                                
+
                             </div>
                         )}
                     </div>
