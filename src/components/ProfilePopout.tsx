@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 interface Player {
     username: string;
@@ -24,7 +25,7 @@ interface ProfilePopoutProps {
 const ProfilePopout: React.FC<ProfilePopoutProps> = ({ playerId }) => {
     const [player, setPlayer] = useState<Player | null>(null);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const [error] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchPlayerData = async () => {
@@ -52,7 +53,7 @@ const ProfilePopout: React.FC<ProfilePopoutProps> = ({ playerId }) => {
                 setLoading(false);
             } catch (err) {
                 console.error('Error fetching player data:', err);
-                setError('Failed to load player data');
+                toast.error('Failed to load player data');
                 setLoading(false);
             }
         };
@@ -65,7 +66,7 @@ const ProfilePopout: React.FC<ProfilePopoutProps> = ({ playerId }) => {
     }
 
     if (error) {
-        return <div>{error}</div>;
+        toast.error(error);
     }
 
     if (!player) {
@@ -88,7 +89,7 @@ const ProfilePopout: React.FC<ProfilePopoutProps> = ({ playerId }) => {
     return (
         <div className="absolute bg-black bg-opacity-50 p-4 rounded-lg shadow-lg z-50 backdrop-blur-md">
             <h2 className="text-white text-lg font-bold">{username}</h2>
-            <img src={pfp} alt={username} className="w-16 h-16 rounded-full" />
+            <img src={pfp} alt={username} className="w-16 h-16 rounded-full  " />
             <div className="mt-2">
                 <h3 className="text-white font-semibold">Levels</h3>
                 <p className="text-white">Current Level: {levels.current}</p>
@@ -96,8 +97,8 @@ const ProfilePopout: React.FC<ProfilePopoutProps> = ({ playerId }) => {
                 <div className="w-full bg-gray-700 rounded-full h-2 mt-2">
                     <div className="bg-blue-500 h-2 rounded-full" style={{ width: `${Math.min((levels.xp / levels.xpNeeded) * 100, 100)}%` }}></div>
                 </div>
-                <p className='text-white'>Rank: {rank}</p>
-                <p className='text-white'>Last Played: {LastPlay}</p>
+                <p className="text-white">Rank: {rank}</p>
+                <p className='text-white'>Last Played: {parseInt(LastPlay.split('d')[0]) > 20000 ? 'Never' : LastPlay}</p>
             </div>
         </div>
     );

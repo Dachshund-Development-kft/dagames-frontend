@@ -9,7 +9,7 @@ const StorePage: React.FC = () => {
     const [shopItems, setShopItems] = useState<ShopItem[]>([]);
     const [selectedItem, setSelectedItem] = useState<ShopItem | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
+    const [error] = useState<string | null>(null);
     const [ownedItems, setOwnedItems] = useState<string[]>([]);
     const [coins, setCoins] = useState<number>(0);
     const [showPopup, setShowPopup] = useState<boolean>(false);
@@ -38,7 +38,7 @@ const StorePage: React.FC = () => {
 
             setLoading(false);
         } catch (err) {
-            setError('Failed to load shop items or inventory.');
+            toast.error('Failed to load shop items or inventory.');
             setLoading(false);
         }
     }, []);
@@ -54,9 +54,9 @@ const StorePage: React.FC = () => {
             setShowPopup(true);
         } catch (error) {
             if (error instanceof Error) {
-                setError(error.message || 'Failed to load item details.');
+                toast.error(error.message || 'Failed to load item details.');
             } else {
-                setError('Failed to load item details.');
+                toast.error('Failed to load item details.');
             }
         }
     };
@@ -81,9 +81,9 @@ const StorePage: React.FC = () => {
             }
         } catch (error) {
             if (error instanceof Error) {
-                setError(error.message || 'Failed to buy item.');
+                toast.error(error.message || 'Failed to buy item.');
             } else {
-                setError('Failed to buy item.');
+                toast.error('Failed to buy item.');
             }
         }
     };
@@ -116,7 +116,7 @@ const StorePage: React.FC = () => {
     }
 
     if (error) {
-        return <div className="text-red-500">{error}</div>;
+        toast.error(error);
     }
 
     return (
@@ -143,7 +143,7 @@ const StorePage: React.FC = () => {
                                     <p className="text-gray-500">{item.description}</p>
                                     <p className="text-green-600 font-bold">${item.price}</p>
                                     {item.image && (
-                                        <img src={item.image} alt={item.name} className="mt-4 rounded-3xl" />
+                                        <img src={item.image} alt={item.name} className="mt-4 rounded-3xl  " style={{ width: "100%" }} />
                                     )}
                                 </div>
                             ))}

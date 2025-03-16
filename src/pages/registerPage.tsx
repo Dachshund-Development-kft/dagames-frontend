@@ -17,6 +17,27 @@ const RegisterPage: React.FC = () => {
         const email = (document.getElementById('email') as HTMLInputElement)?.value || '';
         const tosChecked = (document.getElementById('tos') as HTMLInputElement)?.checked;
 
+        if (!username) {
+            toast.error("Username is required");
+            return;
+        }
+
+        if (!email) {
+            toast.error("Email is required");
+            return;
+        } else if (!/\S+@\S+\.\S+/.test(email)) {
+            toast.error("Email is invalid");
+            return;
+        }
+
+        if (!password) {
+            toast.error("Password is required");
+            return;
+        } else if (password.length < 8) {
+            toast.error("Password must be at least 8 characters long");
+            return;
+        }
+
         if (password !== passwordAgain) {
             toast.error("Passwords do not match");
             return;

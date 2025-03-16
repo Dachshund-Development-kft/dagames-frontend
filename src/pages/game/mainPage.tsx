@@ -106,7 +106,7 @@ const PlayPage = () => {
             {user && (
                 <div className="fixed top-20 left-4">
                     <div className="bg-black bg-opacity-50 backdrop-blur-md p-4 rounded-lg flex items-center space-x-2 cursor-pointer" onClick={toggleProfilePopout}>
-                        <img src={user.pfp} alt="Profile" className="w-32 h-32 rounded-full object-cover" />
+                        <img src={user.pfp} alt="Profile" className="w-32 h-32 rounded-full object-cover  " />
                         <div>
                             <span className="text-white font-bold">{user.username}</span>
                             <div className="text-white">
