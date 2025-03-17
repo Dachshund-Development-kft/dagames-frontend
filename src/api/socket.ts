@@ -14,16 +14,4 @@ if (localStorage.getItem('token')) {
   socket.emit('auth', { "token": localStorage.getItem('token') });
 }
 
-socket.on('connect', () => {
-  console.log('Connected to server');
-  socket.on('auth', (data: any) => {
-    if (data.auth) {
-      console.log('Authenticated');
-    } else {
-      window.location.href = '/';
-      console.log('Authentication failed');
-    }
-  });
-});
-
 export default socket;
