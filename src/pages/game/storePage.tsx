@@ -4,6 +4,7 @@ import { fetchShopItems, fetchShopItemById, buyItem, ShopItem } from '../../api/
 import { inventory } from '../../api/inventory';
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import Loading from '../../components/loading';
+import type { JSX } from 'react';
 
 const StorePage: React.FC = () => {
     const [shopItems, setShopItems] = useState<ShopItem[]>([]);
