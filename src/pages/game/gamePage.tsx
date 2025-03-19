@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useDrag } from 'react-dnd';
-import { useDrop } from 'react-dnd';
-import { DndProvider } from 'react-dnd';
+import { useDrag, useDrop, DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import socket from '../../api/socket';
 import Loading from '../../components/loading';
@@ -144,7 +142,8 @@ const GamePage: React.FC = () => {
             setRounds(data.match.rounds);
             setMyId(data.player.id);
             setEnemeyId(data.enemy.id);
-            console.log(data.player.cards);
+            console.log('Player cards:', data.player.cards);
+            setCards(data.player.cards || []);
         };
 
         const handleGameUpdate = (data: any) => {
@@ -161,7 +160,8 @@ const GamePage: React.FC = () => {
                     setEnemyHealth(player2.health);
                     setEnemyPoints(player2.energy);
                     setEnemeyId(player2.id);
-                    setCards(player1.cards);
+                    console.log('Player 1 cards:', player1.cards);
+                    setCards(player1.cards || []);
                     setEnemyCards(player2.cards.length);
                 } else {
                     setMyHealth(player2.health);
@@ -170,7 +170,8 @@ const GamePage: React.FC = () => {
                     setEnemyHealth(player1.health);
                     setEnemyPoints(player1.energy);
                     setEnemeyId(player1.id);
-                    setCards(player2.cards);
+                    console.log('Player 2 cards:', player2.cards);
+                    setCards(player2.cards || []);
                     setEnemyCards(player1.cards.length);
                 }
             }
@@ -198,6 +199,7 @@ const GamePage: React.FC = () => {
                 }
             } else if (data.error) {
                 toast.error(data.error);
+                setMyActionChosen(false);
             }
 
             if (data.self_action) {
@@ -350,6 +352,7 @@ const GamePage: React.FC = () => {
                                     const disabled = myPoints < (CARD_COSTS[card] || 0) || myActionChosen;
                                     return <DraggableCard key={card} card={card} disabled={disabled} />;
                                 })}
+                                <button onClick={() => handleAction('rest')}>Rest</button>
                             </div>
                         )}
                     </div>
