@@ -16,6 +16,7 @@
     "dotenv": "^16.4.7",
     "framer-motion": "^12.5.0",
     "react": "^19.0.0",
+    "react-device-detect": "^2.2.3",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^19.0.0",

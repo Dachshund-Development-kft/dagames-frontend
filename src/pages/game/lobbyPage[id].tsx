@@ -6,6 +6,7 @@ import Loading from '../../components/loading';
 import { lobbyId } from '../../api/lobby';
 import { user } from '../../api/me';
 import ProfilePopout from '../../components/ProfilePopout';
+import { isMobile } from 'react-device-detect';
 
 const PlayPageID: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -180,6 +181,11 @@ const PlayPageID: React.FC = () => {
     const handleCloseProfilePopout = () => {
         setSelectedPlayerId(null);
     };
+
+    if (isMobile) {
+        alert('You cant open this on mobile');
+        window.location.href = '/';
+    }
 
     if (loading) {
         return <Loading />;
