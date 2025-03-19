@@ -17,6 +17,9 @@ importers:
       axios:
         specifier: ^1.8.3
         version: 1.8.3
+      disable-devtool:
+        specifier: ^0.3.8
+        version: 0.3.8
       dotenv:
         specifier: ^16.4.7
         version: 16.4.7
@@ -970,6 +973,9 @@ packages:
 
   didyoumean@1.2.2:
     resolution: {integrity: sha512-gxtyfqMg7GKyhQmb056K7M3xszy/myH8w+B4RT+QXBQsvAOdc3XymqDDPHx1BgPgsdAA5SIifona89YtRATDzw==}
+
+  disable-devtool@0.3.8:
+    resolution: {integrity: sha512-spwifiBbcgDTVEdzoWyH3NjZ1he/OgJmUNXvMgEffJ8Fh2B6mEJjCCEV25wlJSyNXEdGyzKFFRXh4kVDRK/wCg==}
 
   dlv@1.1.3:
     resolution: {integrity: sha512-+HlytyjlPKnIG8XuRG8WvmBP8xs8P71y+SKKS6ZXWoEgLuePxtDoUEiH7WkdePWrQ5JBpE6aoVqfZfJUQkjXwA==}
@@ -2918,6 +2924,8 @@ snapshots:
       dequal: 2.0.3
 
   didyoumean@1.2.2: {}
+
+  disable-devtool@0.3.8: {}
 
   dlv@1.1.3: {}
 

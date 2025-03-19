@@ -10,6 +10,7 @@ import ProgressBar from '../../components/progressBar';
 import ProfilePopout from '../../components/ProfilePopout';
 import { toast } from 'react-toastify';
 import { isMobile } from 'react-device-detect';
+import DisableDevtool from 'disable-devtool';
 
 const GamePage: React.FC = () => {
     const { id: matchid } = useParams<{ id: string }>();
@@ -90,6 +91,8 @@ const GamePage: React.FC = () => {
     };
 
     useEffect(() => {
+        DisableDevtool();
+
         if (matchid === 'undefined') {
             window.location.href = '/play';
         }
