@@ -10,6 +10,7 @@ import ProgressBar from '../../components/progressBar';
 import ProfilePopout from '../../components/ProfilePopout';
 import { useMediaQuery } from 'react-responsive';
 import { toast } from 'react-toastify';
+import { isMobile } from 'react-device-detect';
 
 const GamePage: React.FC = () => {
     const { id: matchid } = useParams<{ id: string }>();
@@ -257,6 +258,11 @@ const GamePage: React.FC = () => {
     const handleCloseProfilePopout = () => {
         setSelectedPlayerId(null);
     };
+
+    if (isMobile) {
+        alert('You cant open this on mobile');
+        window.location.href = '/';
+    }
 
     if (!isDesktopOrLaptop) {
         return (

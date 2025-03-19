@@ -4,6 +4,7 @@ import socket from '../../api/socket';
 import { FaEye, FaEyeSlash, FaLock, FaTimes } from 'react-icons/fa';
 import Loading from '../../components/loading';
 import { toast } from 'react-toastify';
+import { isMobile } from 'react-device-detect';
 
 interface Lobby {
     id: string;
@@ -143,6 +144,11 @@ const PlayPage: React.FC = () => {
             });
         }
     };
+
+    if (isMobile) {
+        alert('You cant open this on mobile');
+        window.location.href = '/';
+    }
 
     if (loading) {
         return <Loading />;
