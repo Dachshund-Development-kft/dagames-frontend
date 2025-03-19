@@ -8,7 +8,6 @@ import socket from '../../api/socket';
 import Loading from '../../components/loading';
 import ProgressBar from '../../components/progressBar';
 import ProfilePopout from '../../components/ProfilePopout';
-import { useMediaQuery } from 'react-responsive';
 import { toast } from 'react-toastify';
 import { isMobile } from 'react-device-detect';
 
@@ -31,7 +30,6 @@ const GamePage: React.FC = () => {
     const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
     const [myActionChosen, setMyActionChosen] = useState<boolean>(false);
     const [enemyActionChosen, setEnemyActionChosen] = useState<boolean>(false);
-    const isDesktopOrLaptop = useMediaQuery({ minWidth: 1024 });
 
     // TO-DO: Meg csinálni hogy displayelje a kártyákat!
     const [cards, setCards] = useState<string[]>([]);
@@ -123,7 +121,7 @@ const GamePage: React.FC = () => {
             setRounds(data.match.rounds);
             setMyId(data.player.id);
             setEnemeyId(data.enemy.id);
-            console.log(data.player.cards);     
+            console.log(data.player.cards);
         };
 
         const handleGameUpdate = (data: any) => {
@@ -262,107 +260,6 @@ const GamePage: React.FC = () => {
     if (isMobile) {
         alert('You cant open this on mobile');
         window.location.href = '/';
-    }
-
-    if (!isDesktopOrLaptop) {
-        return (
-            <>
-                <main className='flex flex-col items-center justify-center min-h-screen text-white'>
-                    <div className="overflow-y-auto max-h-screen w-full">
-                        <div className="middlerow flex items-center justify-center p-4">
-                            <div className='bg-black bg-opacity-50 p-4 rounded-lg'>
-                                <div className='text-center bg-black bg-opacity-50 p-4 rounded-lg'>
-                                    <p className='text-xl font-bold'>Fight:</p>
-                                    <p>Start: {startDates}</p>
-                                    <p>Elapsed time: {startTime}</p>
-                                    <p>Number of rounds: {rounds}</p>
-                                </div>
-                                {playerInfo && enemyInfo && (
-                                    <div className='flex justify-center items-center gap-8 mt-16'>
-                                        <img src={playerInfo.character.icon} alt={playerInfo.character.name} className='w-32 h-32  ' style={{ WebkitTransform: 'scaleX(-1)', transform: 'scaleX(-1)' }} />
-                                        <img src={enemyInfo.character.icon} alt={enemyInfo.character.name} className='w-32 h-32  ' />
-                                    </div>
-                                )}
-
-                                <div className='mt-8 text-center'>
-                                    <p className='text-lg'>{message0}</p>
-                                    <p className='text-lg'>{message1}</p>
-                                </div>
-
-                                <div className='flex justify-center items-center gap-4 mt-8'>
-                                    {winner ? (
-                                        <p className='text-2xl font-bold mt-8'>
-                                            {winner === localStorage.getItem('user_id') ? 'Nyertél!' : 'Vesztettél!'}
-                                        </p>
-                                    ) : (
-                                        <div className='mt-8'>
-                                            <button className='bg-blue-500 text-white px-6 py-3 rounded-lg mr-4 hover:bg-blue-600 transition-colors' onClick={() => handleAction('normal_attack')} >
-                                                Normal attack
-                                            </button>
-                                            <button className='bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-600 transition-colors' onClick={() => handleAction('strong_attack')} >
-                                                Special attack
-                                            </button>
-                                            <button className='bg-yellow-500 text-white px-6 py-3 rounded-lg hover:bg-yellow-600 transition-colors' onClick={() => handleAction('weak_attack')} >
-                                                Weak attack
-                                            </button>
-
-                                            <button className='bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition-colors' onClick={() => handleAction('defend')} >
-                                                Defend
-                                            </button>
-
-                                            <button className='bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition-colors' onClick={() => handleAction('rest')} >
-                                                Rest
-                                            </button>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="flex items-center justify-center p-4 gap-4 ">
-                            <div className='bg-black w-full bg-opacity-50 rounded-lg p-4' onClick={() => handlePlayerClick(myId)}>
-                                <h2 className='text-xl font-bold'>You {myActionChosen && <span className="text-green-500">✔</span>}</h2>
-                                <p>Health: {myHealth}</p>
-                                <ProgressBar value={myHealth} max={100} startColor="#FF0000" endColor="#00FF00" />
-                                <p>Power: {myPoints}</p>
-                                <ProgressBar value={myPoints} max={5} startColor="#800080" endColor="##0000ff" />
-                                {playerInfo && (
-                                    <div className='mt-2'>
-                                        <img src={playerInfo.character.icon} alt={playerInfo.character.name} className='w-16 h-16  ' />
-                                        <p>{playerInfo.character.name}</p>
-                                        <img src={playerInfo.weapon.icon} alt={playerInfo.weapon.name} className='w-16 h-16  ' />
-                                        <p>{playerInfo.weapon.name}</p>
-                                    </div>
-                                )}
-                            </div>
-                            <div className='bg-black w-full bg-opacity-50 rounded-lg p-4' onClick={() => handlePlayerClick(enemyId)}>
-                                <h2 className='text-xl font-bold'>Enemy {enemyActionChosen && <span className="text-green-500">✔</span>}</h2>
-                                <p>Health: {enemyHealth}</p>
-                                <ProgressBar value={enemyHealth} max={100} startColor="#FF0000" endColor="#00FF00" />
-                                <p>Power: {enemyPoints}</p>
-                                <ProgressBar value={enemyPoints} max={5} startColor="#800080" endColor="##0000ff" />
-                                {enemyInfo && (
-                                    <div className='mt-2'>
-                                        <img src={enemyInfo.character.icon} alt={enemyInfo.character.name} className='w-16 h-16  ' />
-                                        <p>{enemyInfo.character.name}</p>
-                                        <img src={enemyInfo.weapon.icon} alt={enemyInfo.weapon.name} className='w-16 h-16  ' />
-                                        <p>{enemyInfo.weapon.name}</p>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-
-                        {selectedPlayerId && (
-                            <>
-                                <div className='fixed inset-0 bg-black bg-opacity-50 z-40' onClick={handleCloseProfilePopout} />
-                                <ProfilePopout playerId={selectedPlayerId} />
-                            </>
-                        )}
-                    </div>
-                </main>
-            </>
-
-        );
     }
 
     return (
