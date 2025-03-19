@@ -10,7 +10,6 @@ import ProgressBar from '../../components/progressBar';
 import ProfilePopout from '../../components/ProfilePopout';
 import { toast } from 'react-toastify';
 import { isMobile } from 'react-device-detect';
-//import DisableDevtool from 'disable-devtool';
 
 const GamePage: React.FC = () => {
     const { id: matchid } = useParams<{ id: string }>();
@@ -31,8 +30,6 @@ const GamePage: React.FC = () => {
     const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
     const [myActionChosen, setMyActionChosen] = useState<boolean>(false);
     const [enemyActionChosen, setEnemyActionChosen] = useState<boolean>(false);
-
-    // TO-DO: Meg csinálni hogy displayelje a kártyákat!
     const [cards, setCards] = useState<string[]>([]);
     const [enemyCards, setEnemyCards] = useState<number>(0);
 
@@ -51,10 +48,22 @@ const GamePage: React.FC = () => {
         setMyActionChosen(true);
     }, []);
 
-    const ActionCard: React.FC<{ action: string; label: string; bgColor: string }> = ({ action, label, bgColor }) => {
+    const getCardImage = (cardType: string, disabled: boolean) => {
+        const baseName = {
+            defend: 'defendCard',
+            normal_attack: 'normalCard',
+            strong_attack: 'strongAttack',
+            weak_attack: 'weakAttack',
+        }[cardType] || '';
+        
+        return `/cards/${baseName}${disabled ? 'Disabled' : ''}.png`;
+    };
+
+    const DraggableCard: React.FC<{ card: string; disabled: boolean }> = ({ card, disabled }) => {
         const [{ isDragging }, drag] = useDrag(() => ({
             type: 'action',
-            item: { action },
+            item: { action: card },
+            canDrag: !disabled,
             collect: (monitor) => ({
                 isDragging: !!monitor.isDragging(),
             }),
@@ -63,11 +72,24 @@ const GamePage: React.FC = () => {
         return (
             <div
                 ref={drag as unknown as React.RefObject<HTMLDivElement>}
-                className={`${bgColor} text-white px-6 py-3 rounded-lg cursor-pointer hover:${bgColor}-600 transition-colors`}
-                style={{ opacity: isDragging ? 0.5 : 1 }}>
-                {label}
+                className={`relative ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                style={{ opacity: isDragging ? 0.5 : 1 }}
+            >
+                <img
+                    src={getCardImage(card, disabled)}
+                    alt={card}
+                    className="w-24 h-32 object-contain"
+                />
+                {disabled && <div className="absolute inset-0 bg-gray-800 opacity-50" />}
             </div>
         );
+    };
+
+    const CARD_COSTS: Record<string, number> = {
+        normal_attack: 1,
+        strong_attack: 3,
+        weak_attack: 1,
+        defend: 2,
     };
 
     const ActionDropArea = () => {
@@ -91,8 +113,6 @@ const GamePage: React.FC = () => {
     };
 
     useEffect(() => {
-        //DisableDevtool();
-
         if (matchid === 'undefined') {
             window.location.href = '/play';
         }
@@ -153,8 +173,6 @@ const GamePage: React.FC = () => {
                     setCards(player2.cards);
                     setEnemyCards(player1.cards.length);
                 }
-
-
             }
 
             if (data.match) {
@@ -274,6 +292,7 @@ const GamePage: React.FC = () => {
                     <ProgressBar value={enemyHealth} max={100} startColor="#FF0000" endColor="#00FF00" />
                     <p>Power: {enemyPoints}</p>
                     <ProgressBar value={enemyPoints} max={10} startColor="#800080" endColor="##0000ff" />
+                    <p>Cards: {enemyCards}</p>
                     {enemyInfo && (
                         <div className='mt-2'>
                             <img src={enemyInfo.character.icon} alt={enemyInfo.character.name} className='w-16 h-16  ' />
@@ -327,11 +346,10 @@ const GamePage: React.FC = () => {
                         ) : (
                             <div className='mt-8 flex flex-wrap justify-center gap-4' style={{ maxWidth: '400px' }}>
                                 <ActionDropArea />
-                                <ActionCard action="normal_attack" label="Normal attack" bgColor="bg-blue-500" />
-                                <ActionCard action="strong_attack" label="Special attack" bgColor="bg-red-500" />
-                                <ActionCard action="weak_attack" label="Weak attack" bgColor="bg-yellow-500" />
-                                <ActionCard action="defend" label="Defend" bgColor="bg-green-500" />
-                                <ActionCard action="rest" label="Rest" bgColor="bg-green-500" />
+                                {cards.map((card) => {
+                                    const disabled = myPoints < (CARD_COSTS[card] || 0) || myActionChosen;
+                                    return <DraggableCard key={card} card={card} disabled={disabled} />;
+                                })}
                             </div>
                         )}
                     </div>
