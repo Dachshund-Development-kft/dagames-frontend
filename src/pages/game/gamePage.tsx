@@ -10,7 +10,7 @@ import ProgressBar from '../../components/progressBar';
 import ProfilePopout from '../../components/ProfilePopout';
 import { toast } from 'react-toastify';
 import { isMobile } from 'react-device-detect';
-import DisableDevtool from 'disable-devtool';
+//import DisableDevtool from 'disable-devtool';
 
 const GamePage: React.FC = () => {
     const { id: matchid } = useParams<{ id: string }>();
@@ -24,8 +24,8 @@ const GamePage: React.FC = () => {
     const [startDates, setStartDates] = useState<string | null>(null);
     const [startTime, setStartTime] = useState<string | null>(null);
     const [rounds, setRounds] = useState<number>(0);
-    const [myPoints, setMyPoints] = useState<number>(10)
-    const [enemyPoints, setEnemyPoints] = useState<number>(10)
+    const [myPoints, setMyPoints] = useState<number>(5);
+    const [enemyPoints, setEnemyPoints] = useState<number>(5);
     const [myId, setMyId] = useState<string>('');
     const [enemyId, setEnemeyId] = useState<string>('');
     const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
@@ -91,7 +91,7 @@ const GamePage: React.FC = () => {
     };
 
     useEffect(() => {
-        DisableDevtool();
+        //DisableDevtool();
 
         if (matchid === 'undefined') {
             window.location.href = '/play';
@@ -154,8 +154,7 @@ const GamePage: React.FC = () => {
                     setEnemyCards(player1.cards.length);
                 }
 
-                console.log(cards);
-                console.log(enemyCards);
+
             }
 
             if (data.match) {
