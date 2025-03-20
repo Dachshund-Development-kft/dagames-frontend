@@ -48,10 +48,7 @@ const MatchPopup = ({ matchData }: { matchData: any, onClose: any }) => {
                     <p><strong>Coins:</strong> {data.coins}</p>
                     <p><strong>Rounds:</strong> {data.rounds}</p>
                 </div>
-                <button
-                    onClick={handleClose}
-                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                >
+                <button onClick={handleClose} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" >
                     Close
                 </button>
             </div>

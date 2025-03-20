@@ -234,27 +234,7 @@ const PlayPage: React.FC = () => {
                                     </div>
                                 </div>
                             )}
-                            <button
-                                className='text-white bg-blue-500 p-2 w-full rounded-md text-lg mt-4'
-                                onClick={() => {
-                                    setLobbyPopup(false);
-
-                                    socket.emit('create_lobby', {
-                                        name: lobbyName,
-                                        public: lobbyVisibility,
-                                        password: lobbyPassword
-                                    });
-
-                                    socket.on('create_lobby', (data) => {
-                                        console.log('Lobby created:', data);
-
-                                        if (data.id) {
-                                            window.location.href = `/play/${data.id}`;
-                                            console.log('Redirecting to lobby:', data.id);
-                                        }
-                                    });
-                                }}
-                            >
+                            <button className='text-white bg-blue-500 p-2 w-full rounded-md text-lg mt-4' onClick={() => { setLobbyPopup(false); socket.emit('create_lobby', { name: lobbyName, public: lobbyVisibility, password: lobbyPassword }); socket.on('create_lobby', (data) => { console.log('Lobby created:', data); if (data.id) { window.location.href = `/play/${data.id}`; console.log('Redirecting to lobby:', data.id); } });  }} >
                                 Create Lobby
                             </button>
                         </div>
