@@ -5,7 +5,7 @@ interface ProgressBarProps {
     max: number;
     startColor: string;
     endColor: string;
-    length?: string; // Optional length prop
+    length?: string;
 }
 
 const ProgressBar: React.FC<ProgressBarProps> = ({ value, max, startColor, endColor, length = '100%' }) => {

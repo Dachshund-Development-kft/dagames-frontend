@@ -83,21 +83,13 @@ const GamePage: React.FC = () => {
     };
 
     useEffect(() => {
-        if (matchid === 'undefined') {
-            window.location.href = '/play';
-        }
-
         const localMatchId = localStorage.getItem('game_id');
         const localToken = localStorage.getItem('game_token');
-
-        let yourid;
-        console.log(yourid);
 
         const handleGameAuth = (data: any) => {
             if (data.success) {
                 console.log('Game auth success');
                 localStorage.setItem('user_id', data.id);
-                yourid = data.id;
             } else {
                 localStorage.removeItem('game_id');
                 localStorage.removeItem('game_token');
@@ -124,8 +116,6 @@ const GamePage: React.FC = () => {
             if (data.players) {
                 const player2 = data.players[1];
                 const player1 = data.players[0];
-
-                const myId = localStorage.getItem('user_id');
 
                 if (player1.id === myId) {
                     setMyHealth(player1.health);
@@ -261,7 +251,7 @@ const GamePage: React.FC = () => {
     }
 
     const ActionDropArea = () => {
-        const [{ canDrop, isOver }, drop] = useDrop(() => ({
+        const [{ canDrop }, drop] = useDrop(() => ({
             accept: 'action',
             drop: (item: { action: string }) => handleAction(item.action),
             collect: (monitor) => ({
@@ -310,11 +300,11 @@ const GamePage: React.FC = () => {
                         )}
                         <div>
 
-                            <div className=''>
+                            <div>
                                 <p>Health: {enemyHealth}</p>
                                 <ProgressBar value={enemyHealth} max={100} startColor="#FF0000" endColor="#00FF00" length="200px" />
                             </div>
-                            <div className=''>
+                            <div>
                                 <p>Power: {enemyPoints}</p>
                                 <ProgressBar value={enemyPoints} max={10} startColor="#800080" endColor="##0000ff" length="200px" />
                             </div>
@@ -361,11 +351,11 @@ const GamePage: React.FC = () => {
                         )}
                         <div>
 
-                            <div className=''>
+                            <div>
                                 <p>Health: {myHealth}</p>
                                 <ProgressBar value={myHealth} max={100} startColor="#FF0000" endColor="#00FF00" length="200px" />
                             </div>
-                            <div className=''>
+                            <div>
                                 <p>Power: {myPoints}</p>
                                 <ProgressBar value={myPoints} max={10} startColor="#800080" endColor="##0000ff" length="200px" />
                             </div>
@@ -384,15 +374,9 @@ const GamePage: React.FC = () => {
 
 
                     <div className='flex justify-center items-center gap-4 mt-8'>
-                        {winner ? (
-                            <p className='text-2xl font-bold mt-8'>
-                                {winner === localStorage.getItem('user_id') ? 'You won!' : 'You lost!'}
-                            </p>
-                        ) : (
-                            <div className='mt-8'>
-                                <ActionDropArea />
-                            </div>
-                        )}
+                        <div className='mt-8'>
+                            <ActionDropArea />
+                        </div>
                     </div>
                 </div>
 
