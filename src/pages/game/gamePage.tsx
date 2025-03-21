@@ -18,7 +18,6 @@ const GamePage: React.FC = () => {
     const [message1, setMessage1] = useState<string>('');
     const [winner, setWinner] = useState<string | null>(null);
     const [startDate, setStartDate] = useState<Date | null>(null);
-    const [startDates, setStartDates] = useState<string | null>(null);
     const [startTime, setStartTime] = useState<string | null>(null);
     const [rounds, setRounds] = useState<number>(0);
     const [myPoints, setMyPoints] = useState<number>(5);
@@ -30,7 +29,6 @@ const GamePage: React.FC = () => {
     const [enemyActionChosen, setEnemyActionChosen] = useState<boolean>(false);
     const [cards, setCards] = useState<string[]>([]);
     const [enemyCards, setEnemyCards] = useState<number>(0);
-    console.log(startDates);
     const [playerInfo, setPlayerInfo] = useState<{
         char: string | undefined;
         character: { name: string; icon: string; type: string };
@@ -89,7 +87,7 @@ const GamePage: React.FC = () => {
         const handleGameAuth = (data: any) => {
             if (data.success) {
                 console.log('Game auth success');
-                localStorage.setItem('user_id', data.id);
+                setMyId(data.id);
             } else {
                 localStorage.removeItem('game_id');
                 localStorage.removeItem('game_token');
@@ -101,45 +99,32 @@ const GamePage: React.FC = () => {
         const handleGameInfo = (data: any) => {
             setPlayerInfo(data.player);
             setEnemyInfo(data.enemy);
-            console.log('data: ' + data);
             setStartDate(new Date(data.match.startTime));
             setRounds(data.match.rounds);
-            setMyId(data.player.id);
-            setEnemeyId(data.enemy.id);
-            console.log('Player cards:', data.player.cards);
             setCards(data.player.cards || []);
             setEnemyCards(data.enemy.cards.length);
-            console.log('Enemy cards:', data.enemy.cards.length);
         };
 
         const handleGameUpdate = (data: any) => {
             if (data.players) {
-                const player2 = data.players[1];
                 const player1 = data.players[0];
-                console.log('Players:', player1.id, player2.id, myId);
-                if (player1.id === myId) {
-                    setMyHealth(player1.health);
-                    setMyPoints(player1.energy);
-                    setMyId(player1.id);
-                    setEnemyHealth(player2.health);
-                    setEnemyPoints(player2.energy);
-                    setEnemeyId(player2.id);
-                    console.log('Player 1 cards:', player1.cards);
-                    setCards(player1.cards || []);
-                    setEnemyCards(player2.cards.length);
-                    console.log('Enemy cards:', player2.cards.length);
-                } else {
-                    setMyHealth(player2.health);
-                    setMyPoints(player2.energy);
-                    setMyId(player2.id);
-                    setEnemyHealth(player1.health);
-                    setEnemyPoints(player1.energy);
-                    setEnemeyId(player1.id);
-                    console.log('Player 2 cards:', player2.cards);
-                    setCards(player2.cards || []);
-                    setEnemyCards(player1.cards.length);
-                    console.log('Enemy cards:', player2.cards.length);
-                }
+                const player2 = data.players[1];
+
+                const me = player1.id === myId ? player1 : player2;
+                const enemy = player1.id === myId ? player2 : player1;
+
+                setEnemeyId(enemy.id);
+                setMyId(me.id);
+
+                console.log('me:', me);
+                console.log('enemy:', enemy);
+
+                setMyHealth(me.health);
+                setMyPoints(me.energy);
+                setEnemyHealth(enemy.health);
+                setEnemyPoints(enemy.energy);
+                setCards(me.cards || []);
+                setEnemyCards(enemy.cards.length);
             }
 
             if (data.match) {
@@ -219,14 +204,6 @@ const GamePage: React.FC = () => {
             const minutes = Math.floor(diff / 60000);
             const seconds = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
 
-            const year = startDate.getFullYear();
-            const month = String(startDate.getMonth() + 1).padStart(2, '0');
-            const day = String(startDate.getDate()).padStart(2, '0');
-            const hours = String(startDate.getHours()).padStart(2, '0');
-            const minutesDate = String(startDate.getMinutes()).padStart(2, '0');
-            const secondsDate = String(startDate.getSeconds()).padStart(2, '0');
-
-            setStartDates(`${year}.${month}.${day} ${hours}:${minutesDate}:${secondsDate}`);
             const timeLeft = `${minutes} perc ${seconds} másodperc`;
 
             setStartTime(timeLeft);
@@ -249,7 +226,7 @@ const GamePage: React.FC = () => {
         alert('You cant open this on mobile');
         window.location.href = '/';
     }
-    
+
     if (window.innerWidth < 720) {
         alert('You cant open this on mobile');
         window.location.href = '/';
