@@ -5,9 +5,20 @@ interface ProgressBarProps {
     max: number;
     startColor: string;
     endColor: string;
+    length?: Int32Array | string;
+    showValue?: boolean;
+    numberType?: string;
 }
 
-const ProgressBar: React.FC<ProgressBarProps> = ({ value, max, startColor, endColor }) => {
+const ProgressBar: React.FC<ProgressBarProps> = ({ 
+    value, 
+    max, 
+    startColor, 
+    endColor, 
+    length = '100%', 
+    showValue = false,
+    numberType = ''
+}) => {
     const percentage = (value / max) * 100;
 
     const interpolateColor = (start: string, end: string, percent: number) => {
@@ -37,8 +48,13 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ value, max, startColor, endCo
     const currentColor = interpolateColor(startColor, endColor, percentage);
 
     return (
-        <div className="w-full h-4 bg-gray-700 rounded-full overflow-hidden">
-            <div className="h-full rounded-full" style={{  width: `${percentage}%`, backgroundColor: currentColor, }} />
+        <div className="h-4 bg-gray-700 rounded-full overflow-hidden relative" style={{ width: typeof length === 'string' ? length : `${length.length}px` }}>
+            <div className="h-full rounded-full" style={{ width: `${percentage}%`, backgroundColor: currentColor }} />
+            {showValue && (
+                <span className="absolute inset-0 flex items-center justify-center text-white text-xs font-bold drop-shadow-[0_1px_1px_rgba(0,0,0,0.5)]">
+                    {`${value+' '+numberType}`}
+                </span>
+            )}
         </div>
     );
 };
