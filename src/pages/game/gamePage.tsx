@@ -249,6 +249,11 @@ const GamePage: React.FC = () => {
         alert('You cant open this on mobile');
         window.location.href = '/';
     }
+    
+    if (window.innerWidth < 720) {
+        alert('You cant open this on mobile');
+        window.location.href = '/';
+    }
 
     const ActionDropArea = () => {
         const [{ canDrop }, drop] = useDrop(() => ({
