@@ -103,10 +103,8 @@ const GamePage: React.FC = () => {
             setRounds(data.match.rounds);
             setMyId(data.player.id);
             setEnemeyId(data.enemy.id);
-            console.log('Player cards:', data.player.cards);
             setCards(data.player.cards || []);
             setEnemyCards(data.enemy.cards.length);
-            console.log('Enemy cards:', data.enemy.cards.length);
         };
 
         const handleGameUpdate = (data: any) => {
