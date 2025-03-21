@@ -112,32 +112,18 @@ const GamePage: React.FC = () => {
 
         const handleGameUpdate = (data: any) => {
             if (data.players) {
-                const player2 = data.players[1];
                 const player1 = data.players[0];
+                const player2 = data.players[1];
 
-                if (player1.id === myId) {
-                    setMyHealth(player1.health);
-                    setMyPoints(player1.energy);
-                    setMyId(player1.id);
-                    setEnemyHealth(player2.health);
-                    setEnemyPoints(player2.energy);
-                    setEnemeyId(player2.id);
-                    console.log('Player 1 cards:', player1.cards);
-                    setCards(player1.cards || []);
-                    setEnemyCards(player2.cards.length);
-                    console.log('Enemy cards:', player2.cards.length);
-                } else {
-                    setMyHealth(player2.health);
-                    setMyPoints(player2.energy);
-                    setMyId(player2.id);
-                    setEnemyHealth(player1.health);
-                    setEnemyPoints(player1.energy);
-                    setEnemeyId(player1.id);
-                    console.log('Player 2 cards:', player2.cards);
-                    setCards(player2.cards || []);
-                    setEnemyCards(player1.cards.length);
-                    console.log('Enemy cards:', player2.cards.length);
-                }
+                const me = player1.id === myId ? player1 : player2;
+                const enemy = player1.id === myId ? player2 : player1;
+
+                setMyHealth(me.health);
+                setMyPoints(me.energy);
+                setEnemyHealth(enemy.health);
+                setEnemyPoints(enemy.energy);
+                setCards(me.cards || []);
+                setEnemyCards(enemy.cards.length);
             }
 
             if (data.match) {
