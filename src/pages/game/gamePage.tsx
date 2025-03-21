@@ -99,7 +99,6 @@ const GamePage: React.FC = () => {
         const handleGameInfo = (data: any) => {
             setPlayerInfo(data.player);
             setEnemyInfo(data.enemy);
-            console.log('data: ' + data);
             setStartDate(new Date(data.match.startTime));
             setRounds(data.match.rounds);
             setMyId(data.player.id);
@@ -117,6 +116,8 @@ const GamePage: React.FC = () => {
 
                 const me = player1.id === myId ? player1 : player2;
                 const enemy = player1.id === myId ? player2 : player1;
+                console.log('me:', me);
+                console.log('enemy:', enemy);
 
                 setMyHealth(me.health);
                 setMyPoints(me.energy);
