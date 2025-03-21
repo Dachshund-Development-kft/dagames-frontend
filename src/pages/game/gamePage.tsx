@@ -30,7 +30,7 @@ const GamePage: React.FC = () => {
     const [enemyActionChosen, setEnemyActionChosen] = useState<boolean>(false);
     const [cards, setCards] = useState<string[]>([]);
     const [enemyCards, setEnemyCards] = useState<number>(0);
-
+    console.log(startDates);
     const [playerInfo, setPlayerInfo] = useState<{
         char: string | undefined;
         character: { name: string; icon: string; type: string };
@@ -69,17 +69,17 @@ const GamePage: React.FC = () => {
 
         return (
             <div ref={drag as unknown as React.RefObject<HTMLDivElement>} className={`relative ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`} style={{ opacity: isDragging ? 0.5 : 1 }} >
-                <img src={getCardImage(card, disabled)} alt={card} className="w-24 h-32 object-contain" />
-                {disabled && <div className="absolute inset-0 bg-gray-800 opacity-50" />}
+                <img src={getCardImage(card, disabled)} alt={card} className="w-32 h-40 object-contain" />
+                {disabled && <div className="absolute inset-0 " />}
             </div>
         );
     };
 
     const CARD_COSTS: Record<string, number> = {
-        normal_attack: 1,
-        strong_attack: 3,
-        weak_attack: 1,
-        defend: 2,
+        normal_attack: 3,
+        strong_attack: 8,
+        weak_attack: 2,
+        defend: 3,
     };
 
     useEffect(() => {
@@ -101,7 +101,7 @@ const GamePage: React.FC = () => {
         const handleGameInfo = (data: any) => {
             setPlayerInfo(data.player);
             setEnemyInfo(data.enemy);
-
+            console.log('data: ' + data);
             setStartDate(new Date(data.match.startTime));
             setRounds(data.match.rounds);
             setMyId(data.player.id);
@@ -116,7 +116,7 @@ const GamePage: React.FC = () => {
             if (data.players) {
                 const player2 = data.players[1];
                 const player1 = data.players[0];
-
+                console.log('Players:', player1.id, player2.id, myId);
                 if (player1.id === myId) {
                     setMyHealth(player1.health);
                     setMyPoints(player1.energy);
@@ -282,10 +282,21 @@ const GamePage: React.FC = () => {
 
     return (
         <DndProvider backend={HTML5Backend}>
-            <main className='flex flex-col items-center justify-center min-h-screen text-white'>
-                <div className='absolute top-4 left-4 bg-black bg-opacity-50 rounded-lg p-4 ' onClick={() => handlePlayerClick(enemyId)}>
-                    <h2 className='text-xl font-bold'>Enemy {enemyActionChosen && <span className="text-green-500">✔</span>}</h2>
-                    <div className='flex items-center gap-4'>
+            <main className='flex flex-col items-center justify-center min-h-screen text-white' style={{ backgroundImage: 'url(/background.svg)', backgroundSize: 'cover' }}>
+
+                <div className='absolute top-4 right-4'>
+                    <div className="bg-black bg-opacity-50 rounded-lg p-4">
+                        <h2 className='text-xl font-bold mb-2'>Enemy Cards</h2>
+                        <div className='flex flex-wrap gap-2'>
+                            {Array.from({ length: enemyCards }).map((_, i) => (
+                                <img key={i} src="/cards/blankCard.png" alt="Enemy Card" className="w-32 h-40 object-contain" />
+                            ))}
+                        </div>
+                    </div>
+                    <div className='mt-4 bg-black bg-opacity-50 rounded-lg p-4 w-min ml-auto' onClick={() => handlePlayerClick(enemyId)}>
+                        <h2 className='text-xl font-bold'>Enemy {enemyActionChosen && <span className="text-green-500">✔</span>}</h2>
+                        <div className='flex items-center gap-4'>
+                            {/*
                         {enemyInfo && (
                             <div className='flex flex-col items-center'>
                                 <img src={enemyInfo.character.icon} alt={enemyInfo.character.name} className='w-16 h-16' />
@@ -298,45 +309,25 @@ const GamePage: React.FC = () => {
                                 <p>{enemyInfo.weapon.name}</p>
                             </div>
                         )}
-                        <div>
+                        */}
+                            <div>
 
-                            <div>
-                                <p>Health: {enemyHealth}</p>
-                                <ProgressBar value={enemyHealth} max={100} startColor="#FF0000" endColor="#00FF00" length="200px" />
-                            </div>
-                            <div>
-                                <p>Power: {enemyPoints}</p>
-                                <ProgressBar value={enemyPoints} max={10} startColor="#800080" endColor="##0000ff" length="200px" />
+                                <div className='my-4'>
+                                    <ProgressBar value={enemyHealth} max={100} startColor="#FF0000" endColor="#00FF00" length="200px" showValue numberType="hp" />
+                                </div>
+                                <div>
+                                    <ProgressBar value={enemyPoints} max={10} startColor="#800080" endColor="##0000ff" length="200px" showValue numberType="power" />
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div className='absolute top-4 right-4 bg-black bg-opacity-50 rounded-lg p-4'>
-                    <h2 className='text-xl font-bold mb-2'>Enemy Cards</h2>
-                    <div className='flex flex-wrap gap-2'>
-                        {Array.from({ length: enemyCards }).map((_, i) => (
-                            <img key={i} src="/cards/blankCard.png" alt="Enemy Card" className="w-16 h-20 object-contain" />
-                        ))}
-                    </div>
-                </div>
-
-                <div className='absolute bottom-4 left-4 bg-black bg-opacity-50 rounded-lg p-4'>
-                    <h2 className='text-xl font-bold mb-2'>Your Cards</h2>
-                    <div className='flex flex-wrap gap-2'>
-                        {cards.map((card) => {
-                            const disabled = myPoints < (CARD_COSTS[card] || 0) || myActionChosen;
-                            return <DraggableCard key={card} card={card} disabled={disabled} />;
-                        })}
-                    </div>
-                    <button onClick={() => handleAction('rest')} className="mt-2 px-3 py-1 bg-blue-500 rounded hover:bg-blue-600 disabled:opacity-50" disabled={myActionChosen} >
-                        Rest
-                    </button>
-                </div>
-
-                <div className='absolute bottom-4 right-4 bg-black bg-opacity-50 rounded-lg p-4 ' onClick={() => handlePlayerClick(enemyId)}>
-                    <h2 className='text-xl font-bold'>You {myActionChosen && <span className="text-green-500">✔</span>}</h2>
-                    <div className='flex items-center gap-4'>
+                <div className='absolute bottom-4 left-4'>
+                    <div className='mb-4 bg-black bg-opacity-50 rounded-lg p-4 w-min' onClick={() => handlePlayerClick(enemyId)}>
+                        <h2 className='text-xl font-bold'>You {myActionChosen && <span className="text-green-500">✔</span>}</h2>
+                        <div className='flex items-center gap-4'>
+                            {/*
                         {playerInfo && (
                             <div className='flex flex-col items-center'>
                                 <img src={playerInfo.character.icon} alt={playerInfo.character.name} className='w-16 h-16' />
@@ -349,35 +340,42 @@ const GamePage: React.FC = () => {
                                 <p>{playerInfo.weapon.name}</p>
                             </div>
                         )}
-                        <div>
+                        */}
+                            <div>
 
-                            <div>
-                                <p>Health: {myHealth}</p>
-                                <ProgressBar value={myHealth} max={100} startColor="#FF0000" endColor="#00FF00" length="200px" />
-                            </div>
-                            <div>
-                                <p>Power: {myPoints}</p>
-                                <ProgressBar value={myPoints} max={10} startColor="#800080" endColor="##0000ff" length="200px" />
+                                <div className='my-4'>
+                                    <ProgressBar value={myHealth} max={100} startColor="#FF0000" endColor="#00FF00" length="200px" showValue numberType="hp" />
+                                </div>
+                                <div>
+                                    <ProgressBar value={myPoints} max={10} startColor="#800080" endColor="##0000ff" length="200px" showValue numberType="power" />
+                                </div>
                             </div>
                         </div>
+                    </div>
+                    <div className="bg-black bg-opacity-50 rounded-lg p-4">
+                        <div className='flex gap-4 mb-2'>
+                            <h2 className='text-xl font-bold mb-2'>Your Cards</h2>
+                            <button onClick={() => handleAction('rest')} className="px-3 bg-blue-500 rounded hover:bg-blue-600 disabled:opacity-50" disabled={myActionChosen} >
+                                Rest
+                            </button>
+                        </div>
+                        <div className='flex flex-wrap gap-2'>
+                            {cards.map((card, index) => {
+                                const disabled = myPoints < (CARD_COSTS[card] || 0) || myActionChosen;
+                                return <DraggableCard key={`${card}-${index}`} card={card} disabled={disabled} />;
+                            })}
+                        </div>
+
                     </div>
                 </div>
 
-                <div id='sigma' className='bg-black bg-opacity-50 p-4 rounded-lg'>
-                    <div className='text-center bg-black bg-opacity-50 p-4 rounded-lg'>
-                        <p className='text-xl font-bold'>Fight:</p>
-                        <p>Start: {startDates}</p>
-                        <p>Elapsed time: {startTime}</p>
-                        <p>Number of rounds: {rounds}</p>
-                    </div>
+                <div className='absolute top-4 left-4 text-center bg-white bg-opacity-30 p-4 rounded-lg'>
+                    <p><span className='font-bold'>Time:</span> {startTime}</p>
+                    <p><span className='font-bold'>Rounds:</span> {rounds}</p>
+                </div>
 
-
-
-                    <div className='flex justify-center items-center gap-4 mt-8'>
-                        <div className='mt-8'>
-                            <ActionDropArea />
-                        </div>
-                    </div>
+                <div className='bg-black bg-opacity-50 p-4 rounded-lg'>
+                    <ActionDropArea />
                 </div>
 
                 {selectedPlayerId && (
