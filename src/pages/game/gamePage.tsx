@@ -18,7 +18,6 @@ const GamePage: React.FC = () => {
     const [message1, setMessage1] = useState<string>('');
     const [winner, setWinner] = useState<string | null>(null);
     const [startDate, setStartDate] = useState<Date | null>(null);
-    const [startDates, setStartDates] = useState<string | null>(null);
     const [startTime, setStartTime] = useState<string | null>(null);
     const [rounds, setRounds] = useState<number>(0);
     const [myPoints, setMyPoints] = useState<number>(5);
@@ -30,7 +29,6 @@ const GamePage: React.FC = () => {
     const [enemyActionChosen, setEnemyActionChosen] = useState<boolean>(false);
     const [cards, setCards] = useState<string[]>([]);
     const [enemyCards, setEnemyCards] = useState<number>(0);
-    console.log(startDates);
     const [playerInfo, setPlayerInfo] = useState<{
         char: string | undefined;
         character: { name: string; icon: string; type: string };
@@ -89,7 +87,7 @@ const GamePage: React.FC = () => {
         const handleGameAuth = (data: any) => {
             if (data.success) {
                 console.log('Game auth success');
-                localStorage.setItem('user_id', data.id);
+                setMyId(data.id);
             } else {
                 localStorage.removeItem('game_id');
                 localStorage.removeItem('game_token');
@@ -116,7 +114,7 @@ const GamePage: React.FC = () => {
             if (data.players) {
                 const player2 = data.players[1];
                 const player1 = data.players[0];
-                console.log('Players:', player1.id, player2.id, myId);
+
                 if (player1.id === myId) {
                     setMyHealth(player1.health);
                     setMyPoints(player1.energy);
@@ -219,14 +217,6 @@ const GamePage: React.FC = () => {
             const minutes = Math.floor(diff / 60000);
             const seconds = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
 
-            const year = startDate.getFullYear();
-            const month = String(startDate.getMonth() + 1).padStart(2, '0');
-            const day = String(startDate.getDate()).padStart(2, '0');
-            const hours = String(startDate.getHours()).padStart(2, '0');
-            const minutesDate = String(startDate.getMinutes()).padStart(2, '0');
-            const secondsDate = String(startDate.getSeconds()).padStart(2, '0');
-
-            setStartDates(`${year}.${month}.${day} ${hours}:${minutesDate}:${secondsDate}`);
             const timeLeft = `${minutes} perc ${seconds} másodperc`;
 
             setStartTime(timeLeft);
@@ -249,7 +239,7 @@ const GamePage: React.FC = () => {
         alert('You cant open this on mobile');
         window.location.href = '/';
     }
-    
+
     if (window.innerWidth < 720) {
         alert('You cant open this on mobile');
         window.location.href = '/';
