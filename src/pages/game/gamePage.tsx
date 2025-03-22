@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDrag, useDrop, DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -23,7 +23,7 @@ const GamePage: React.FC = () => {
     const [myPoints, setMyPoints] = useState<number>(5);
     const [enemyPoints, setEnemyPoints] = useState<number>(5);
     const [myId, setMyId] = useState<string>('');
-    const [enemyId, setEnemeyId] = useState<string>('');
+    const [enemyId, setEnemyId] = useState<string>('');
     const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
     const [myActionChosen, setMyActionChosen] = useState<boolean>(false);
     const [enemyActionChosen, setEnemyActionChosen] = useState<boolean>(false);
@@ -38,6 +38,9 @@ const GamePage: React.FC = () => {
         character: { name: string; icon: string; type: string };
         weapon: { name: string; icon: string; type: string };
     } | null>(null);
+
+    const myIdRef = useRef<string>(myId);
+    useEffect(() => { myIdRef.current = myId; }, [myId]);
 
     const handleAction = useCallback((action: string) => {
         socket.emit('player_action', action);
@@ -55,7 +58,7 @@ const GamePage: React.FC = () => {
         return `/cards/${baseName}${disabled ? 'Disabled' : ''}.png`;
     };
 
-    const DraggableCard: React.FC<{ card: string; disabled: boolean }> = ({ card, disabled }) => {
+    const DraggableCard: React.FC<{ card: string; disabled: boolean }> = React.memo(({ card, disabled }) => {
         const [{ isDragging }, drag] = useDrag(() => ({
             type: 'action',
             item: { action: card },
@@ -71,7 +74,7 @@ const GamePage: React.FC = () => {
                 {disabled && <div className="absolute inset-0 " />}
             </div>
         );
-    };
+    });
 
     const CARD_COSTS: Record<string, number> = {
         normal_attack: 3,
@@ -87,11 +90,9 @@ const GamePage: React.FC = () => {
         const handleGameAuth = (data: any) => {
             if (data.success) {
                 console.log('Game auth success');
-                setMyId(data.id);
             } else {
                 localStorage.removeItem('game_id');
                 localStorage.removeItem('game_token');
-                console.log('Game auth failed');
                 window.location.href = '/play';
             }
         };
@@ -99,6 +100,8 @@ const GamePage: React.FC = () => {
         const handleGameInfo = (data: any) => {
             setPlayerInfo(data.player);
             setEnemyInfo(data.enemy);
+            setMyId(data.player.id);
+            setEnemyId(data.enemy.id);
             setStartDate(new Date(data.match.startTime));
             setRounds(data.match.rounds);
             setCards(data.player.cards || []);
@@ -106,18 +109,12 @@ const GamePage: React.FC = () => {
         };
 
         const handleGameUpdate = (data: any) => {
-            if (data.players) { 
+            if (data.players) {
                 const player1 = data.players[0];
                 const player2 = data.players[1];
 
-                const me = player1.id === myId ? player1 : player2;
-                const enemy = player1.id === myId ? player2 : player1;
-
-                setEnemeyId(enemy.id);
-                setMyId(me.id);
-
-                console.log('me:', me);
-                console.log('enemy:', enemy);
+                const me = player1.id === myIdRef.current ? player1 : player2;
+                const enemy = player1.id === myIdRef.current ? player2 : player1;
 
                 setMyHealth(me.health);
                 setMyPoints(me.energy);
@@ -143,7 +140,7 @@ const GamePage: React.FC = () => {
             }
 
             if (data.action) {
-                if (data.action.playerId === myId) {
+                if (data.action.playerId === myIdRef.current) {
                     setMyActionChosen(true);
                 } else {
                     setEnemyActionChosen(true);
@@ -193,25 +190,29 @@ const GamePage: React.FC = () => {
         };
     }, [matchid]);
 
-    if (loading) {
-        return <Loading />;
-    }
+    useEffect(() => {
+        if (isMobile || window.innerWidth < 720) {
+            alert('You cannot play on mobile.');
+            window.location.href = '/';
+        }
+    }, []);
 
-    const timer = setInterval(() => {
-        if (startDate) {
+    useEffect(() => {
+        if (!startDate || winner) return;
+
+        const timer = setInterval(() => {
             const currentDate = new Date();
-            const diff = Math.abs(startDate.getTime() - currentDate.getTime());
+            const diff = currentDate.getTime() - startDate.getTime();
             const minutes = Math.floor(diff / 60000);
             const seconds = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+            setStartTime(`${minutes} perc ${seconds} másodperc`);
+        }, 1000);
 
-            const timeLeft = `${minutes} perc ${seconds} másodperc`;
+        return () => clearInterval(timer);
+    }, [startDate, winner]);
 
-            setStartTime(timeLeft);
-        }
-    }, 1000);
-
-    if (winner) {
-        clearInterval(timer);
+    if (loading) {
+        return <Loading />;
     }
 
     const handlePlayerClick = (playerId: string) => {
@@ -222,17 +223,7 @@ const GamePage: React.FC = () => {
         setSelectedPlayerId(null);
     };
 
-    if (isMobile) {
-        alert('You cant open this on mobile');
-        window.location.href = '/';
-    }
-
-    if (window.innerWidth < 720) {
-        alert('You cant open this on mobile');
-        window.location.href = '/';
-    }
-
-    const ActionDropArea = () => {
+    const ActionDropArea = React.memo(() => {
         const [{ canDrop }, drop] = useDrop(() => ({
             accept: 'action',
             drop: (item: { action: string }) => handleAction(item.action),
@@ -260,7 +251,7 @@ const GamePage: React.FC = () => {
                 )}
             </div>
         );
-    };
+    });
 
     return (
         <DndProvider backend={HTML5Backend}>
@@ -278,22 +269,7 @@ const GamePage: React.FC = () => {
                     <div className='mt-4 bg-black bg-opacity-50 rounded-lg p-4 w-min ml-auto' onClick={() => handlePlayerClick(enemyId)}>
                         <h2 className='text-xl font-bold'>Enemy {enemyActionChosen && <span className="text-green-500">✔</span>}</h2>
                         <div className='flex items-center gap-4'>
-                            {/*
-                        {enemyInfo && (
-                            <div className='flex flex-col items-center'>
-                                <img src={enemyInfo.character.icon} alt={enemyInfo.character.name} className='w-16 h-16' />
-                                <p>{enemyInfo.character.name}</p>
-                            </div>
-                        )}
-                        {enemyInfo && (
-                            <div className='flex flex-col items-center'>
-                                <img src={enemyInfo.weapon.icon} alt={enemyInfo.weapon.name} className='w-16 h-16' />
-                                <p>{enemyInfo.weapon.name}</p>
-                            </div>
-                        )}
-                        */}
                             <div>
-
                                 <div className='my-4'>
                                     <ProgressBar value={enemyHealth} max={100} startColor="#FF0000" endColor="#00FF00" length="200px" showValue numberType="hp" />
                                 </div>
@@ -306,25 +282,10 @@ const GamePage: React.FC = () => {
                 </div>
 
                 <div className='absolute bottom-4 left-4'>
-                    <div className='mb-4 bg-black bg-opacity-50 rounded-lg p-4 w-min' onClick={() => handlePlayerClick(enemyId)}>
+                    <div className='mb-4 bg-black bg-opacity-50 rounded-lg p-4 w-min' onClick={() => handlePlayerClick(myId)}>
                         <h2 className='text-xl font-bold'>You {myActionChosen && <span className="text-green-500">✔</span>}</h2>
                         <div className='flex items-center gap-4'>
-                            {/*
-                        {playerInfo && (
-                            <div className='flex flex-col items-center'>
-                                <img src={playerInfo.character.icon} alt={playerInfo.character.name} className='w-16 h-16' />
-                                <p>{playerInfo.character.name}</p>
-                            </div>
-                        )}
-                        {playerInfo && (
-                            <div className='flex flex-col items-center'>
-                                <img src={playerInfo.weapon.icon} alt={playerInfo.weapon.name} className='w-16 h-16' />
-                                <p>{playerInfo.weapon.name}</p>
-                            </div>
-                        )}
-                        */}
                             <div>
-
                                 <div className='my-4'>
                                     <ProgressBar value={myHealth} max={100} startColor="#FF0000" endColor="#00FF00" length="200px" showValue numberType="hp" />
                                 </div>
@@ -347,7 +308,6 @@ const GamePage: React.FC = () => {
                                 return <DraggableCard key={`${card}-${index}`} card={card} disabled={disabled} />;
                             })}
                         </div>
-
                     </div>
                 </div>
 
