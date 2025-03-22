@@ -106,7 +106,7 @@ const GamePage: React.FC = () => {
         };
 
         const handleGameUpdate = (data: any) => {
-            if (data.players) {
+            if (data.players) { 
                 const player1 = data.players[0];
                 const player2 = data.players[1];
 
