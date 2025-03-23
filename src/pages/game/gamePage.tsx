@@ -59,6 +59,10 @@ const GamePage: React.FC = () => {
     };
 
     const DraggableCard: React.FC<{ card: string; disabled: boolean }> = React.memo(({ card, disabled }) => {
+        if (!card) {
+            return null;
+        }
+
         const [{ isDragging }, drag] = useDrag(() => ({
             type: 'action',
             item: { action: card },
