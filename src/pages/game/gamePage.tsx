@@ -239,8 +239,8 @@ const GamePage: React.FC = () => {
                 {playerInfo && enemyInfo && (
                     <>
                         <div className='flex justify-center items-center gap-8 mt-16'>
-                            <img src={`/characters/${enemyInfo.character.name.toLowerCase()}${enemyInfo.weapon.name}.png`} alt={enemyInfo.character.name} className='w-42 h-64' style={{ transform: 'scaleX(-1)' }} />
                             <img src={`/characters/${playerInfo.character.name.toLowerCase()}${playerInfo.weapon.name}.png`} alt={playerInfo.character.name} className='w-42 h-64' />
+                            <img src={`/characters/${enemyInfo.character.name.toLowerCase()}${enemyInfo.weapon.name}.png`} alt={enemyInfo.character.name} className='w-42 h-64' style={{ transform: 'scaleX(-1)' }} />
                         </div>
 
                         <div className='mt-4 text-center'>
