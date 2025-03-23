@@ -19,7 +19,6 @@ const PlayPageID: React.FC = () => {
     const [usernames, setUsernames] = useState<{ [key: string]: string }>({});
     const [countdown, setCountdown] = useState<number>(0);
     const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
     useEffect(() => {
         if (!socket) {
@@ -27,62 +26,33 @@ const PlayPageID: React.FC = () => {
             return;
         }
 
-        const token = localStorage.getItem('token');
-        socket.emit('auth', { token });
-
-        const handleAuth = (data: any) => {
-            if (data.success) {
-                setIsAuthenticated(true);
-            } else {
-                alert('Authentication failed. Please log in.');
-                window.location.href = '/login';
-            }
-        };
-
-        socket.on('auth', handleAuth);
-
-        return () => {
-            socket.off('auth', handleAuth);
-        };
-    }, []);
-
-    useEffect(() => {
-        if (!isAuthenticated) return;
-
         const handleLobbyUpdate = (data: any) => {
-            if (!data.success) {
-                console.log('Lobby update failed');
-                return;
-            }
             if (data.players) {
                 setPlayers(data.players || []);
             } else if (data.ready) {
                 setReadyPlayers(data.ready);
+            } else {
+                console.log('Failed to update lobby');
             }
         };
 
         const handleLobbyMessage = (data: any) => {
-            if (!data.success) return;
             console.log(data.message);
         };
 
         const handleCountdown = (data: any) => {
-            if (!data.success) {
-                console.log('Countdown failed');
-                setCountdown(0);
-                return;
-            }
-            if (data.message > 0 && data.message <= 5) {
-                console.log(`Game starting in ${data.message} seconds!`);
-                setCountdown(data.message);
-            } else if (data.success) {
+            if (data.success) {
                 const id = data.id;
                 const token = data.token;
+
                 localStorage.removeItem('game_id');
                 localStorage.removeItem('game_token');
                 localStorage.setItem('game_id', id);
                 localStorage.setItem('game_token', token);
                 window.location.href = `/game/${id}`;
+            } else if (data.message > 0 && data.message <= 5) {
+                console.log(`Game starting in ${data.message} seconds!`);
+                setCountdown(data.message);
             } else {
                 console.log('Failed to start game');
                 setCountdown(0);
@@ -90,34 +60,35 @@ const PlayPageID: React.FC = () => {
         };
 
         const handleReady = (data: any) => {
-            if (!data.success) {
+            if (data.success) {
+                setReady(true);
+            } else {
                 console.log('Failed to ready');
-                return;
             }
-            setReady(true);
         };
 
         const handleUnready = (data: any) => {
-            if (!data.success) {
+            if (data.success) {
+                setReady(false);
+            } else {
                 console.log('Failed to unready');
-                return;
             }
-            setReady(false);
         };
 
-        const handleLobbyDeleted = (data: any) => {
-            if (!data.success) return;
+        const handleLobbyDeleted = () => {
             console.log('Lobby deleted');
             window.location.href = '/play';
         };
 
         const joinLobby = (data: any) => {
             if (!data.success) {
-                window.location.reload();
+                window.location.reload()
+            } else {
+                return;
             }
-        };
+        }
 
-        socket.on('join_lobby', joinLobby);
+        socket.on('join_lobby', joinLobby)
         socket.on('lobby_update', handleLobbyUpdate);
         socket.on('lobby_message', handleLobbyMessage);
         socket.on('countdown', handleCountdown);
@@ -154,7 +125,6 @@ const PlayPageID: React.FC = () => {
         fetchLobbyData();
 
         return () => {
-            socket.off('join_lobby', joinLobby);
             socket.off('lobby_update', handleLobbyUpdate);
             socket.off('lobby_message', handleLobbyMessage);
             socket.off('countdown', handleCountdown);
@@ -162,7 +132,7 @@ const PlayPageID: React.FC = () => {
             socket.off('unready', handleUnready);
             socket.off('lobby_deleted', handleLobbyDeleted);
         };
-    }, [id, isAuthenticated]);
+    }, [id]);
 
     useEffect(() => {
         const fetchUsernames = async () => {

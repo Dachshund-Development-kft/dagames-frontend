@@ -10,4 +10,8 @@ const socket = io(`${localStorage.getItem('url')}`, {
   transports: ['websocket'],
 });
 
+if (localStorage.getItem('token')) {
+  socket.emit('auth', { "token": localStorage.getItem('token') });
+}
+
 export default socket;
