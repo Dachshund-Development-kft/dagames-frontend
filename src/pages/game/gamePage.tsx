@@ -59,10 +59,6 @@ const GamePage: React.FC = () => {
     };
 
     const DraggableCard: React.FC<{ card: string; disabled: boolean }> = React.memo(({ card, disabled }) => {
-        if (!card) {
-            return null;
-        }
-
         const [{ isDragging }, drag] = useDrag(() => ({
             type: 'action',
             item: { action: card },
@@ -243,8 +239,13 @@ const GamePage: React.FC = () => {
                 {playerInfo && enemyInfo && (
                     <>
                         <div className='flex justify-center items-center gap-8 mt-16'>
-                            <img src={`/characters/${playerInfo.character.name.toLowerCase()}${playerInfo.weapon.name}.png`} alt={playerInfo.character.name} className='w-42 h-64' style={{ transform: 'scaleX(-1)' }} />
-                            <img src={`/characters/${enemyInfo.character.name.toLowerCase()}${enemyInfo.weapon.name}.png`} alt={enemyInfo.character.name} className='w-42 h-64' />
+                            <img src={`/characters/${enemyInfo.character.name.toLowerCase()}${enemyInfo.weapon.name}.png`} alt={enemyInfo.character.name} className='w-42 h-64' style={{ transform: 'scaleX(-1)' }} />
+                            <img src={`/characters/${playerInfo.character.name.toLowerCase()}${playerInfo.weapon.name}.png`} alt={playerInfo.character.name} className='w-42 h-64' />
+                        </div>
+
+                        <div className='mt-4 text-center'>
+                            <p className='text-lg'>{message0}</p>
+                            <p className='text-lg'>{message1}</p>
                         </div>
                     </>
                 )}
@@ -256,7 +257,7 @@ const GamePage: React.FC = () => {
         <DndProvider backend={HTML5Backend}>
             <main className='flex flex-col items-center justify-center min-h-screen text-white' style={{ backgroundImage: 'url(/background.svg)', backgroundSize: 'cover' }}>
                 <div className='absolute top-4 right-4'>
-                    <div className="bg-black bg-opacity-50 backdrop:blur-md rounded-lg p-4">
+                    <div className="bg-black bg-opacity-50 backdrop-blur-md rounded-lg p-4">
                         <h2 className='text-xl font-bold mb-2'>Enemy Cards</h2>
                         <div className='flex flex-wrap gap-2'>
                             {Array.from({ length: enemyCards }).map((_, i) => (
@@ -264,7 +265,7 @@ const GamePage: React.FC = () => {
                             ))}
                         </div>
                     </div>
-                    <div className='mt-4 bg-black bg-opacity-50 backdrop:blur-md rounded-lg p-4 w-min ml-auto' onClick={() => handlePlayerClick(enemyId)}>
+                    <div className='mt-4 bg-black bg-opacity-50 backdrop-blur-md rounded-lg p-4 w-min ml-auto' onClick={() => handlePlayerClick(enemyId)}>
                         <h2 className='text-xl font-bold'>Enemy {enemyActionChosen && <span className="text-green-500">✔</span>}</h2>
                         <div className='flex items-center gap-4'>
                             <div>
@@ -280,7 +281,7 @@ const GamePage: React.FC = () => {
                 </div>
 
                 <div className='absolute bottom-4 left-4'>
-                    <div className='mb-4 bg-black bg-opacity-50 backdrop:blur-md rounded-lg p-4 w-min' onClick={() => handlePlayerClick(myId)}>
+                    <div className='mb-4 bg-black bg-opacity-50 backdrop-blur-md rounded-lg p-4 w-min' onClick={() => handlePlayerClick(myId)}>
                         <h2 className='text-xl font-bold'>You {myActionChosen && <span className="text-green-500">✔</span>}</h2>
                         <div className='flex items-center gap-4'>
                             <div>
@@ -293,7 +294,7 @@ const GamePage: React.FC = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="bg-black bg-opacity-50 backdrop:blur-md rounded-lg p-4">
+                    <div className="bg-black bg-opacity-50 backdrop-blur-md rounded-lg p-4">
                         <div className='flex gap-4 mb-2'>
                             <h2 className='text-xl font-bold mb-2'>Your Cards</h2>
                             <button onClick={() => handleAction('rest')} className="px-3 bg-blue-500 rounded hover:bg-blue-600 disabled:opacity-50" disabled={myActionChosen} >
@@ -312,10 +313,6 @@ const GamePage: React.FC = () => {
                 <div className='absolute top-4 left-4 text-center bg-white bg-opacity-30 p-4 rounded-lg'>
                     <p><span className='font-bold'>Time:</span> {startTime}</p>
                     <p><span className='font-bold'>Rounds:</span> {rounds}</p>
-                    <div className='mt-4 text-center'>
-                        <p className='text-lg'>{message0}</p>
-                        <p className='text-lg'>{message1}</p>
-                    </div>
                 </div>
 
                 <div className='p-4 rounded-lg'>
@@ -324,7 +321,7 @@ const GamePage: React.FC = () => {
 
                 {selectedPlayerId && (
                     <>
-                        <div className='fixed inset-0 bg-black bg-opacity-50 z-40' onClick={handleCloseProfilePopout} />
+                        <div className='fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md z-40' onClick={handleCloseProfilePopout} />
                         <ProfilePopout playerId={selectedPlayerId} />
                     </>
                 )}
