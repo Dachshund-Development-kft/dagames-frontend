@@ -224,7 +224,7 @@ const GamePage: React.FC = () => {
     };
 
     const ActionDropArea = React.memo(() => {
-        const [drop] = useDrop(() => ({
+        const [canDrop ,drop] = useDrop(() => ({
             accept: 'action',
             drop: (item: { action: string }) => handleAction(item.action),
             collect: (monitor) => ({
@@ -235,7 +235,7 @@ const GamePage: React.FC = () => {
 
         return (
             <div ref={drop as unknown as React.RefObject<HTMLDivElement>}
-                className={`p-4 rounded-lg flex flex-col items-center justify-center text-center`}>
+                className={`p-4 rounded-lg flex flex-col items-center justify-center text-center ${canDrop ? 'border-2 border-dotted border-green-500' : ''}`}>
                 {playerInfo && enemyInfo && (
                     <>
                         <div className='flex justify-center items-center gap-8 mt-16'>
