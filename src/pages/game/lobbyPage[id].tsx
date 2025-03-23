@@ -80,6 +80,15 @@ const PlayPageID: React.FC = () => {
             window.location.href = '/play';
         };
 
+        const joinLobby = (data: any) => {
+            if (!data.success) {
+                window.location.reload()
+            } else {
+                return;
+            }
+        }
+
+        socket.on('join_lobby', joinLobby)
         socket.on('lobby_update', handleLobbyUpdate);
         socket.on('lobby_message', handleLobbyMessage);
         socket.on('countdown', handleCountdown);
