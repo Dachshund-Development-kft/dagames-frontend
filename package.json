@@ -15,7 +15,7 @@
     "axios": "^1.8.4",
     "disable-devtool": "^0.3.8",
     "dotenv": "^16.4.7",
-    "framer-motion": "^12.6.2",
+    "framer-motion": "^12.6.3",
     "react": "^19.0.0",
     "react-device-detect": "^2.2.3",
     "react-dnd": "^16.0.1",
