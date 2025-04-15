@@ -16,7 +16,7 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const characterIds = ["3b1b21e2fc", "d070592d6f", "ef7a4f5ba3"];
+                const characterIds = ["3b1b21e2fc", "d070592d6f", "ef7a4f5ba3","e221e5839d","af44275812"];
                 const characterPromises = characterIds.map(async (id) => {
                     const response = await getShopItems(id);
                     return response;
@@ -34,7 +34,7 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
                 }));
                 setCharacters(formattedCharacters);
 
-                const weaponIds = ["a5cb18924b", "1df43eea51", "e5f10e6165", "396c2a7e11", "ad234b5421"];
+                const weaponIds = ["a5cb18924b", "1df43eea51", "e5f10e6165", "396c2a7e11", "ad234b5421","130e94a399","755d829ba5"];
                 const weaponPromises = weaponIds.map(async id => {
                     const response = await getShopItems(id);
                     return response;
@@ -94,6 +94,10 @@ const SetupLayout = ({ onComplete }: { onComplete: () => void }) => {
                 return weapons.filter(weapon => ['Dagger', 'Sword'].includes(weapon.name));
             case 'Priest':
                 return weapons.filter(weapon => ['Staff', 'Mace', 'Sword', 'Dagger'].includes(weapon.name));
+            case 'Hunter':
+                return weapons.filter(weapon => ['Spear', 'Sword'].includes(weapon.name));
+            case 'Samurai':
+                return weapons.filter(weapon => ['Spear', 'Katana', 'Sword'].includes(weapon.name));
             default:
                 return [];
         }
