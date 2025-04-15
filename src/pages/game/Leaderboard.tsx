@@ -1,63 +1,107 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NavLayoutGame from '../../components/nav';
 import Loading from '../../components/loading';
+import { motion, AnimatePresence } from 'framer-motion';
 
-interface LeaderboardEntry {
+interface Player {
     username: string;
     wins: number;
-    played: number;
-    coins: number;
-    level: number;
-    rank: number;
+    losses: number;
+}
+
+interface Team {
+    team: string;
+    points: number | null;
+    players: Player[];
+}
+
+interface LeaderboardEntry {
+    team: string;
+    points: number;
+    players: Player[];
+    totalWins: number;
+    totalLosses: number;
+    winRate: number;
+    totalGames: number;
 }
 
 const LeaderboardPage: React.FC = () => {
     const [leaderboardData, setLeaderboardData] = useState<LeaderboardEntry[]>([]);
-    const [sortMode, setSortMode] = useState<'wins' | 'played' | 'coins' | 'level' | 'rank'>('wins');
-    const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
+    const [, setPreviousData] = useState<LeaderboardEntry[]>([]);
+    const [sortMode] = useState<'points' | 'winRate' | 'totalWins' | 'totalGames'>('points');
+    const [sortDirection] = useState<'asc' | 'desc'>('desc');
     const [loading, setLoading] = useState<boolean>(true);
+    const [highlightedTeam, setHighlightedTeam] = useState<string | null>(null);
+    const prevDataRef = useRef<LeaderboardEntry[]>([]);
 
     useEffect(() => {
         fetchLeaderboardData();
+        const interval = setInterval(fetchLeaderboardData, 60000);
+        return () => clearInterval(interval);
     }, []);
 
     const fetchLeaderboardData = async () => {
         try {
-            const [winsResponse, playedResponse, coinsResponse, levelResponse, rankResponse] = await Promise.all([
-                axios.get('https://api.dagames.online/v1/leaderboard?mode=wins'),
-                axios.get('https://api.dagames.online/v1/leaderboard?mode=played'),
-                axios.get('https://api.dagames.online/v1/leaderboard?mode=coins'),
-                axios.get('https://api.dagames.online/v1/leaderboard?mode=level'),
-                axios.get('https://api.dagames.online/v1/leaderboard?mode=rank'),
-            ]);
+            const response = await axios.get('https://api.dagames.online/v1/leaderboard/teams');
+            const teamsData: Team[] = response.data;
 
-            const combinedData: LeaderboardEntry[] = winsResponse.data.map((entry: any) => ({
-                username: entry.username,
-                wins: entry.wins || 0,
-                played: playedResponse.data.find((e: any) => e.username === entry.username)?.played || 0,
-                coins: coinsResponse.data.find((e: any) => e.username === entry.username)?.coins || 0,
-                level: levelResponse.data.find((e: any) => e.username === entry.username)?.level || 0,
-                rank: rankResponse.data.find((e: any) => e.username === entry.username)?.rank || 0,
-            }));
+            const processedData: LeaderboardEntry[] = teamsData.map(team => {
+                const totalWins = team.players.reduce((sum, player) => sum + (player.wins || 0), 0);
+                const totalLosses = team.players.reduce((sum, player) => sum + (player.losses || 0), 0);
+                const totalGames = totalWins + totalLosses;
+                const winRate = totalGames > 0 ? Math.round((totalWins / totalGames) * 100) : 0;
 
-            setLeaderboardData(combinedData);
+                return {
+                    team: team.team,
+                    points: team.points || 0,
+                    players: team.players,
+                    totalWins,
+                    totalLosses,
+                    winRate,
+                    totalGames
+                };
+            });
+
+            if (prevDataRef.current.length > 0) {
+                const changedTeams = findChangedTeams(prevDataRef.current, processedData);
+                if (changedTeams.length > 0) {
+                    setHighlightedTeam(changedTeams[0]);
+                    setTimeout(() => setHighlightedTeam(null), 2000);
+                }
+            }
+
+            setPreviousData(prevDataRef.current);
+            prevDataRef.current = processedData;
+            setLeaderboardData(processedData);
             setLoading(false);
         } catch (error) {
             console.error('Failed to fetch leaderboard data:', error);
             toast.error('Failed to load leaderboard data');
+            setLoading(false);
         }
     };
 
-    const handleSort = (mode: 'wins' | 'played' | 'coins' | 'level' | 'rank') => {
-        if (mode === sortMode) {
-            setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
-        } else {
-            setSortMode(mode);
-            setSortDirection('desc');
-        }
+    const findChangedTeams = (oldData: LeaderboardEntry[], newData: LeaderboardEntry[]) => {
+        const changedTeams: string[] = [];
+        
+        newData.forEach(newTeam => {
+            const oldTeam = oldData.find(t => t.team === newTeam.team);
+            if (!oldTeam) {
+                changedTeams.push(newTeam.team);
+                return;
+            }
+
+            if (oldTeam.points !== newTeam.points || 
+                oldTeam.totalWins !== newTeam.totalWins || 
+                oldTeam.totalLosses !== newTeam.totalLosses) {
+                changedTeams.push(newTeam.team);
+            }
+        });
+
+        return changedTeams;
     };
 
     const sortedData = [...leaderboardData].sort((a, b) => {
@@ -76,62 +120,66 @@ const LeaderboardPage: React.FC = () => {
     }
 
     return (
-        <div className="flex flex-col min-h-screen text-white bg-cover bg-repeat-y ">
+        <div className="flex flex-col min-h-screen text-white bg-cover bg-repeat-y">
             <NavLayoutGame />
             <main className="flex flex-grow items-center justify-center py-16 px-4">
                 <div className="bg-black bg-opacity-50 backdrop-blur-md rounded-2xl shadow-xl p-6 w-full max-w-4xl text-center">
                     <h2 className="text-3xl font-bold bg-white bg-clip-text">
-                        Leaderboard
+                        Team Leaderboard
                     </h2>
                     <div className="mt-10">
-                        <div className="flex flex-wrap gap-4 mb-4">
-                            <button onClick={() => handleSort('wins')} className={`px-4 py-2 rounded-lg ${sortMode === 'wins' ? 'bg-blue-500' : 'bg-gray-700'} hover:bg-opacity-90 transition-all duration-300`} >
-                                Wins {sortMode === 'wins' && (sortDirection === 'asc' ? '↑' : '↓')}
-                            </button>
-                            <button onClick={() => handleSort('played')} className={`px-4 py-2 rounded-lg ${sortMode === 'played' ? 'bg-blue-500' : 'bg-gray-700'} hover:bg-opacity-90 transition-all duration-300`} >
-                                Played {sortMode === 'played' && (sortDirection === 'asc' ? '↑' : '↓')}
-                            </button>
-                            <button onClick={() => handleSort('coins')} className={`px-4 py-2 rounded-lg ${sortMode === 'coins' ? 'bg-blue-500' : 'bg-gray-700'} hover:bg-opacity-90 transition-all duration-300`} >
-                                Coins {sortMode === 'coins' && (sortDirection === 'asc' ? '↑' : '↓')}
-                            </button>
-                            <button onClick={() => handleSort('level')} className={`px-4 py-2 rounded-lg ${sortMode === 'level' ? 'bg-blue-500' : 'bg-gray-700'} hover:bg-opacity-90 transition-all duration-300`} >
-                                Level {sortMode === 'level' && (sortDirection === 'asc' ? '↑' : '↓')}
-                            </button>
-                            <button onClick={() => handleSort('rank')} className={`px-4 py-2 rounded-lg ${sortMode === 'rank' ? 'bg-blue-500' : 'bg-gray-700'} hover:bg-opacity-90 transition-all duration-300`} >
-                                Rank {sortMode === 'rank' && (sortDirection === 'asc' ? '↑' : '↓')}
-                            </button>
-                        </div>
                         <div className="overflow-auto max-h-96">
-                        <table className="w-full text-left">
-                            <thead>
-                                <tr>
-                                    <th className="p-2">Username</th>
-                                    <th className="p-2">Wins</th>
-                                    <th className="p-2">Played</th>
-                                    <th className="p-2">Coins</th>
-                                    <th className="p-2">Level</th>
-                                    <th className="p-2">Rank</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {sortedData.map((entry, index) => (
-                                    <tr key={index} className="border-b border-gray-700">
-                                        <td className="p-2">{entry.username}</td>
-                                        <td className="p-2">{entry.wins}</td>
-                                        <td className="p-2">{entry.played}</td>
-                                        <td className="p-2">{entry.coins}</td>
-                                        <td className="p-2">{entry.level}</td>
-                                        <td className="p-2">{entry.rank}</td>
+                            <table className="w-full text-left">
+                                <thead>
+                                    <tr className="sticky top-0">
+                                        <th className="p-2">Team</th>
+                                        <th className="p-2">Points</th>
+                                        <th className="p-2">Wins</th>
+                                        <th className="p-2">Losses</th>
+                                        <th className="p-2">Win Rate</th>
+                                        <th className="p-2">Games</th>
+                                        <th className="p-2">Players</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
-
+                                </thead>
+                                <tbody>
+                                    <AnimatePresence>
+                                        {sortedData.map((entry) => (
+                                            <motion.tr 
+                                                key={entry.team}
+                                                initial={{ opacity: 0, y: 20 }}
+                                                animate={{ 
+                                                    opacity: 1, 
+                                                    y: 0,
+                                                    backgroundColor: highlightedTeam === entry.team ? 'rgba(59, 130, 246, 0.3)' : 'transparent'
+                                                }}
+                                                exit={{ opacity: 0 }}
+                                                transition={{ duration: 0.5 }}
+                                                className="border-b border-gray-700 hover:bg-gray-800"
+                                            >
+                                                <td className="p-2 font-semibold">{entry.team}</td>
+                                                <td className="p-2">{entry.points}</td>
+                                                <td className="p-2">{entry.totalWins}</td>
+                                                <td className="p-2">{entry.totalLosses}</td>
+                                                <td className="p-2">{entry.winRate}%</td>
+                                                <td className="p-2">{entry.totalGames}</td>
+                                                <td className="p-2">
+                                                    <div className="flex flex-wrap gap-1">
+                                                        {entry.players.map(player => (
+                                                            <span key={player.username} className="text-xs bg-gray-700 px-2 py-1 rounded">
+                                                                {player.username}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                </td>
+                                            </motion.tr>
+                                        ))}
+                                    </AnimatePresence>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </main>
-            
         </div>
     );
 };
