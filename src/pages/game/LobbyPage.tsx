@@ -10,9 +10,9 @@ interface Lobby {
     id: string;
     name: string;
     public: boolean;
-    owner: string;
     players: number;
     rank: string;
+    teams: Array<string>;
 }
 
 const PlayPage: React.FC = () => {
@@ -77,16 +77,6 @@ const PlayPage: React.FC = () => {
             }
         }, 1000);
     }, []);
-
-    const createLobby = () => {
-        if (!socket) {
-            toast.error('Socket not connected');
-            return;
-        }
-
-        console.log('Creating lobby...');
-        setLobbyPopup(true);
-    }
 
     const handleVisibilityChange = (visibility: boolean) => {
         setLobbyVisibility(visibility);
@@ -159,12 +149,6 @@ const PlayPage: React.FC = () => {
             <NavLayoutGame />
             <div className='flex flex-grow items-center justify-center gap-4 p-4'>
                 <div className='w-full max-w-4xl'>
-                    <div className="bg-black bg-opacity-50 rounded-lg shadow-md backdrop-blur-md p-6 text-center">
-                        <h1 className='text-2xl font-bold text-white'>Create Lobby</h1>
-                        <button className='mt-4 bg-blue-600 text-white py-2 px-6 rounded-md text-lg hover:bg-blue-700 transition-colors' onClick={createLobby} >
-                            Create
-                        </button>
-                    </div>
                     <div className="bg-black bg-opacity-50 rounded-lg shadow-md backdrop-blur-md p-6 mt-8">
                         <h2 className="text-2xl font-bold mb-6 text-center text-white">Active Lobbies</h2>
                         <div className="overflow-y-auto max-h-[60vh] scrollbar-hide grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4 w-full">
@@ -178,9 +162,6 @@ const PlayPage: React.FC = () => {
                                     </div>
                                     <div className="text-sm text-gray-300 mb-2">
                                         Lobby rank: {lobby.rank}
-                                    </div>
-                                    <div className="text-sm text-gray-300 mb-2">
-                                        Owner: {lobby.owner}
                                     </div>
                                     <div className="text-sm text-gray-300 mb-2">
                                         Players: {lobby.players}/2

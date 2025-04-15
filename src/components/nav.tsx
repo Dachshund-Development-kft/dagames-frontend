@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { HiMiniHome } from "react-icons/hi2";
-import { FaNewspaper, FaShop } from "react-icons/fa6";
 import { FiLogOut } from "react-icons/fi";
 import { MdInventory } from "react-icons/md";
 import { FaPlay } from "react-icons/fa";
@@ -23,11 +22,9 @@ const NavLayoutGame: React.FC = () => {
     ];
 
     const centerNavItems = [
-        { path: "/leaderboard", icon: <MdLeaderboard />, label: "Leaderboard" },
         { path: "/inventory", icon: <MdInventory />, label: "Inventory" },
         { path: "/play", icon: <FaPlay />, label: "Play" },
-        { path: "/shop", icon: <FaShop />, label: "Shop" },
-        { path: "/news", icon: <FaNewspaper />, label: "News" }
+        { path: "/leaderboard", icon: <MdLeaderboard />, label: "Leaderboard" },
     ];
 
     useEffect(() => {
@@ -119,7 +116,7 @@ const NavLayoutGame: React.FC = () => {
             </div>
 
             <nav className="flex flex-row justify-center w-full">
-                <div className="flex flex-row items-center gap-8 pr-[170px]">
+                <div className="flex flex-row items-center gap-8 pl-auto pr-auto">
                     {centerNavItems.map((item, index) => (
                         <div key={index} className={`flex flex-row items-center transition-opacity duration-300 ${location.pathname === item.path ? "opacity-100" : "opacity-50 hover:opacity-100"}`}>
                             <Link to={item.path} className="text-white flex items-center">
