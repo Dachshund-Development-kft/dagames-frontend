@@ -10,10 +10,9 @@ interface Lobby {
     id: string;
     name: string;
     public: boolean;
-    owner: string;
     players: number;
     rank: string;
-    allowedTeams: Array<string>;
+    teams: Array<string>;
 }
 
 const PlayPage: React.FC = () => {
@@ -163,9 +162,6 @@ const PlayPage: React.FC = () => {
                                     </div>
                                     <div className="text-sm text-gray-300 mb-2">
                                         Lobby rank: {lobby.rank}
-                                    </div>
-                                    <div className="text-sm text-gray-300 mb-2">
-                                        Owner: {lobby.owner}
                                     </div>
                                     <div className="text-sm text-gray-300 mb-2">
                                         Players: {lobby.players}/2
