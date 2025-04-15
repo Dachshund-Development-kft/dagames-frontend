@@ -13,7 +13,7 @@ interface Lobby {
     owner: string;
     players: number;
     rank: string;
-    allowedTeams: Array;
+    allowedTeams: Array<string>;
 }
 
 const PlayPage: React.FC = () => {
@@ -78,16 +78,6 @@ const PlayPage: React.FC = () => {
             }
         }, 1000);
     }, []);
-
-    const createLobby = () => {
-        if (!socket) {
-            toast.error('Socket not connected');
-            return;
-        }
-
-        console.log('Creating lobby...');
-        setLobbyPopup(true);
-    }
 
     const handleVisibilityChange = (visibility: boolean) => {
         setLobbyVisibility(visibility);
