@@ -136,7 +136,6 @@ const LeaderboardPage: React.FC = () => {
                                         <th className="p-2">Points</th>
                                         <th className="p-2">Wins</th>
                                         <th className="p-2">Losses</th>
-                                        <th className="p-2">Win Rate</th>
                                         <th className="p-2">Games</th>
                                         <th className="p-2">Players</th>
                                     </tr>
@@ -160,7 +159,6 @@ const LeaderboardPage: React.FC = () => {
                                                 <td className="p-2">{entry.points}</td>
                                                 <td className="p-2">{entry.totalWins}</td>
                                                 <td className="p-2">{entry.totalLosses}</td>
-                                                <td className="p-2">{entry.winRate}%</td>
                                                 <td className="p-2">{entry.totalGames}</td>
                                                 <td className="p-2">
                                                     <div className="flex flex-wrap gap-1">
