@@ -128,16 +128,16 @@ const LeaderboardPage: React.FC = () => {
                         Team Leaderboard
                     </h2>
                     <div className="mt-10">
-                        <div className="overflow-auto max-h-96">
-                            <table className="w-full text-left">
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-left table-fixed">
                                 <thead>
                                     <tr className="sticky top-0">
-                                        <th className="p-2">Team</th>
-                                        <th className="p-2">Points</th>
-                                        <th className="p-2">Wins</th>
-                                        <th className="p-2">Losses</th>
-                                        <th className="p-2">Games</th>
-                                        <th className="p-2">Players</th>
+                                        <th className="p-2 w-1/6">Team</th>
+                                        <th className="p-2 w-1/6">Points</th>
+                                        <th className="p-2 w-1/6">Wins</th>
+                                        <th className="p-2 w-1/6">Losses</th>
+                                        <th className="p-2 w-1/6">Games</th>
+                                        <th className="p-2 w-1/3">Players</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -155,7 +155,7 @@ const LeaderboardPage: React.FC = () => {
                                                 transition={{ duration: 0.5 }}
                                                 className="border-b border-gray-700 hover:bg-gray-800"
                                             >
-                                                <td className="p-2 font-semibold">{entry.team}</td>
+                                                <td className="p-2 font-semibold truncate">{entry.team}</td>
                                                 <td className="p-2">{entry.points}</td>
                                                 <td className="p-2">{entry.totalWins}</td>
                                                 <td className="p-2">{entry.totalLosses}</td>
@@ -163,7 +163,7 @@ const LeaderboardPage: React.FC = () => {
                                                 <td className="p-2">
                                                     <div className="flex flex-wrap gap-1">
                                                         {entry.players.map(player => (
-                                                            <span key={player.username} className="text-xs bg-gray-700 px-2 py-1 rounded">
+                                                            <span key={player.username} className="text-xs bg-gray-700 px-2 py-1 rounded truncate">
                                                                 {player.username}
                                                             </span>
                                                         ))}
