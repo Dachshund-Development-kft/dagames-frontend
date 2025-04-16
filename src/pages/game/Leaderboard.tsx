@@ -123,7 +123,7 @@ const LeaderboardPage: React.FC = () => {
         <div className="flex flex-col min-h-screen text-white bg-cover bg-repeat-y">
             <NavLayoutGame />
             <main className="flex flex-grow items-center justify-center py-16 px-4">
-                <div className="bg-black bg-opacity-50 backdrop-blur-md rounded-2xl shadow-xl p-6 w-full max-w-4xl text-center">
+                <div className="bg-black bg-opacity-50 backdrop-blur-md rounded-2xl shadow-xl p-6 w-full max-w-4xl text-center max-h-[80vh] overflow-y-auto">
                     <h2 className="text-3xl font-bold bg-white bg-clip-text">
                         Team Leaderboard
                     </h2>
