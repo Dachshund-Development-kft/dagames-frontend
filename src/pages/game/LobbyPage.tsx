@@ -10,9 +10,9 @@ interface Lobby {
     id: string;
     name: string;
     public: boolean;
+    owner: string;
     players: number;
     rank: string;
-    teams: Array<string>;
 }
 
 const PlayPage: React.FC = () => {
@@ -23,47 +23,49 @@ const PlayPage: React.FC = () => {
     const [lobbies, setLobbies] = useState<Lobby[]>([]);
     const [loading, setLoading] = useState(true);
 
+    const fetchLobbies = async () => {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            toast.error('No token found in localStorage');
+            setLoading(false);
+            return;
+        }
+
+        try {
+            socket.emit('get_lobbies');
+            socket.on('get_lobbies', (data: any) => {
+                if (data.success) {
+                    setLobbies(data.data);
+                    setLoading(false);
+                } else {
+                    toast.error(data.message);
+                    setLoading(false);
+                }
+            });
+        } catch (error) {
+            toast.error(error instanceof Error ? error.message : 'An unknown error occurred');
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const fetchLobbies = async () => {
-            const token = localStorage.getItem('token');
-
-            if (!token) {
-                toast.error('No token found in localStorage');
-                setLoading(false);
-                return;
-            }
-
-            try {
-                socket.emit('get_lobbies');
-                const lobbiesHandler = (data: any) => {
-                    if (data.success) {
-                        setLobbies(data.data);
-                        setLoading(false);
-                    } else {
-                        toast.error(data.message);
-                        setLoading(false);
-                    }
-                    socket.off('get_lobbies', lobbiesHandler); // Eltávolítjuk a handler-t, hogy ne figyeljen feleslegesen
-                };
-                socket.on('get_lobbies', lobbiesHandler);
-            } catch (error) {
-                toast.error(error instanceof Error ? error.message : 'An unknown error occurred');
-                setLoading(false);
-            }
-        };
-
         fetchLobbies();
+        const intervalId = setInterval(fetchLobbies, 2500);
+        return () => clearInterval(intervalId);
+    }, []);
 
+    useEffect(() => {
         if (!socket) {
             toast.error('Socket not connected');
         }
 
-        const leaveLobby = () => {
+        setTimeout(() => {
             if (localStorage.getItem('lobby_id')) {
                 console.log('Leaving lobby:', localStorage.getItem('lobby_id'));
                 socket.emit('leave_lobby', { id: localStorage.getItem('lobby_id') });
 
-                const leaveHandler = (data: any) => {
+                socket.on('leave_lobby', (data: any) => {
                     if (data.success) {
                         localStorage.removeItem('lobby_id')
                         return window.location.href = '/play';
@@ -71,19 +73,20 @@ const PlayPage: React.FC = () => {
                         console.log('Data deleted...')
                         localStorage.removeItem('lobby_id')
                     }
-                    socket.off('leave_lobby', leaveHandler); // Eltávolítjuk a handler-t
-                };
-                socket.on('leave_lobby', leaveHandler);
+                });
             }
-        };
-
-        const timer = setTimeout(leaveLobby, 1000);
-
-        return () => {
-            clearTimeout(timer);
-            // Itt lehetne még leiratkozni más eseményekről is, ha szükséges
-        };
+        }, 1000);
     }, []);
+
+    const createLobby = () => {
+        if (!socket) {
+            toast.error('Socket not connected');
+            return;
+        }
+
+        console.log('Creating lobby...');
+        setLobbyPopup(true);
+    }
 
     const handleVisibilityChange = (visibility: boolean) => {
         setLobbyVisibility(visibility);
@@ -94,24 +97,30 @@ const PlayPage: React.FC = () => {
 
     const handleJoinLobby = (lobbyId: string) => {
         const password = (document.getElementById('pass') as HTMLInputElement)?.value;
-
-        const joinHandler = (data: any) => {
-            if (data.success) {
-                console.log('Joined lobby:', data.id);
-                localStorage.setItem('lobby_id', data.id);
-                window.location.href = `/play/${data.id}`;
-            } else {
-                toast.error('Failed to join lobby: ' + data.message);
-            }
-            socket.off('join_lobby', joinHandler); // Eltávolítjuk a handler-t
-        };
-
-        socket.on('join_lobby', joinHandler);
-
         if (password) {
             socket.emit('join_lobby', { id: lobbyId, password: password });
+
+            socket.on('join_lobby', (data: any) => {
+                if (data.success) {
+                    console.log('Joined lobby:', data.id);
+                    localStorage.setItem('lobby_id', data.id);
+                    return window.location.href = `/play/${data.id}`;
+                } else {
+                    toast.error('Failed to join lobby: ' + data.message);
+                }
+            });
         } else {
             socket.emit('join_lobby', { id: lobbyId });
+
+            socket.on('join_lobby', (data: any) => {
+                if (data.success) {
+                    console.log('Joined lobby:', data.id);
+                    localStorage.setItem('lobby_id', data.id);
+                    return window.location.href = `/play/${data.id}`;
+                } else {
+                    toast.error('Failed to join lobby: ' + data.message);
+                }
+            });
         }
     };
 
@@ -119,20 +128,19 @@ const PlayPage: React.FC = () => {
         if (event.key === 'Enter') {
             setLobbyPopup(false);
 
-            const createHandler = (data: any) => {
-                console.log('Lobby created:', data);
-                if (data.id) {
-                    window.location.href = `/play/${data.id}`;
-                    console.log('Redirecting to lobby:', data.id);
-                }
-                socket.off('create_lobby', createHandler); // Eltávolítjuk a handler-t
-            };
-
-            socket.on('create_lobby', createHandler);
             socket.emit('create_lobby', {
                 name: lobbyName,
                 public: lobbyVisibility,
                 password: lobbyPassword
+            });
+
+            socket.on('create_lobby', (data) => {
+                console.log('Lobby created:', data);
+
+                if (data.id) {
+                    window.location.href = `/play/${data.id}`;
+                    console.log('Redirecting to lobby:', data.id);
+                }
             });
         }
     };
@@ -151,6 +159,12 @@ const PlayPage: React.FC = () => {
             <NavLayoutGame />
             <div className='flex flex-grow items-center justify-center gap-4 p-4'>
                 <div className='w-full max-w-4xl'>
+                    <div className="bg-black bg-opacity-50 rounded-lg shadow-md backdrop-blur-md p-6 text-center">
+                        <h1 className='text-2xl font-bold text-white'>Create Lobby</h1>
+                        <button className='mt-4 bg-blue-600 text-white py-2 px-6 rounded-md text-lg hover:bg-blue-700 transition-colors' onClick={createLobby} >
+                            Create
+                        </button>
+                    </div>
                     <div className="bg-black bg-opacity-50 rounded-lg shadow-md backdrop-blur-md p-6 mt-8">
                         <h2 className="text-2xl font-bold mb-6 text-center text-white">Active Lobbies</h2>
                         <div className="overflow-y-auto max-h-[60vh] scrollbar-hide grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4 w-full">
@@ -164,6 +178,9 @@ const PlayPage: React.FC = () => {
                                     </div>
                                     <div className="text-sm text-gray-300 mb-2">
                                         Lobby rank: {lobby.rank}
+                                    </div>
+                                    <div className="text-sm text-gray-300 mb-2">
+                                        Owner: {lobby.owner}
                                     </div>
                                     <div className="text-sm text-gray-300 mb-2">
                                         Players: {lobby.players}/2
@@ -222,20 +239,19 @@ const PlayPage: React.FC = () => {
                                 onClick={() => {
                                     setLobbyPopup(false);
 
-                                    const createHandler = (data: any) => {
-                                        console.log('Lobby created:', data);
-                                        if (data.id) {
-                                            window.location.href = `/play/${data.id}`;
-                                            console.log('Redirecting to lobby:', data.id);
-                                        }
-                                        socket.off('create_lobby', createHandler); // Eltávolítjuk a handler-t
-                                    };
-
-                                    socket.on('create_lobby', createHandler);
                                     socket.emit('create_lobby', {
                                         name: lobbyName,
                                         public: lobbyVisibility,
                                         password: lobbyPassword
+                                    });
+
+                                    socket.on('create_lobby', (data) => {
+                                        console.log('Lobby created:', data);
+
+                                        if (data.id) {
+                                            window.location.href = `/play/${data.id}`;
+                                            console.log('Redirecting to lobby:', data.id);
+                                        }
                                     });
                                 }}
                             >
