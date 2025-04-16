@@ -49,11 +49,7 @@ const PlayPage: React.FC = () => {
         }
     };
 
-    useEffect(() => {
-        fetchLobbies();
-        const intervalId = setInterval(fetchLobbies, 2500);
-        return () => clearInterval(intervalId);
-    }, []);
+    fetchLobbies();
 
     useEffect(() => {
         if (!socket) {
