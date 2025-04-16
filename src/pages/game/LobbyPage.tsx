@@ -23,45 +23,47 @@ const PlayPage: React.FC = () => {
     const [lobbies, setLobbies] = useState<Lobby[]>([]);
     const [loading, setLoading] = useState(true);
 
-    const fetchLobbies = async () => {
-        const token = localStorage.getItem('token');
-
-        if (!token) {
-            toast.error('No token found in localStorage');
-            setLoading(false);
-            return;
-        }
-
-        try {
-            socket.emit('get_lobbies');
-            socket.on('get_lobbies', (data: any) => {
-                if (data.success) {
-                    setLobbies(data.data);
-                    setLoading(false);
-                } else {
-                    toast.error(data.message);
-                    setLoading(false);
-                }
-            });
-        } catch (error) {
-            toast.error(error instanceof Error ? error.message : 'An unknown error occurred');
-            setLoading(false);
-        }
-    };
-
-    fetchLobbies();
-
     useEffect(() => {
+        const fetchLobbies = async () => {
+            const token = localStorage.getItem('token');
+
+            if (!token) {
+                toast.error('No token found in localStorage');
+                setLoading(false);
+                return;
+            }
+
+            try {
+                socket.emit('get_lobbies');
+                const lobbiesHandler = (data: any) => {
+                    if (data.success) {
+                        setLobbies(data.data);
+                        setLoading(false);
+                    } else {
+                        toast.error(data.message);
+                        setLoading(false);
+                    }
+                    socket.off('get_lobbies', lobbiesHandler); // Eltávolítjuk a handler-t, hogy ne figyeljen feleslegesen
+                };
+                socket.on('get_lobbies', lobbiesHandler);
+            } catch (error) {
+                toast.error(error instanceof Error ? error.message : 'An unknown error occurred');
+                setLoading(false);
+            }
+        };
+
+        fetchLobbies();
+
         if (!socket) {
             toast.error('Socket not connected');
         }
 
-        setTimeout(() => {
+        const leaveLobby = () => {
             if (localStorage.getItem('lobby_id')) {
                 console.log('Leaving lobby:', localStorage.getItem('lobby_id'));
                 socket.emit('leave_lobby', { id: localStorage.getItem('lobby_id') });
 
-                socket.on('leave_lobby', (data: any) => {
+                const leaveHandler = (data: any) => {
                     if (data.success) {
                         localStorage.removeItem('lobby_id')
                         return window.location.href = '/play';
@@ -69,9 +71,18 @@ const PlayPage: React.FC = () => {
                         console.log('Data deleted...')
                         localStorage.removeItem('lobby_id')
                     }
-                });
+                    socket.off('leave_lobby', leaveHandler); // Eltávolítjuk a handler-t
+                };
+                socket.on('leave_lobby', leaveHandler);
             }
-        }, 1000);
+        };
+
+        const timer = setTimeout(leaveLobby, 1000);
+
+        return () => {
+            clearTimeout(timer);
+            // Itt lehetne még leiratkozni más eseményekről is, ha szükséges
+        };
     }, []);
 
     const handleVisibilityChange = (visibility: boolean) => {
@@ -83,30 +94,24 @@ const PlayPage: React.FC = () => {
 
     const handleJoinLobby = (lobbyId: string) => {
         const password = (document.getElementById('pass') as HTMLInputElement)?.value;
+
+        const joinHandler = (data: any) => {
+            if (data.success) {
+                console.log('Joined lobby:', data.id);
+                localStorage.setItem('lobby_id', data.id);
+                window.location.href = `/play/${data.id}`;
+            } else {
+                toast.error('Failed to join lobby: ' + data.message);
+            }
+            socket.off('join_lobby', joinHandler); // Eltávolítjuk a handler-t
+        };
+
+        socket.on('join_lobby', joinHandler);
+
         if (password) {
             socket.emit('join_lobby', { id: lobbyId, password: password });
-
-            socket.on('join_lobby', (data: any) => {
-                if (data.success) {
-                    console.log('Joined lobby:', data.id);
-                    localStorage.setItem('lobby_id', data.id);
-                    return window.location.href = `/play/${data.id}`;
-                } else {
-                    toast.error('Failed to join lobby: ' + data.message);
-                }
-            });
         } else {
             socket.emit('join_lobby', { id: lobbyId });
-
-            socket.on('join_lobby', (data: any) => {
-                if (data.success) {
-                    console.log('Joined lobby:', data.id);
-                    localStorage.setItem('lobby_id', data.id);
-                    return window.location.href = `/play/${data.id}`;
-                } else {
-                    toast.error('Failed to join lobby: ' + data.message);
-                }
-            });
         }
     };
 
@@ -114,19 +119,20 @@ const PlayPage: React.FC = () => {
         if (event.key === 'Enter') {
             setLobbyPopup(false);
 
-            socket.emit('create_lobby', {
-                name: lobbyName,
-                public: lobbyVisibility,
-                password: lobbyPassword
-            });
-
-            socket.on('create_lobby', (data) => {
+            const createHandler = (data: any) => {
                 console.log('Lobby created:', data);
-
                 if (data.id) {
                     window.location.href = `/play/${data.id}`;
                     console.log('Redirecting to lobby:', data.id);
                 }
+                socket.off('create_lobby', createHandler); // Eltávolítjuk a handler-t
+            };
+
+            socket.on('create_lobby', createHandler);
+            socket.emit('create_lobby', {
+                name: lobbyName,
+                public: lobbyVisibility,
+                password: lobbyPassword
             });
         }
     };
@@ -216,19 +222,20 @@ const PlayPage: React.FC = () => {
                                 onClick={() => {
                                     setLobbyPopup(false);
 
-                                    socket.emit('create_lobby', {
-                                        name: lobbyName,
-                                        public: lobbyVisibility,
-                                        password: lobbyPassword
-                                    });
-
-                                    socket.on('create_lobby', (data) => {
+                                    const createHandler = (data: any) => {
                                         console.log('Lobby created:', data);
-
                                         if (data.id) {
                                             window.location.href = `/play/${data.id}`;
                                             console.log('Redirecting to lobby:', data.id);
                                         }
+                                        socket.off('create_lobby', createHandler); // Eltávolítjuk a handler-t
+                                    };
+
+                                    socket.on('create_lobby', createHandler);
+                                    socket.emit('create_lobby', {
+                                        name: lobbyName,
+                                        public: lobbyVisibility,
+                                        password: lobbyPassword
                                     });
                                 }}
                             >
