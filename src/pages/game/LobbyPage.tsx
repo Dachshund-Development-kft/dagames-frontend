@@ -23,33 +23,16 @@ const PlayPage: React.FC = () => {
     const [lobbies, setLobbies] = useState<Lobby[]>([]);
     const [loading, setLoading] = useState(true);
 
-    const fetchLobbies = async () => {
-        const token = localStorage.getItem('token');
-
-        if (!token) {
-            toast.error('No token found in localStorage');
+    socket.emit('get_lobbies');
+    socket.on('get_lobbies', (data: any) => {
+        if (data.success) {
+            setLobbies(data.data);
             setLoading(false);
-            return;
-        }
-
-        try {
-            socket.emit('get_lobbies');
-            socket.on('get_lobbies', (data: any) => {
-                if (data.success) {
-                    setLobbies(data.data);
-                    setLoading(false);
-                } else {
-                    toast.error(data.message);
-                    setLoading(false);
-                }
-            });
-        } catch (error) {
-            toast.error(error instanceof Error ? error.message : 'An unknown error occurred');
+        } else {
+            toast.error(data.message);
             setLoading(false);
         }
-    };
-
-    fetchLobbies();
+    });
 
     useEffect(() => {
         if (!socket) {
