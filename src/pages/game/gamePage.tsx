@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDrag, useDrop, DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import socket from '../../api/socket';
+import socket, { ensureSocketConnectedAndAuthenticated } from '../../api/socket';
 import Loading from '../../components/loading';
 import ProgressBar from '../../components/progressBar';
 import ProfilePopout from '../../components/ProfilePopout';
@@ -84,8 +84,18 @@ const GamePage: React.FC = () => {
     };
 
     useEffect(() => {
+        ensureSocketConnectedAndAuthenticated();
+
         const localMatchId = localStorage.getItem('game_id');
         const localToken = localStorage.getItem('game_token');
+
+        const requestGameAuth = () => {
+            if (!localMatchId || localMatchId !== matchid || !localToken) {
+                return;
+            }
+
+            socket.emit('game_auth', { token: localToken, id: localMatchId });
+        };
 
         const handleGameAuth = (data: any) => {
             if (data.success) {
@@ -163,11 +173,11 @@ const GamePage: React.FC = () => {
             }
         };
 
-        socket.on('auth', (data) => {
+        const handleSocketAuth = (data: { success: boolean }) => {
             if (data.success) {
                 if (localMatchId) {
                     if (localMatchId === matchid) {
-                        socket.emit('game_auth', { token: localToken, id: localMatchId });
+                        requestGameAuth();
                     } else {
                         localStorage.removeItem('game_id');
                         localStorage.removeItem('game_token');
@@ -175,7 +185,10 @@ const GamePage: React.FC = () => {
                     }
                 }
             }
-        });
+        };
+
+        socket.on('auth', handleSocketAuth);
+        requestGameAuth();
 
         socket.on('game_auth', handleGameAuth);
         socket.on('game_info', handleGameInfo);
@@ -184,6 +197,7 @@ const GamePage: React.FC = () => {
         setLoading(false);
 
         return () => {
+            socket.off('auth', handleSocketAuth);
             socket.off('game_auth', handleGameAuth);
             socket.off('game_info', handleGameInfo);
             socket.off('game_update', handleGameUpdate);

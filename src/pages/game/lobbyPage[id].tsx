@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import NavLayoutGame from '../../components/nav';
-import socket from '../../api/socket';
+import socket, { ensureSocketConnectedAndAuthenticated } from '../../api/socket';
 import Loading from '../../components/loading';
 import { lobbyId } from '../../api/lobby';
 import { user } from '../../api/me';
@@ -21,10 +21,7 @@ const PlayPageID: React.FC = () => {
     const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
 
     useEffect(() => {
-        if (!socket) {
-            alert('Socket not connected');
-            return;
-        }
+        ensureSocketConnectedAndAuthenticated();
 
         const handleLobbyUpdate = (data: any) => {
             if (data.players) {
@@ -59,7 +56,7 @@ const PlayPageID: React.FC = () => {
             }
         };
 
-        const handleReady = (data: any) => {
+        const handleReadyEvent = (data: any) => {
             if (data.success) {
                 setReady(true);
             } else {
@@ -67,7 +64,7 @@ const PlayPageID: React.FC = () => {
             }
         };
 
-        const handleUnready = (data: any) => {
+        const handleUnreadyEvent = (data: any) => {
             if (data.success) {
                 setReady(false);
             } else {
@@ -88,12 +85,12 @@ const PlayPageID: React.FC = () => {
             }
         }
 
-        socket.on('join_lobby', joinLobby)
+        socket.on('join_lobby', joinLobby);
         socket.on('lobby_update', handleLobbyUpdate);
         socket.on('lobby_message', handleLobbyMessage);
         socket.on('countdown', handleCountdown);
-        socket.on('ready', handleReady);
-        socket.on('unready', handleUnready);
+        socket.on('ready', handleReadyEvent);
+        socket.on('unready', handleUnreadyEvent);
         socket.on('lobby_deleted', handleLobbyDeleted);
 
         const fetchLobbyData = async () => {
@@ -125,11 +122,12 @@ const PlayPageID: React.FC = () => {
         fetchLobbyData();
 
         return () => {
+            socket.off('join_lobby', joinLobby);
             socket.off('lobby_update', handleLobbyUpdate);
             socket.off('lobby_message', handleLobbyMessage);
             socket.off('countdown', handleCountdown);
-            socket.off('ready', handleReady);
-            socket.off('unready', handleUnready);
+            socket.off('ready', handleReadyEvent);
+            socket.off('unready', handleUnreadyEvent);
             socket.off('lobby_deleted', handleLobbyDeleted);
         };
     }, [id]);
@@ -150,10 +148,10 @@ const PlayPageID: React.FC = () => {
     }, [players]);
 
     const leaveLobby = async () => {
-        const id = window.location.pathname.split('/')[2];
-        socket.emit('leave_lobby', { id: id });
+        ensureSocketConnectedAndAuthenticated();
+        const lobbyId = window.location.pathname.split('/')[2];
 
-        socket.on('leave_lobby', (data: any) => {
+        socket.once('leave_lobby', (data: any) => {
             if (data.success) {
                 window.location.href = '/play';
                 localStorage.removeItem('lobby_id');
@@ -161,9 +159,12 @@ const PlayPageID: React.FC = () => {
                 alert('Failed to leave lobby');
             }
         });
+
+        socket.emit('leave_lobby', { id: lobbyId });
     };
 
     const handleReady = async () => {
+        ensureSocketConnectedAndAuthenticated();
         const id = window.location.pathname.split('/')[2];
         setIsButtonDisabled(true);
         socket.emit('ready', { id: id });
@@ -174,6 +175,7 @@ const PlayPageID: React.FC = () => {
     };
 
     const handleUnready = async () => {
+        ensureSocketConnectedAndAuthenticated();
         const id = window.location.pathname.split('/')[2];
         setIsButtonDisabled(true);
         socket.emit('unready', { id: id });
@@ -191,10 +193,12 @@ const PlayPageID: React.FC = () => {
         setSelectedPlayerId(null);
     };
 
-    if (isMobile) {
-        alert('You cant open this on mobile');
-        window.location.href = '/';
-    }
+    useEffect(() => {
+        if (isMobile) {
+            alert('You cant open this on mobile');
+            window.location.href = '/';
+        }
+    }, []);
 
     if (loading) {
         return <Loading />;
